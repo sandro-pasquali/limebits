@@ -1,0 +1,7 @@
+{
+  "js": [         
+    "processing.js"
+  ],
+
+  "init": "init.js"
+}

@@ -1,0 +1,8 @@
+{
+  "js": [         
+    "thumbnails.js"
+  ],
+
+  "init": "init.js"
+}
+

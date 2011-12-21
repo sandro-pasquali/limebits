@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  extensions="Modules+Errors"
+></script>
+<script type="text/javascript">
+AXIS.Modules.load({
+  provider:   'local',
+  module:     'Processing'
+});  
+</script>
+  <script type="text/javascript">
+
+    
+  </script>
+<style type="text/css">
+  
+html, body {
+  background: #EEE;
+  font-family: Arial;
+  font-size: 13px;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  background: #385C85;
+  color: #FFF;
+  padding: 10px;
+  padding-left: 20px;
+  margin-top: 0px;
+}
+
+h1 a {
+  color: #FFF;
+}
+
+h2 {
+  padding-left: 20px;
+}
+
+p {
+  padding-left: 20px;
+  line-height: 1.3em;
+}
+
+p a {
+  color: #385C85;
+}
+
+canvas {
+  margin: 10px 0;
+}
+
+pre {
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 5px;
+  background: #FFF;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+div.ref-col {
+  float: left;
+  width: 32%;
+}
+  
+</style>
+</head>
+<body><h1><a href="http://ejohn.org/blog/processingjs/">Processing.js</a></h1>
+<h2>SineWave</h2>
+
+<p>by Daniel Shiffman.  
+
+Render a simple sine wave.</p>
+
+<p><a href="http://processing.org/learning/basics/sinewave.html"><b>Original Processing.org Example:</b> SineWave</a><br>
+<script type="application/processing">
+int xspacing = 8;   // How far apart should each horizontal location be spaced
+int w;              // Width of entire wave
+
+float theta = 0.0;       // Start angle at 0
+float amplitude = 75.0;  // Height of wave
+float period = 500.0;    // How many pixels before the wave repeats
+float dx;                 // Value for incrementing X, to be calculated as a function of period and xspacing
+float[] yvalues;          // Using an array to store height values for the wave (not entirely necessary)
+
+void setup() {
+  size(200,200);
+  frameRate(30);
+  colorMode(RGB,255,255,255,100);
+  smooth();
+  w = width+16;
+  dx = (TWO_PI / period) * xspacing;
+  yvalues = new float[w/xspacing];
+}
+
+void draw() {
+  background(0);
+  calcWave();
+  renderWave();
+
+}
+
+void calcWave() {
+  // Increment theta (try different values for 'angular velocity' here
+  theta += 0.02;
+
+  // For every x value, calculate a y value with sine function
+  float x = theta;
+  for (int i = 0; i < yvalues.length; i++) {
+    yvalues[i] = sin(x)*amplitude;
+    x+=dx;
+  }
+}
+
+void renderWave() {
+  // A simple way to draw the wave with an ellipse at each location
+  for (int x = 0; x < yvalues.length; x++) {
+    noStroke();
+    fill(255,50);
+    ellipseMode(CENTER);
+    ellipse(x*xspacing,width/2+yvalues[x],16,16);
+  }
+}
+</script><canvas width="200" height="200"></canvas></p>
+<div style="height:0px;width:0px;overflow:hidden;"></div>
+
+<pre><b>// All Examples Written by <a href="http://reas.com/">Casey Reas</a> and <a href="http://benfry.com/">Ben Fry</a>
+// unless otherwise stated.</b>
+
+int xspacing = 8;   // How far apart should each horizontal location be spaced
+int w;              // Width of entire wave
+
+float theta = 0.0;       // Start angle at 0
+float amplitude = 75.0;  // Height of wave
+float period = 500.0;    // How many pixels before the wave repeats
+float dx;                 // Value for incrementing X, to be calculated as a function of period and xspacing
+float[] yvalues;          // Using an array to store height values for the wave (not entirely necessary)
+
+void setup() {
+  size(200,200);
+  frameRate(30);
+  colorMode(RGB,255,255,255,100);
+  smooth();
+  w = width+16;
+  dx = (TWO_PI / period) * xspacing;
+  yvalues = new float[w/xspacing];
+}
+
+void draw() {
+  background(0);
+  calcWave();
+  renderWave();
+
+}
+
+void calcWave() {
+  // Increment theta (try different values for 'angular velocity' here
+  theta += 0.02;
+
+  // For every x value, calculate a y value with sine function
+  float x = theta;
+  for (int i = 0; i &lt; yvalues.length; i++) {
+    yvalues[i] = sin(x)*amplitude;
+    x+=dx;
+  }
+}
+
+void renderWave() {
+  // A simple way to draw the wave with an ellipse at each location
+  for (int x = 0; x &lt; yvalues.length; x++) {
+    noStroke();
+    fill(255,50);
+    ellipseMode(CENTER);
+    ellipse(x*xspacing,width/2+yvalues[x],16,16);
+  }
+}</pre>
+</body>
+</html>
+

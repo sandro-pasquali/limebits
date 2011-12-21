@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Errors+Modules" 
+></script>
+
+<script type="text/javascript">
+  
+  AXIS.Modules.load({
+    provider: 'local',
+    module:   'JSBeautify',
+    onload:   function(r) {
+      
+      
+      AXIS.find('content').value = r.beautify(AXIS.WebDAV.GET({
+        url: '/!lime/root/library/limebits/latest/axis/AXIS.js'
+      }).responseText);
+   
+   
+    }
+  });
+  
+</script>
+
+</head>
+<body>
+  
+  <form method="post" action="#">
+    
+    <textarea style="width:90%; height:500px;" name="content" id="content"></textarea>
+  
+  </form>
+
+</body>
+</html>

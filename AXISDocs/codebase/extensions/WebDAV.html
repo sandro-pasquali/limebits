@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+     	options:  {
+     	            rootPath: '../../',
+       	          groupURI: 'http://groups.google.com/group/limebits/post'
+     	          }
+    });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - WebDAV</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    When you fill out a form on a webpage, you are sending the information you've provided to a <abbr>URL</abbr>, which is a resource on a server that can do something useful with that information.  You might be replying to someone on a web forum -- so you tell the target <abbr>URL</abbr> to POST the information. Sometimes you don't want to send information to a <abbr>URL</abbr>, but get the contents of the resource -- so you GET the information.  `POST` and `GET` are <abbr>REST</abbr> methods. <abbr>WebDAV</abbr> provides you with several new and powerful <abbr>REST</abbr> methods, such as COPY.
+  </p>
+  <p>
+    The <abbr>WebDAV</abbr> extension for the AXIS is collection of methods for manipulating a <abbr>WebDAV</abbr> server.  
+</div>
+
+<h2>Requests</h2>
+<p>
+  All <abbr>WebDAV</abbr> requests are made by sending a <a href="#the_davobject"><a href="#the_davobject"><dfn>DAVObject</dfn></a></a> to the relevant method.  While each <abbr>WebDAV</abbr> method will do quite different things, you are always targeting a resource and asking for either some action to be performed on that resource, or to retrieve some information about that resource.  The AXIS <abbr>WebDAV</abbr> <abbr>API</abbr> simplifies this for you.
+</p>
+
+<a id="the_davobject"></a>
+<h2>The DAVObject</h2>
+<p>
+  All AXIS#WebDAV methods expect a single argument, the <a href="#the_davobject"><dfn>DAVObject</dfn></a>.  Each method has its own expectations for what is contained in the object, but there must always be a .url method -- these methods are for manipulating a <abbr>WebDAV</abbr> resource, which means a resource <abbr>URL</abbr> must always be defined.
+</p>
+<div class="vlist">
+  <dl>
+    <dt>
+      <h5><a href="#the_davobject"><dfn>DAVObject</dfn></a>
+        <ul>
+          <li>
+            <dfn>String</dfn> <i>url</i> : The <abbr>WebDAV</abbr> resource <abbr>URL</abbr>.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> <i>callback</i> : Function to call when a response has been received.  The callback will receive a response object as its first argument.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> <i>onBeforeSend</i> : Function called just prior to the call being made.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> <i>onAfterSend</i> : Function called just after the call is made.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> <i>onSuccess</i> : Function called if the call is successful and a response is received.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> <i>onFailure</i> : Function called if the call fails.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> <i>responseProcessor</i> : Will be passed the response object prior to callbacks being fired.
+          </li>
+          <li>
+            <dfn class="optional">String</dfn> <i>callId</i> : Recommended. An id for the call.  In addition to being a useful way to identify response objects, an call object with an id ensures that until it returns no other call with the same id will be made, eliminating the possibility of multiple identical calls being made.
+          </li>
+          <li>
+            <dfn class="optional">Array</dfn> <i>passThru</i> : Will be passed through with the request, and will be available in the response object.
+          </li>
+          <li>
+            <dfn class="optional">Boolean</dfn> <i>asynch</i> : Whether the call will be asynchronous.  Default is false (synchronous).
+          </li>
+          <li>
+            <dfn class="optional">String</dfn> <i>body</i> : For <abbr>HTTP</abbr> methods which provide writable content to the server (PUT, POST, etc) this is where you would place that content.
+          </li>
+          <li>
+            <dfn class="optional">String</dfn> <i>username</i> : A username for the resource.
+          </li>
+          <li>
+            <dfn class="optional">String</dfn> <i>password</i> : A password to the resource.
+          </li>
+          <li>
+            <dfn class="optional">String</dfn> <i>loadingMsg</i> : A message to display to the user when this file is loading.  Defaults to AXIS#defaultLoadingMsg.
+          </li>
+          <li>
+            <dfn class="optional">Object</dfn> <i>headers</i> : Request headers, name : value form.
+          </li>
+          <li>
+            <dfn class="optional">Array</dfn> <i>successCodes</i> : A list of <abbr>HTTP</abbr> response codes which are to be understood as successful responses -- firing #onSuccess handler.
+          </li>
+          <li>
+            <dfn class="optional">Array</dfn> <i>failureCodes</i> : A list of <abbr>HTTP</abbr> status codes which are to be understood as failure responses -- firing #onFailure handler.
+          </li>
+          <li>
+            <dfn class="optional">Object</dfn> <i>scope</i> : The scope to fire any callbacks in.  Defaults to `window`.
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      All of the above attributes of the <a href="#the_davobject"><dfn>DAVObject</dfn></a> defined above apply to each of the AXIS#WebDAV methods defined below.  Any special instructions, or additional attributes, which are specific to particular methods will be outlined in the description of that method.
+    </dd>
+  </dl>
+</div>
+
+<h2>Handling Responses</h2>
+<p>
+  Requests to <abbr>WebDAV</abbr> resources are made by sending a <a href="#the_davobject"><dfn>DAVObject</dfn></a>, and a modified <a href="#the_davobject"><dfn>DAVObject</dfn></a> is what you receive as a response.  This response object will be the original <a href="#the_davobject"><dfn>DAVObject</dfn></a> sent extended with properties and methods to assist you in handling the response to your request. For example, if we request the <abbr>WebDAV</abbr> property `creationdate` from a given resource:
+</p>
+
+<pre class="brush: js">
+  // Define a DAVObject
+  var DAVOb = {
+    url:            'WebDAV.html',
+    properties:     { 
+      name: "creationdate"
+    },
+    callback:       function(response) {
+      // `response` is the modified DAVObject. 
+    }
+  };
+  
+  // Make a DAV call; #callback will be fired when completed.
+  AXIS.WebDAV.getProperty(DAVOb);
+</pre>
+<p>
+  The `response` argument sent to the #callback function of the <a href="#the_davobject"><dfn>DAVObject</dfn></a> above will contain all of the properties/methods that defined the original, and will be extended by:
+  <div class="vlist">
+    <dl>
+      <dt>
+        <h4>
+          <i>responseText</i>
+        </h4>
+      </dt>
+      <dd>
+        Contains the unfiltered server response:
+        <pre class="brush: xml">
+          // AXIS.WebDAV.getProperty -> response.responseText
+          <?xml version="1.0" encoding="UTF-8"?>
+          <D:multistatus xmlns:D="DAV:" xmlns:ns0="DAV:">
+             <D:response xmlns:lp1="DAV:">
+                <D:href>/demo.html</D:href>
+                <D:propstat>
+                   <D:prop>
+                      <D:creationdate>2009-06-22T16:15:21Z</D:creationdate>
+                   </D:prop>
+                   <D:status>HTTP/1.1 200 OK</D:status>
+                </D:propstat>
+             </D:response>
+          </D:multistatus>
+        </pre>
+      </dd>
+      
+      <dt>
+        <h4>
+          <i>responseXMLObject()</i>
+        </h4>
+      </dt>
+      <dd>
+        Instead of dealing with raw <abbr>XML</abbr>, you can also fetch the response data as an <dfn>Object</dfn>, which you can use regular Javascript iterators to move through:
+        <pre class="brush: js">
+          // AXIS.WebDAV.getProperty -> response.responseXMLObject()
+          var a = response.responseXMLObject();
+          
+          // Shows 2009-06-22T16:15:21Z
+          console.log(a.multistatus.response.propstat.prop.creationdate);
+        </pre>
+      </dd>
+      
+      <dt>
+        <h4>
+          <i>getStatus()</i>
+        </h4>
+      </dt>
+      <dd>
+        The <abbr>HTTP</abbr> status code returned by the server:
+        <pre class="brush: js">
+          // Execute a method on a nonexistent file = 404
+          var sCall = AXIS.WebDAV.getProperty({
+            url: 'doesntexist.html',
+          });
+
+          // 404
+          console.log(sCall.getStatus());
+        </pre>
+        <p>
+          See <a href="../../appendices/HTTP-status-codes.html"><abbr>HTTP</abbr> status codes</a> for more information.
+      </dd>
+      
+    </dl>
+  </div>
+</p>
+
+<h2>Response Preprocessors</h2>
+<p>
+  A powerful resource available to the developer is the ability to define preprocessors for <abbr>WebDAV</abbr> responses.  To do so, you simply set the #responseProcessor property of a <a href="#the_davobject"><dfn>DAVObject</dfn></a>.  This function will be passed the response object <i>prior</i> to that response object being returned to any other callback:
+</p>
+  <pre class="brush: js">
+    // Pass a preprocessor
+    var sCall = AXIS.WebDAV.getProperty({
+      url:                'file.html',
+      responseProcessor:  function(r) {
+        this.modifiedResponseProperty = 'foo';
+      },
+      callback:           function(r) {
+        // foo
+        console.log(r.modifiedResponseProperty);
+      }
+    });
+  </pre>
+<p>
+  A more interesting use would be to read and modify the response data itself, perhaps running returned <abbr>HTML</abbr> through a renderer, etc.
+</p>
+
+<h2>Common Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <h5>HEAD
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Retrieves the HEAD information of a resource. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.4">http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.4</a>  
+      </p>
+    </dd>
+    
+    <dt>
+      <a id="method_GET"></a>
+      <h5>GET
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Retrieves whatever is identified by the resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.4">http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.4</a>  
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>POST
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+          <ul>
+            <li>
+              <dfn>String</dfn> <i>body</i> : The content to be sent to the resource.
+            </li>
+          </ul>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Sends information to the resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_POST">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_POST</a>  
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>MKCOL
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Creates a new collection on the resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_MKCOL">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_MKCOL</a>  
+      </p>
+      <pre class="brush: js">
+      // Create new resource under home/
+      AXIS.WebDAV.MKCOL({
+        url: 'home/newFolder'
+      });
+      </pre>
+    </dd>
+       
+    <dt>
+      <h5>DELETE
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Deletes the resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_DELETE">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_DELETE</a>  
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>PUT
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+          <ul>
+            <li>
+              <dfn>String</dfn> <i>body</i> : The content to replace what is currently found at the resource.
+            </li>
+          </ul>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Set the content of a resource <abbr>URL</abbr>. What you send will replace the <a href="#method_GET">GET</a> response entity of the resource. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_PUT">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_PUT</a>  
+      </p>
+      <pre class="brush: js">
+      // Put content in a resource
+      AXIS.WebDAV.PUT({
+        url:  'myurl.html', 
+        body: 'The Content'
+      });
+      
+      // GET the content. Will alert 'The Content'
+      AXIS.WebDAV.GET({
+        url:      'myurl.html', 
+        callback: function(r) {
+          alert(r.responseText);
+        }
+      });
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>COPY
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+          <ul>
+            <li>
+              <dfn>String</dfn> <i>url</i> : The resource to copy <i>from</i>.
+            </li>
+            <li>
+              <dfn>String</dfn> <i>destination</i> : The resource to copy <i>to</i>.
+            </li>
+            <li>
+              <dfn class="optional">Object</dfn> <i>headers</i> : Additional execution instructions
+              <ul>
+                <li>
+                  <dfn class="optional">String</dfn> <i>Overwrite</i> : One of 'T' or 'F', indicating whether the destination resource should be overwritten if it already exists (T), or not (F). Default is False.
+                </li>
+                <li>
+                  <dfn class="optional">Mixed</dfn> <i>Depth</i> : One of `0`(zero) or `infinity`. Default is `infinity`.  In the case of collection copies, whether to copy only the resource (0), or all sub-collections (infinity).
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Copies the content of a resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_COPY">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_COPY</a>  
+      </p>
+      <pre class="brush: js">
+      // Make a copy
+      AXIS.WebDAV.COPY({
+        url:          'oldurl.html', 
+        destination:  'newurl.html',
+        headers:      {
+          Overwrite: 'T'
+        }
+      });
+      
+      // GET the content. Will alert 'exists' if successful
+      AXIS.WebDAV.GET({
+        url:        'newurl.html', 
+        onSuccess:  function(r) { 
+          alert('exists');
+        }
+      });
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>MOVE
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+          <ul>
+            <li>
+              <dfn>String</dfn> <i>url</i> : The resource to move <i>from</i>.
+            </li>
+            <li>
+              <dfn>String</dfn> <i>destination</i> : The resource to move <i>to</i>.
+            </li>
+            <li>
+              <dfn class="optional">Object</dfn> <i>headers</i> : Additional execution instructions
+              <ul>
+                <li>
+                  <dfn class="optional">String</dfn> <i>Overwrite</i> : One of 'T' or 'F', indicating whether the destination resource should be overwritten if it already exists (T), or not (F). Default is False.
+                </li>
+                <li>
+                  <dfn class="optional">Mixed</dfn> <i>Depth</i> : One of `0`(zero) or `infinity`. Default is `infinity`.  In the case of collection copies, whether to copy only the resource (0), or all sub-collections (infinity).
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Moves the content of a resource <abbr>URL</abbr>. This is not a COPY; the original file will be deleted. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_MOVE">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_MOVE</a>  
+      </p>
+      <pre class="brush: js">
+      // Make a copy
+      AXIS.WebDAV.MOVE({
+        url:          'oldurl.html', 
+        destination:  'newurl.html',
+        headers:      {
+          Overwrite: 'T'
+        }
+      });
+      
+      // The new resource has been created
+      AXIS.WebDAV.GET({
+        url:        'newurl.html', 
+        onSuccess:  function(r) { 
+          alert('exists');
+        }
+      });
+      
+      // The old resource will NOT exist
+      AXIS.WebDAV.GET({
+        url:        'oldurl.html', 
+        on404:  function(r) { 
+          alert('does not exist');
+        }
+      });
+      </pre>
+    </dd>
+
+    <dt>
+      <h5>SEARCH
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        TBD  
+      </p>
+    </dd>
+
+  </dl>
+</div>
+
+<h2>Setting Properties on Resources</h2>
+<p>
+  Being able to set the properties of resources is one of the key advantages of <abbr>WebDAV</abbr>. You are already familiar with file properties if you use any of the common operating systems: 
+</p>
+
+<div class="imageblock">
+  <div class="content">
+    <img src="../../images/extensions-WebDAV-setting-properties.png" alt="images/extensions-WebDAV-setting-properties.png" />
+  </div>
+  <div class="image-title">
+    Common file properties.
+  </div>
+</div>
+
+<p>  
+  <abbr>WebDAV</abbr> lets you set other properties, so that you might also say that a given file has the property of "vacation: maui", or "sortPosition: 23".
+</p>
+  
+<div class="vlist">
+  <dl>
+    
+    <dt>
+      <h5>PROPFIND
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+          <ul>
+            <li>
+              <dfn class="optional">Object</dfn> <i>headers</i>:
+              <ul>
+                <li>
+                  <dfn>Mixed</dfn> <i>Depth</i> : Accepts `0`, `1`, and `infinity`. Defaults to `0`, which targets exactly the target resource.  A depth of `1` targets the resource and its immediate children.  A depth of `infinity` walks the entire tree rooted by the resource <abbr>URL</abbr>.
+                </li>
+              </ul>
+            </li>
+            <li>
+              <dfn class="optional">String</dfn> <i>body</i> : An <abbr>XML</abbr> element indicating specific properties to search for.
+            </li>
+          </ul>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Fetches the <abbr>WebDAV</abbr> properties of the resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_PROPFIND">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_PROPFIND</a>  
+      </p>
+      <pre class="brush: js">
+      // Get author/lastmodified properties of all files in mydatafolder/ collection
+      AXIS.WebDAV.PROPFIND({
+        url:      'mydatafolder/',
+        body:     '&lt;?xml version="1.0" encoding="utf-8" ?>\
+                   &lt;D:propfind xmlns:D="DAV:">\
+                     &lt;D:prop xmlns:R="http://ns.example.com/data/">\
+                       &lt;R:author/>\
+                       &lt;R:lastmodified/>\
+                     &lt;/D:prop>\
+                   &lt;/D:propfind>'; 
+        headers:  {
+          Depth: '1'
+        }
+      });
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_PROPPATCH"></a>
+      <h5>PROPPATCH
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+          <ul>
+            <li>
+              <dfn class="optional">Array</dfn> <i>setProperties</i> : A collection of property objects.
+              <ul>
+                <li>
+                  <dfn>Object</dfn> A property object.
+                  <ul>
+                    <li>
+                      <dfn>String</dfn> <i>name</i> : The name of the property to set.
+                    </li>
+                    <li>
+                      <dfn>String</dfn> <i>value</i> : The value of the property.
+                    </li>  
+                    <li>
+                      <dfn class="optional">String</dfn> <i>ns</i> : The property namespace.
+                    </li>  
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <dfn class="optional">Array</dfn> <i>removeProperties</i> : A collection of property objects to remove.
+              <ul>
+                <li>
+                  <dfn>Object</dfn> A property object.
+                  <ul>
+                    <li>
+                      <dfn>String</dfn> <i>name</i> : The name of the property to remove.
+                    </li>
+                    <li>
+                      <dfn class="optional">String</dfn> <i>ns</i> : The property namespace.
+                    </li>   
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Sets the <abbr>WebDAV</abbr> properties of the resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_PROPPATCH">http://greenbytes.de/tech/webdav/rfc4918.html#METHOD_PROPPATCH</a>  
+      </p>
+      <pre class="brush: js">
+      // Set properties displayname/Author on resource, w/ namespace example
+      var s = setProperties = [{
+        name: "displayname",
+        value: "foo.html"   
+      }, {
+        ns: "http://www.limebits.com/ns/1.0"
+        name: "Author",
+        value: "Fitzgerald"
+      }];
+       
+      AXIS.WebDAV.PROPPATCH({
+        url: 'myurl.html', 
+        setProperties: setProperties
+      });
+      </pre>
+    </dd>
+
+    <dt>
+      <h5>setProperty
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+            <ul>
+              <li>
+                <dfn>Mixed</dfn> <i>setProperties</i> : Usually an array of propery objects as used in <a href="#method_PROPPATCH">PROPPATCH</a>#setProperties.  If you are setting only a single property, you can also send a single property object.
+                <ul>
+                  <li>
+                    <dfn>Object</dfn> A property object.
+                    <ul>
+                      <li>
+                        <dfn>String</dfn> <i>name</i> : The name of the property to set.
+                      </li>
+                      <li>
+                        <dfn>String</dfn> <i>value</i> : The value of the property.
+                      </li>  
+                      <li>
+                        <dfn class="optional">String</dfn> <i>ns</i> : The property namespace.
+                      </li>  
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Sets a property(-ies) on a resource.
+      </p>
+      <pre class="brush: js">       
+      AXIS.WebDAV.setProperty({
+        url:            'foo.html',
+        setProperties:  { 
+          ns: 'MYNS:', 
+          name: "order", 
+          value: "book" 
+        }
+      });
+      
+      AXIS.WebDAV.setProperty({
+        url:            'foo.html',
+        setProperties:  [{ 
+          ns: 'MYNS:', 
+          name: "order", 
+          value: "book" 
+        }, {
+          ns: 'MYNS:', 
+          name: "card", 
+          value: "visa" 
+        }]
+      });
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>removeProperty
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+            <ul>
+              <li>
+                <dfn>Mixed</dfn> <i>setValues</i> : Usually an array of propery objects as used in <a href="#method_PROPPATCH">PROPPATCH</a>#removeProperties.  If you are removing only a single property, you can also send a single property object.
+                <ul>
+                  <li>
+                    <dfn>Object</dfn> A property object.
+                    <ul>
+                      <li>
+                        <dfn>String</dfn> <i>name</i> : The name of the property to set.
+                      </li>
+                      <li>
+                        <dfn class="optional">String</dfn> <i>ns</i> : The property namespace.
+                      </li>  
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Removes a property(-ies) on a resource.
+      </p>
+      <pre class="brush: js">       
+      AXIS.WebDAV.removeProperty({
+        url:            'foo.html',
+        removeProperties:  { 
+          ns: 'MYNS:', 
+          name: "order", 
+          value: "book" 
+        }
+      });
+      </pre>
+    </dd>
+  </dl>
+</div>
+    
+    
+<h2>Getting Properties on Resources</h2>
+<p>
+  A major advantage of <abbr>WebDAV</abbr> is the power you are given to set and get properties on resources.  You can get set and get properties yourself, or get properties on a resource that are automatically set for each resource by the server itself.  See <a href="../../appendices/WebDAV-properties.html">The Live and the Dead: Resource Properties</a> for more detailed information on properties.
+</p>
+
+<div class="vlist">
+  <dl>
+    <dt>
+      <h5>getProperty
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+            <ul>
+              <li>
+                <dfn>Mixed</dfn> <i>properties</i> : Usually an array of propery objects as used in <a href="#method_PROPPATCH">PROPPATCH</a>#setProperties.  If you are retrieving only a single property, you can also send a single property object.
+                <ul>
+                  <li>
+                    <dfn>Object</dfn> A property object.
+                    <ul>
+                      <li>
+                        <dfn>String</dfn> <i>name</i> : The name of the property to get.
+                      </li>
+                      <li>
+                        <dfn class="optional">String</dfn> <i>ns</i> : The property namespace.
+                      </li>  
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Get a property(-ies) on a resource.
+      </p>
+      <pre class="brush: js">       
+      AXIS.WebDAV.getProperty({
+        url:            'foo.html',
+        properties:  { 
+          ns: 'MYNS:', 
+          name: "order"
+        }
+      });
+      
+      AXIS.WebDAV.getProperty({
+        url:            'foo.html',
+        properties:  [
+        { 
+          name: "order", 
+        }, 
+        {
+          name: "value"
+        }]
+      });
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>getPropertyNames
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Retrieves all property names on the resource <abbr>URL</abbr>. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.1.4">http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.1.4</a>  
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>getAllProperties
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Retrieves the dead/live properties/values on the resource <abbr>URL</abbr>, as specified in the <abbr>WebDAV</abbr> &lt;allprop/&gt; specification. See: <a href="http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.1.5">http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.9.1.5</a>.  If an optional #includes <dfn>Array</dfn> is passed in the <dfn>DAVObject</dfn>, additional properties to those covered by &lt;allprop/&gt; can be requested.
+      </p>
+      <pre class="brush: js">       
+      AXIS.WebDAV.getAllProperties({
+        url:            'foo.html'
+      });
+      // Returns a typical &lt;allprop&gt; response.
+      
+      AXIS.WebDAV.getAllProperties({
+        url:            'foo.html',
+        includes:       [
+          'supported-live-property-set',
+          'supported-report-set'
+        ]
+      });
+      // Returns &lt;allprop&gt; + response to request for two additional properties.
+      </pre>
+      <p>
+        See <a href="../../appendices/WebDAV-properties.html">The Live and the Dead: Resource Properties</a>.
+      </p>
+    </dd>
+
+  </dl>
+</div>
+
+<h2>General Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+    <dt>
+      <h5>readFolder
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+        <div>
+          Returns <a href="#the_davobject"><dfn>DAVObject</dfn></a> with a special property, #folder, which contains information on the folder and its children.  Note that only first-level children are listed.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        It is expected that you will send the <abbr>URL</abbr> of a <abbr>WebDAV</abbr> collection (which can be understood as a folder).  This method will return a list of objects containing information on each resource in that collection -- the properties of each file in a folder. 
+      </p>
+      <pre class="brush: js">       
+      AXIS.WebDAV.readFolder({
+        url:      'AXISDocs',
+        onSuccess: function(response) {
+          console.log(response.folder);
+        }
+      });
+      </pre>
+      <div class="imageblock">
+        <div class="content">
+          <img src="../../images/extensions-WebDAV-readFolder.png" alt="images/extensions-WebDAV-readFolder.png" />
+        </div>
+        <div class="image-title">
+          AXIS.WebDAV.readFolder() result for a folder (via FireBug).
+        </div>
+      </div>
+
+    </dd>
+    
+  </dl>
+</div>
+
+<h2>Access Control and Permissions</h2>
+<p>
+  <abbr>WebDAV</abbr> has a powerful set of interfaces allow fine-grained control over who can access resources and what can be done with resources once accessed.
+</p>
+<div class="vlist">
+  <dl>
+    
+    <dt>
+      <h5>VERSION_CONTROL
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        TBD  
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>CHECKOUT
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        TBD  
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>CHECKIN
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        TBD  
+      </p>
+    </dd>    
+    
+    <dt>
+      <h5>LOCK
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        TBD  
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>UNLOCK
+        <ul>
+          <li>
+            <a href="#the_davobject"><dfn>DAVObject</dfn></a>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        TBD  
+      </p>
+    </dd>
+    
+  </dl>
+</div>
+
+</body>
+</html>

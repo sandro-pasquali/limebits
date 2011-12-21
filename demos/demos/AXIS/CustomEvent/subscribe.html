@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Errors" 
+></script>
+<script type="text/javascript">
+
+// Create event and attach somewhere.
+var myCustomEvent = AXIS.CustomEvent.create(
+  name: 'myEventName'
+});
+
+// What is called when the event is fired.
+var callbackFunction = function()  {
+    alert('fired event');
+  };
+
+// You have to subscribe to events.
+myCustomEvent.subscribe({
+  callback:   callbackFunction
+});
+
+// Should show "fired event"
+myCustomEvent.fire();
+
+</script>
+</head>
+
+<body>
+</body>
+
+</html>

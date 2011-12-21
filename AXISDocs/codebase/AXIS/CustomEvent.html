@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+     	options:  {
+     	            rootPath: '../../',
+       	          groupURI: 'http://groups.google.com/group/limebits/post'
+     	          }
+    });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - CustomEvent</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    When something important happens in the world, you might describe it as an event.  When something important happens in your browser, those are events too.  When you click your mouse, an 'onClick' event fires.  When you press a key on your keyboard, an 'onKeyDown' event fires.  When you use some software that does something when you click a button, that something happened because a programmer asked to be informed when a user clicked a button.  In a sense, that programmer was "subscribing" to an event "notification", in the same way that you might subscribe to a service that informs you when a particular airline ticket becomes available. You might even say you are subscribing to an 'onTicketAvailable' event.
+  </p>
+  <p>
+    As mentioned, there are some built-in events that a programmer can subscribe to, like 'onClick', 'onMouseMove', 'onLoad', and so forth.  You can use javascript to subscribe to these events.  But what if you are writing some javascript that does interesting things that another programmer might want to subscribe to, something event-worthy?  For example, let's say you write a nice menu widget.  When a user opens a menu, that is often an event that a software interface will want to do something with -- like load the contents of the menu.  In that case, you want to create an 'onMenuOpen' event.  After that custom event is created another programmer can ask to be informed when the event "fires" -- when it happens, when the conditions exist to activate it -- and do something, like call the loadMenuContents() function.
+  </p>
+  <p>
+    The AXIS provides a CustomEvent object so that you can create, subscribe to, and fire events.
+  </p>
+
+  <p>
+    Now there is an event subscriber, which will execute the #callback function when the event fires.  Which brings up the final key Custom Event idea: how are events fired?
+  </p>
+  <pre class="brush: js">
+  var myCustomEvent = AXIS.CustomEvent.create();
+  
+  myCustomEvent.subscribe({
+    callback: function() {
+      alert('event!');
+    }
+  });
+  
+  // Now we tell the event to fire, which will notify all subscribers.
+  myCustomEvent.fire();
+  
+  // alerts: 'event!'
+  </pre>
+</div>
+
+<h2>Creating a Custom Event Object</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <a id="method_create"></a>
+      <h5>create
+        <ul>
+          <li>
+            <dfn class="optional">Object</dfn> Definition object for the event.
+            <ul>
+              <li>
+                <dfn class="optional">String</dfn> name : A name for this event.
+              </li>
+              <li>
+                <dfn class="optional">Object</dfn> scope : The scope to execute subscriber callbacks in.  Defaults to `window`.
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>CustomEvent</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Creates a subscribable event.  
+      </p>
+      <pre class="brush: js">
+      var myCustomEvent = AXIS.CustomEvent.create();
+      
+      // Ask to be informed when the event fires
+      myCustomEvent.subscribe({
+        callback: function() {
+          alert('event!');
+        }
+      });
+      </pre>
+    </dd>
+  </dl>
+</div>
+
+<h2>Event Methods</h2>
+<p>
+  Once you've created a <dfn>CustomEvent</dfn> there are a number of methods which allow you to control the firing of the event and event subscriptions.
+</p>
+<div class="vlist">
+  <dl>
+    <dt>
+      <a id="method_subscribe"></a>
+      <h5>subscribe
+        <ul>
+          <li>
+            <dfn>Object</dfn> Definition object for the event.
+            <ul>
+              <li>
+                <dfn>Callback</dfn> callback : The function to be executed when the subscribed event fires.
+              </li>
+              <li>
+                <dfn class="optional">Mixed</dfn> object : Any additional information you'd like passed to the callback function.
+              </li>
+              <li>
+                <dfn class="optional">Boolean</dfn> wait : If a subscription is made to an event that has already fired, the default behaviour is for the subscription callback to fire immediately.  If you would like your subscription to wait for the <b>next</b> firing of the subscribed event, use this argument.
+              </li>
+              <li>
+              <dfn class="optional">Object</dfn> scope : The scope to execute callbacks in.  Defaults to `window`.  Note that subscriber scope will override event scope (see <a href="#method_create">#create</a>).
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn>, true if event has already fired, false if not.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Subscribes to a <dfn>CustomEvent</dfn>.  Every time that event fires, the callback passed to this method will fire.  
+      </p>
+      <pre class="brush: js">
+      var myCustomEvent = AXIS.CustomEvent.create();
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_unsubscribe"></a>
+      <h5>unsubscribe
+        <ul>
+          <li>
+            <dfn>Callback</dfn> The callback identified by the object passed when you subscribed to the event.  Note that if there are several subscribers with the same callback function, they will <b>all</b> be unsubscribed.
+          </li>
+          <li>
+            <dfn class="optional">Mixed</dfn> If a callback function is not specific enough (in cases where several subscribers use the same callback), you can be more targeted by passing the object argument passed to <a href="#method_subscribe">#subscribe</a>.
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>Number</dfn> of subscribers removed.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Creates a subscribable event.  
+      </p>
+      <pre class="brush: js">
+      var myCustomEvent = AXIS.CustomEvent.create();
+      
+      var f = function() { // do something. }
+      var s = {
+        specialInfo: 1
+      }
+      
+      myCustomEvent.subscribe({
+        name:     'player-1',
+        callback: f;
+      });
+      
+      myCustomEvent.subscribe({
+        name:     'player-2',
+        callback: f;
+        object:   s
+      });
+      
+      // This will remove *all* subscribers
+      myCustomEvent.unsubscribe(f);
+      
+      // This will remove only player-2
+      myCustomEvent.unsubscribe(f,s);
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_unsubscribeall"></a>
+      <h5>unsubscribeAll
+        <div>
+          Always returns <dfn>Boolean</dfn> true.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Removes <b>all</b> subscribers to an event. 
+      </p>
+    </dd>
+    
+    <dt>
+      <a id="method_fire"></a>
+      <h5>fire
+        <div>
+          Returns <dfn>Number</dfn> of subscribers affected.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Fires the event, firing the callback for all subscribers.  
+      </p>
+      <pre class="brush: js">
+      var myCustomEvent = AXIS.CustomEvent.create();
+      
+      // Ask to be informed when the event fires
+      myCustomEvent.subscribe({
+        callback: function() {
+          alert('event!');
+        }
+      });
+      
+      // alerts 'event!'
+      myCustomEvent.fire();
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_hasfired"></a>
+      <h5>hasFired
+        <div>
+          Returns <dfn>Boolean</dfn> indicating if event has already fired.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Check if the event has already fired.  
+      </p>
+      <pre class="brush: js">
+      var myCustomEvent = AXIS.CustomEvent.create();
+      
+      // Ask to be informed when the event fires
+      myCustomEvent.subscribe({
+        callback: function() {
+          alert('event!');
+        }
+      });
+ 
+      // false
+      console.log(myCustomEvent.hasFired());
+      
+      // alerts 'event!'
+      myCustomEvent.fire();
+      
+      // true
+      console.log(myCustomEvent.hasFired());
+      </pre>
+    </dd>
+    
+  </dl>
+</div>
+
+</body>
+
+</html>

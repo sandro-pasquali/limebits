@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" extensions="Modules"></script>
+    <script type="text/javascript">
+
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+         	          groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+
+      
+    </script>
+    
+  </head>
+<body>
+<div id="TOC_BAR"></div>
+
+<div id="header">
+  <h1>What is LimeBits?</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    <q>Sharing my website is easy.  Anybody can see whatever I put there, right?</q>
+  </p>  
+  
+  <p>
+    Not quite.  Although you may share webpages on your website, you're not actually sharing the site.
+  </p>
+  
+  <p> 
+    Most websites generate some webpages dynamically (running a program that creates a new, customized version of the page instantly) and then show it on your browser.  It shows your FaceBook profile when you're logged in, but mine when I'm logged in.
+  </p>
+  
+  <p>  
+    I can get a static snapshot of your website by viewing or copying your webpages.  But there's no easy way for me to capture the dynamic behavior of your site, because the programs that create each version of your dynamic webpages are hidden.  There's no easy way for me to get those programs from the webserver, nor for you to make them available to me.
+  </p>
+  
+  <p>  
+    Even if I could get them, they're designed to run on a webserver, not my PC.  And even if I had a webserver, I'd need to understand how to install and configure the dynamic software -- specialized knowledge beyond the skills of most people.
+  </p>
+</div>
+
+<h2>LimeBits Changes all That</h2>
+
+<p>
+LimeBits makes it possible for you to share your whole site -- static pages and dynamic page-generating programs.  If you share your site on LimeBits, I can get my own fully-functioning copy of your entire site, including dynamics.
+</p>
+
+<p>
+LimeBits is a new web platform that makes sharing of dynamic websites easy.  There's no visible difference between traditional websites and LimeBits sites.  But under the hood, LimeBits sites work differently.
+</p>
+
+<p>
+JavaScript is the universal programming language in all browsers.  LimeBits makes your browser's JavaScript more powerful.  It gives your browser a standard way to save data to a webserver.  With LimeBits, your browser's JavaScript programs may save state information, documents, or any other data, using the <abbr">WebDAV</abbr> standard.
+</p>
+
+<p>
+WebDAV is important not just because it's an international standard (and supported by Microsoft, Apple, Sun, Adobe, <abbr title="GNU's Not Unix">GNU</abbr>/Linux, and others), but also because it provides features for enhanced security, collaboration, querying, and version tracking.
+</p>
+
+<p>
+LimeBits's <abbr>WebDAV</abbr> server is flexible enough to take over some of the functions formerly handled by special-purpose server programs, such as content-management systems, blog systems, and even database systems.  LimeBits's <abbr>WebDAV</abbr> server handles the storage, security, querying, and retrieval.
+</p>
+
+<h2>LimeBits Goes one Step Further -- a Giant Step</h2>
+
+<p>
+  LimeBits pushes the special-purpose programs out of the server, and into your browser, using JavaScript.  For example, LimeBits's blog is actually a JavaScript program in your browser, rather than on a webserver.  It uses the LimeBits <abbr>WebDAV</abbr> server for storage and retrieval, so that everyone can read the blog comments that you post.
+</p>
+
+<p>
+  If you have a LimeBits website, it works in everyone's browser normally, no software installation required.  The difference is that your website is fully shareable, including the dynamics.
+</p>
+
+<h2>Why is Sharing Important?</h2>
+
+<p>
+  It makes dynamic websites easier -- within reach of novices, not just specialists.
+</p>
+
+<p>
+  Instead of starting from scratch, you start from someone else's fully working LimeBits website.  You find a site you like and then click LimeBits's Copy button. Now you just customize your copy: insert your own name, your pictures, etc., while keeping the site's dynamic features in place.
+</p>
+
+<p>
+  Because LimeBits websites are fully sharable, they lend themselves perfectly to the open-source model.  That is, LimeBits users form a community whose members are free to improve on one another's work.  If I write a JavaScript blogging program, you can freely copy it from my LimeBits website, and modify or improve it for your own website.  Because browsers download your JavaScript program, it is then available for further modification.
+</p>
+
+<div class="quoteblock">
+  <div class="content">
+    <q>We could say we want the Web to reflect a vision of the world where everything is done <em>democratically</em>. To do that, we get computers to talk with each other in such a way as to <em>promote that ideal</em>.</q>
+
+  </div>
+  <div class="attribution">
+    &#8212; <em>Sir Tim Berners-Lee</em>, Internet Pioneer
+  </div>
+</div>
+
+<p>
+  <div class="imageblock">
+    <div class="content">
+      <img src="images/test.png" alt="images/test.png"/>
+    </div>
+    <div class="image-title">Figure 1-1: A scrapbook Bit that contains other Bits</div>
+  </div>
+</p>
+
+<p>
+  LimeBits is meant for sharing.  Its unique architecture eases and speeds the process of putting your own creations online.
+</p>
+
+<pre class="brush: js">
+
+<!--includes graphics by Fernando Ocampo -  http://fernando.bulbo.com.py/ -->
+<div class="polaroid">
+    <a class="image" href="{% host %}/apps/finder/#folder=/home/bits/bits/scrapbooks/introduction/">
+        <img class="roid" src="data/images/roid_scrapbook.jpg" alt="ScrapBook webpage maker">
+    </a>
+    <a class="copy" id="scrapbook-copy" href="{% host %}/home/bits/bits/scrapbooks/introduction/" title="Copy this">Copy this</a>
+    <p class="title" ><a href="{% host %}/apps/finder/#folder=/home/bits/bits/scrapbooks/introduction/">ScrapBook webpage maker</a></p>
+    <p class="author">by <a href="{% host %}/home/johnp">johnp</a>, <a href="{% host %}/home/kevin">Kevin</a>, <a href="{% host %}/home/paritosh">Paritosh</a></p>
+</div>
+&#60;script type="text/javascript">
+    setup_copy('scrapbook');
+&#60;/script>
+
+</pre>
+
+</body>
+</html>

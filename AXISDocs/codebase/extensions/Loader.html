@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+     	options:  {
+     	            rootPath: '../../',
+       	          groupURI: 'http://groups.google.com/group/limebits/post'
+     	          }
+    });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - Loader</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    The load controller for <abbr>XMHTTP</abbr> requests. 
+  </p>
+</div>
+<h2>Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <a id="method_load"></a>
+      <h5>load
+        <ul>
+          <li>
+            <dfn>Object</dfn> Definition of the loader object.
+            <ul>
+              <li>
+                <dfn>String</dfn> <i>url</i> : The <abbr>WebDAV</abbr> resource <abbr>URL</abbr>.
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>method</i> : The <abbr>HTTP</abbr> method to use in making the call.  Default is `GET`.
+              </li>
+              <li>
+                <dfn class="optional">Callback</dfn> <i>callback</i> : Function to call when a response has been received.  The callback will receive a response object as its first argument.
+              </li>
+              <li>
+                <dfn class="optional">Callback</dfn> <i>onBeforeSend</i> : Function called just prior to the call being made.
+              </li>
+              <li>
+                <dfn class="optional">Callback</dfn> <i>onSuccess</i> : Function called if the call is successful and a response is received.
+              </li>
+              <li>
+                <dfn class="optional">Callback</dfn> <i>onFailure</i> : Function called if the call fails.
+              </li>
+              <li>
+                <dfn class="optional">Callback</dfn> <i>responseProcessor</i> : Will be passed the response object prior to callbacks being fired.
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>callId</i> : Recommended. An id for the call.  In addition to being a useful way to identify response objects, an call object with an id ensures that until it returns no other call with the same id will be made, eliminating the possibility of multiple identical calls being made.
+              </li>
+              <li>
+                <dfn class="optional">Array</dfn> <i>passThru</i> : Will be passed through with the request, and will be available in the response object.
+              </li>
+              <li>
+                <dfn class="optional">Boolean</dfn> <i>asynch</i> : Whether the call will be asynchronous.  Default is false (synchronous).
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>body</i> : For <abbr>HTTP</abbr> methods which provide writable content to the server (PUT, POST, etc) this is where you would place that content.
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>username</i> : A username for the resource.
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>password</i> : A password to the resource.
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>loadingMsg</i> : A message to display to the user when this file is loading.  Defaults to AXIS#defaultLoadingMsg.
+              </li>
+              <li>
+                <dfn class="optional">Object</dfn> <i>headers</i> : Request headers, name : value form.
+              </li>
+              <li>
+                <dfn class="optional">Array</dfn> <i>successCodes</i> : A list of <abbr>HTTP</abbr> response codes which are to be understood as successful responses -- firing #onSuccess handler.
+              </li>
+              <li>
+                <dfn class="optional">Array</dfn> <i>failureCodes</i> : A list of <abbr>HTTP</abbr> status codes which are to be understood as failure responses -- firing #onFailure handler.
+              </li>
+              <li>
+                <dfn class="optional">Object</dfn> <i>scope</i> : The scope to fire any callbacks in.  Defaults to `window`.
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>Mixed</dfn>.  If the call is asynchronous, will return a <dfn>QueueObject</dfn>.  If the call is synchronous, will return the response object.  If the call fails, returns false.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Loads a resource.  
+      </p>
+      <pre class="brush: js">
+      // Fetch and show a file's contents
+      var myCustomEvent = AXIS.Loader.load({
+        url:      'myfile.html',
+        callback: function(r) {
+          alert(r.responseText);
+        }
+      });
+
+      </pre>
+    </dd>
+  </dl>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="mootools.js"></script>
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  arguments="showLoadingInfo+login" 
+  extensions="Util+Modules+WebDAV" 
+  libraries="array"
+></script>
+<script type="text/javascript">
+
+$NS = {};
+
+$NS._permissions = [
+  'read', 
+  'read-acl', 
+  'read-current-user-privilege-set', 
+  'write-acl', 
+  'unlock', 
+  'write', 
+  'write-properties', 
+  'write-content', 
+  'bind', 
+  'unbind', 
+  'all', 
+  'read-private-properties'
+];
+
+$NS._principals = [
+  'PRINCIPAL_USER',
+  'PRINCIPAL_UNAUTHENTICATED',
+  'PRINCIPAL_AUTHENTICATED',
+  'PRINCIPAL_ALL'
+];
+
+/**
+ * This will be set dynamically when in production, perhaps via query.
+ */
+$NS.url = 'tester.html';
+
+AXIS.onDOMReady.subscribe({
+  callback: function() {
+  
+  disableSave();
+  
+  /**
+   * Need to be logged in to have any sort of permissions for this
+   */
+  if(AXIS.User.isLoggedIn())
+    {
+      $NS.acl = AXIS.WebDAV.getACL({
+        url:      $NS.url,
+        asynch:   false
+      });
+    }
+  else
+    {
+      AXIS.showNotification({
+        content: "You must be logged in to set permissions."
+      });
+      return;  
+    }
+  
+  buildAddForm();
+  
+  createAclInterface();
+  
+       // alert("protected " + acl.protectedAces.length + "; inherited unprotected " + acl.inheritedAces.length + "; total " + acl.length);
+       // alert(acl.printXML(true));	
+  }
+});
+
+/**
+ * Goes through $NS.acl and draws them out, in three groups, Protected being first
+ * and Inherited being last.  This function is called whenever any change at all
+ * is made to the list.
+ */
+function createAclInterface()
+  {
+    clearAclInterface();
+    
+    /**
+     * Iterate over the ACL and build the html that will form the information
+     * "block" for each item in ACE group.  Purely View, and has no bearing
+     * on real ACL info.  Customize the display as you like.
+     */
+  	for(var p = 0; p < $NS.acl.length; p++)
+  	  {
+  	    var A       = $NS.acl[p];	   
+  	    A.origPos   = p; 
+  	    
+  	    /**
+  	     * Here we are simply determining which group we are working with.  Following
+  	     * this determination we want to build a visual 'block' to represent an ACE
+  	     * in the interface.  There is a function to do that.  Whatever html that function
+  	     * returns will be the html bounded by the <div> contained by the <li> in the group list.  
+  	     * It is expected that this function will change, or even represent some sort of 
+  	     * templating point. The only "built in" html is the <div> which will wrap the returned
+  	     * html.  This will be given a class depending on whether the ACE is a GRANT or DENY.
+  	     * Which one determines the class definition of the block.  You can use that alternating
+  	     * class definition to indicate the difference.  Default is to have the two display
+  	     * with different colours. 
+  	     */
+  	    var cList =       (A.isProtected) 
+  	                      ? $NS.ACELists.protected
+  	                      : (A.inherited)
+  	                        ? $NS.ACELists.inherited
+  	                        : $NS.ACELists.editable;
+  	                        
+        cList.properties.push(A); 
+        
+        var cls = A.grant ? "ace grant" : "ace deny";
+  	    
+  	    var html  =   '<div class="' + cls + '">';
+
+        html      +=  getACEBlock(A);
+  	    
+  	    html      +=  '</div>';
+  	    
+    		cList.viewList.push(new Element('li', {
+    		  id:     'position_' + p,
+    			html:   html
+    		}));
+  		}
+    
+    /**
+     * Create the groups in a format that mootools understands
+     */
+  	var pc = new Element('ul', {
+  		'class': 'ACLList'
+  	}).inject('ProtectedContainer').adopt($NS.ACELists.protected.viewList);
+  	
+  	var ec = new Element('ul', {
+  		'class': 'ACLList'
+  	}).inject('EditableContainer').adopt($NS.ACELists.editable.viewList);
+  	
+  	var ic = new Element('ul', {
+  		'class': 'ACLList'
+  	}).inject('InheritedContainer').adopt($NS.ACELists.inherited.viewList);
+  	
+  	/**
+  	 * Make the Editable ACE's Sortable
+  	 */
+  	$NS._editableList = new Sortables(ec,{
+  	  clone: true,
+  	  constrain: true,
+  	  opacity: .4,
+  	  revert: true,
+  	  
+  	  /**
+  	   * Event handler when dropped
+  	   */
+  	  onComplete: function(e)
+  	    {
+  	      var t;
+  	      var aP = $NS.ACELists.editable.properties;
+          
+          /**
+           * Get the new order, and look for cases where
+           * the n index of newOrder does not match the
+           * original ACL position index, and swap
+           */  
+  	      var newOrder = $NS._editableList.serialize();
+  	      for(var n=0; n < newOrder.length; n++)
+  	        {
+  	          t = newOrder[n].split('_');
+  	          t = t[1];
+  	          
+  	          if(aP[n].origPos != t)
+  	            {
+  	              var modifier = (aP[n].origPos < t) ? 0 : -1;
+  	              var one = $NS.acl.removeAce(t);
+  	              var two = $NS.acl.addAce(one.grant, one.privs, one.principal,aP[n].origPos + modifier);
+  	              enableSave();
+  	            }
+  	        }  
+  	        
+  	      createAclInterface();    
+  	    }
+  	});
+  	
+  	/**
+  	 * Add a delete button to editable aces
+  	 */
+  	var ale         = document.getElementById('EditableContainer');
+  	var aleCNodes   = ale.firstChild.childNodes;
+  
+  	for(var h=0; h < aleCNodes.length; h++)
+  	  {
+  	    var db    = document.getElementById('ACE_del');
+  	    var nd    = db.cloneNode(true);
+  	    nd.style.visibility = 'visible';   
+  	    nd.id     = 'eA_' + h;
+  	    var x = aleCNodes[h].firstChild.parentNode.insertBefore(nd,aleCNodes[h].firstChild);
+  	    
+  	    $('eA_' + h).addEvent('mousedown',function(){
+  	      
+  	      /**
+  	       * This determines the index of the ACE in the master ACL list
+  	       * ($NS.acl)
+  	       */
+          var inf = this.parentNode.id.split('_');
+          inf = inf[1];
+            
+          /**
+           * Remove ACE from master ACL list
+           */
+          $NS.acl.removeAce(inf);
+            
+          /**
+           * Refresh display
+           */
+          createAclInterface();
+  	    });
+  	  }
+  }
+
+/**
+ * Returns the ACE block. Customize this however you'd like.
+ *  @see #createAclInterface
+ */
+function getACEBlock(A)
+  {
+    var r = '';
+    r +=  'PRINCIPAL: ' + AXIS.WebDAV.Acl.printPrincipal(A.principal,true) + '<br />';
+    r +=  'PROTECTED: ' + A.isProtected + ' | ';
+    
+    if(A.inherited)
+      {
+        r +=  'INHERITED: ' + A.inherited + '<br />';
+      }
+      
+    r +=  'GRANT: ' + A.grant + ' | ';
+    r +=  'PRIVS: ' + A.privs + ' | ';   
+    
+    return r;
+  };
+
+/**
+ * Simply takes the current $NS.acl and passes it to the AXIS#WebDAV#setACL method
+ */
+function saveChanges()
+  {
+    if($NS._hasChanged === true)
+      {
+        var cb = AXIS.WebDAV.setACL({
+          url: $NS.url,
+          acl: $NS.acl,
+          asynch: false
+        }); 
+      
+        disableSave();
+        createAclInterface(); 
+      }
+  };
+  
+function enableSave()
+  {
+    $NS._hasChanged = true;
+    $('save_button').disabled = false;
+  };
+  
+function disableSave()
+  {
+    $NS._hasChanged = false;
+    $('save_button').disabled = true;
+  };
+
+/**
+ * Clears all editable ACEs
+ */
+function clearAllEditable()
+  {
+    $NS.acl.clearEditableAces();
+    createAclInterface();  
+    enableSave();
+  };
+
+/**
+ * Purges any content that may have been injected into the
+ * layout "skeleton" you've defined in the html
+ */
+function clearAclInterface()
+  {
+    var p = $("ProtectedContainer");
+    var e = $("EditableContainer");
+    var i = $("InheritedContainer");
+
+    purge(p);
+    purge(e);
+    purge(i);
+    
+    p.innerHTML = '';
+    e.innerHTML = '';
+    i.innerHTML = '';
+    
+    /**
+     * This will contain the Sortables reference for the editable list
+     */
+    $NS._editableList = {};
+    
+    $NS.ACELists = 
+      {
+        protected:    {
+          viewList:     [],
+          properties:   []
+        },
+        editable:     {
+          viewList:     [],
+          properties:   []
+        },
+        inherited:    {
+          viewList:     [],
+          properties:   []
+        },
+    
+        concatLists:  function()
+          {
+            return [].concat(this.protected).concat(this.editable).concat(this.inherited);  
+          }
+      }
+  };
+
+// see crockford purge
+function purge(d) {
+    var a = d.attributes, i, l, n;
+    if (a) {
+        l = a.length;
+        for (i = 0; i < l; i += 1) {
+            n = a[i].name;
+            if (typeof d[n] === 'function') {
+                d[n] = null;
+            }
+        }
+    }
+    a = d.childNodes;
+    if (a) {
+        l = a.length;
+        for (i = 0; i < l; i += 1) {
+            purge(d.childNodes[i]);
+        }
+    }
+};
+
+function addAce(t)
+  {
+    var permission  = $('permissions').options[$('permissions').options.selectedIndex].value;
+    var principal   = $('principals').options[$('principals').options.selectedIndex].value;
+    var grant       = $('grant').checked;
+    var username    = false;
+    
+    principal = [AXIS.WebDAV[principal],0];
+    
+    if(principal[0] == AXIS.WebDAV.PRINCIPAL_USER)
+      {
+        username = $('principal_user').value;
+
+        if(username == '')
+          {
+            alert('fill out a user name');
+            return;  
+          }
+        principal[1] = username;
+      }
+    
+    $NS.acl.addAce(grant, permission, principal);
+
+    saveChanges();
+    createAclInterface();
+  }
+
+function principalsChange(t)
+  {
+    var pc = t.options[t.options.selectedIndex].value;
+    
+    if(pc == 'PRINCIPAL_USER')
+      {
+        $('principals_user_container').style.visibility = 'visible';  
+      }
+    else
+      {
+        $('principals_user_container').style.visibility = 'hidden'; 
+        $('principal_user').value = '';
+      }
+  };
+
+function buildAddForm()
+  {
+    var t;
+    var permissions     = $('permissions');
+    var principals      = $('principals');
+    var principal_user  = $('principal_user');
+       
+    for(var x=0; x < $NS._permissions.length; x++)
+      {
+        t = document.createElement('option');
+        t.value = $NS._permissions[x];
+        
+        t.appendChild(document.createTextNode(t.value));
+        permissions.appendChild(t);
+      }
+      
+    for(var y=0; y < $NS._principals.length; y++)
+      {
+        t = document.createElement('option');
+        t.value = $NS._principals[y];
+        
+        t.appendChild(document.createTextNode(t.value));
+        principals.appendChild(t);
+      }
+  };
+
+</script>
+<style type="text/css">
+
+ul, li
+  {
+    list-style: none;  
+  }
+
+ul.ACLList 
+  {
+  }
+
+ul.ACLList li 
+  {
+    width: 536px;
+  }
+
+.ace
+  {
+    width:        500px;
+    padding:      4px;
+    margin:       4px;
+    font-family:  Verdana, Arial;
+    font-size:    10px;
+  	cursor:       pointer;
+  }
+
+.ace.deny
+  {
+    background-color: #FCCFD0;
+  }
+  
+.ace.grant
+  {
+    background-color: #CEFDD5;
+  }
+
+.ace_del
+  {
+    width:              16px;
+    height:             16px;
+    margin:             2px;
+    font-size:          10px;
+    text-align:         center;
+    background-color:   #B5ACD5;
+    border:             1px black solid;
+    float:              right;
+    visibility:         hidden;
+    cursor:             pointer;
+    cursor:             hand;
+  }
+
+</style>
+</head>
+
+<body>
+
+<!--
+
+  This is the interface for adding an ACE.  You can stylize this any way that you might
+  like, but the form itself must maintain the exact same field ids show here.
+
+-->
+<div id="addACE">
+  <form id="addForm">
+    Permissions:  <select id="permissions"></select><br />
+  Principal:    <select id="principals" onchange="principalsChange(this)"></select><span id="principals_user_container"> User Name: <input id="principal_user" type="text" style="width: 100px;" /></span><br />
+    Grant:        <input type="checkbox" id="grant" /><br />
+                  <input type="button" value="Add ACE" onclick="addAce(this)" />
+  </form>
+</div>
+<br /><br />
+
+<!--
+
+  You are free to do whatever you want here to stylize the page.  The only restriction
+  is that there must exist somewhere on the page three DIVs with ids:
+  1. ProtectedContainer
+  2. EditableContainer
+  3. InheritedContainer
+  
+  All else is optional.  Note as well that the content of these three DIVs is regularly
+  flushed, so do not put anything inside them (innerHTML), as it will be purged.
+
+-->
+
+<div>protected</div>
+<div id="ProtectedContainer"></div>
+<div>editable <input id="save_button" type="button" value="Save" onclick="saveChanges()" style="margin-left: 300px;" /> <input type="button" value="Clear All Editable" onclick="clearAllEditable()" /><br /></div>
+<div id="EditableContainer"></div>
+
+<!--
+
+  The button activating the save of the current state of the ACL.  You can stylize this
+  any way that you would like, or use something other than a button, etc..  You'll want 
+  to have some way to for the user to ask for a save of the current state, which is done 
+  by firing #saveChanges.  Same for clear all editable.
+
+-->
+
+
+<div>inherited</div>
+<div id="InheritedContainer"></div></div>  
+<br /><br />
+
+
+
+
+
+
+
+
+
+<!-- 
+
+  Define what you want the delete button to look like here.  The look defined for this
+  element will be cloned and used as the delete button for each ACE element.  You should
+  define the css for this element with visibility:hidden; when the button is cloned and
+  inserted, the new instant will be made visible automagically in createAclInterface()
+
+-->
+<div class="ace_del" id="ACE_del">X</div>
+
+
+
+</body>
+
+</html>

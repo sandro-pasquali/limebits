@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="" 
+      libraries="selector_lite+array+Element.core"
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.CustomEvent.subscribe('onDOMReady',{
+      callback: function() {
+          
+        AXIS.select('div').foreach(function(e) {
+          console.log(e.attr('id'));
+          console.log(this.tagName);
+        });
+
+
+        AXIS.attachEvent('click',function() {
+          alert(this.attr('tag'));
+          AXIS.detachEvent('click',arguments.callee,this);
+        },document.getElementById('test'));
+        
+      }
+    });
+                      
+    </script>
+    
+  </head>
+<body>
+
+<div id="header"></div>
+<div id="preamble"></div>
+<div id="test">here</div>
+</body>
+</html>

@@ -1,0 +1,326 @@
+/**
+ * Copyright 2009 Lime Labs LLC
+ * @author Sandro Pasquali (spasquali@gmail.com)
+ *
+ * This file is part of AXIS.
+ *
+ * AXIS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * version 3 as published by the Free Software Foundation.
+ *
+ * AXIS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with AXIS.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Based on the layout found here: http://books.couchdb.org/relax/
+ */
+
+/**
+ * Copyright 2009, Noah Slater <nslater@tumbolia.org>
+ *
+ * Copying and distribution of this file, with or without modification, are
+ * permitted in any medium without royalty provided the copyright notice and this
+ * notice are preserved.
+ */
+
+/**
+ * Typographic history concludes that lines should not exceed ~74 chars (depending 
+ * on the typeface, size and line height, going down to 62 for single column and even 
+ * 44 for multi-column type. The 990 school of the web is basically just shit made up 
+ * on the go. - Jan Lehnardt 
+ *
+ * You can change the width of the document display by changing the .width attribute 
+ * of the BODY tag, here.  If you do change it, you will also need to change the style
+ * declaration for the `p a.comment` selector.
+ */
+body {
+    width:        700px;
+    margin:       0 auto;
+    padding:      0 0 60px 0;
+    line-height:  24px;
+    font-size:    100%;
+    font-type:    Georgia, serif;
+}
+
+/**
+ * TOC
+ */
+.NAV_col
+  {
+    padding-right:  30px;  
+    float:          left;
+    max-width:      '320px';
+    width:          expression(this.width > 320 ? 320: true);
+  }
+
+#TOC_BAR {
+  color:            #fff;
+  text-decoration:  none;
+  background:       #696969;
+}
+
+#TOC_headline {
+  font-style:       italic;
+  text-align:       center;
+  font-size:        .9em;
+  width:            94%;
+  margin:           0px auto;
+  cursor:           pointer;
+  cursor:           hand;  
+}
+
+#TOC_slide_menu {
+  width:            100%;
+  height:           8px;
+  background:       #696969;
+}
+
+#TOC_tail {
+  width:            100%;
+  height:           8px;
+  float:            left;
+}
+
+#TOC_tail_left_corner {
+  width:              8px;
+  height:             8px;
+  background-image:   url(../images/tail_left_corner.png);
+  background-repeat:  no-repeat;
+  float:              left;
+}
+
+#TOC_tail_right_corner {
+  width:              8px;
+  height:             8px;
+  background-image:   url(../images/tail_right_corner.png);
+  background-repeat:  no-repeat;
+  float:              right;
+}
+
+#TOC_tail_center {
+  background-color:   #696969;
+  margin-left:        8px;
+  margin-right:       8px;
+  height:             8px;  
+}
+
+.TOC_menu_arrow_down {
+  background:       url(../images/down_arrow.png) no-repeat;
+  float:            right;
+  width:            12px;
+  height:           6px; 
+  padding:          0px 4px 2px 4px;
+  float:            right;
+  cursor:           pointer;
+  cursor:           hand;  
+}
+
+.TOC_menu_arrow_up {
+  background:       url(../images/up_arrow.png) no-repeat;
+  float:            right;
+  width:            12px;
+  height:           6px; 
+  padding:          0px 4px 2px 4px;
+  cursor:           pointer;
+  cursor:           hand;  
+}
+
+h1, h2, h3, h4, h5 {
+    font-family:      Tahoma, Trebuchet, sans;
+    letter-spacing:   0px;
+    word-spacing:     0px;
+    font-weight:      normal;
+    color:            #007896;
+}
+
+h1 {
+    font-size:      1.6em;
+    margin:         20px 0 20px 0;
+    text-align:     right;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+}
+
+h3 span {
+    margin-left:  20px;
+    font-style:   italic;
+}
+
+h3.toc_numbered {
+  font-size:    1.1em;
+  margin:       4px;  
+}
+
+h4 {
+  font-size: .9em;
+}
+
+li h3,h4 {
+  margin: 2px;
+}
+
+/**
+ * H5 elements are mostly used as method names for object
+ * descriptions.  So there is some special treatment of contained tags,
+ * described in what follows.
+ */
+h5 {
+  font-size:          .8em;
+  background-color:   #fafafa;
+  border:             1px solid #eeeeee;
+  padding:            0 0 0 3px;
+}
+
+/**
+ * Used to describe return values
+ */
+h5 div {
+  margin-top:   10px;
+  border-top:   1px #eeeeee solid;
+  padding-top:  4px;
+}
+
+/**
+ * Function parameter descriptions
+ */
+h5 li {
+  color: #00274f; 
+}
+
+/**
+ * Parameters
+ */
+h5 li i {
+  color: #007896;
+}
+
+img {
+    border: 0;
+}
+
+a {
+    color: midnightblue;
+}
+
+a:visited {
+    color: indigo;
+}
+
+a:active, a:hover, a:visited:hover {
+    color: #BD4500;
+}
+
+#footer {
+    margin-top: 40px;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 30px;
+}
+
+dt {
+    font-style: italic;
+}
+
+dfn {
+  color:              #bd4500;
+  background-color:   #fafafa;
+  font-family:        Consolas, "Courier New", Courier, monospace;
+  vertical-align:     baseline;
+  border:             1px solid #eeeeee;
+  padding:            0px 4px 1px 1px;  
+}
+
+dfn.optional {
+  border:   1px #a8a8a8 dashed;
+  padding:  0px 4px 1px 1px;
+}
+
+.amp {
+    font-family:  Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", serif;
+    font-style:   italic;
+}
+
+p {
+  font-size: .9em;  
+}
+
+/**
+ * Add a comment block
+ */
+p a.comment {
+    display:          none;
+    width:            100px;
+    padding:          104px 0 100px 60px;
+    position:         absolute;
+    margin-top:       -100px;
+    margin-left:      650px;
+    text-decoration:  none;
+    text-align:       left;
+    font-style:       italic;
+    line-height:      18px;
+    background:       url(../images/dummy.gif); /* lose this -- just a hack for now, get proper css fix */
+}
+
+p:hover a.comment, a:hover.comment {
+    display: block;
+}
+
+
+span.examplelink {
+  text-decoration:  underline;
+  font-weight:      bold;
+  color:            #007896;
+}
+
+.imageblock .content {
+    border:         1px solid #eeeeee;
+    text-align:     center;
+    padding:        15px;
+}
+
+.imageblock .image-title {
+    font-style:   italic;
+    margin:       6px 0;
+}
+
+.imageblock img {
+    width: 80%;
+}
+
+.quoteblock .content {
+    padding:    0 30px;
+    font-size:  1em;
+}
+
+.quoteblock .attribution {
+    text-align: right;
+}
+
+/**
+ * Quotations get nice quotes set ... don't bother adding them yourself
+ */
+q:before 
+  {
+    content: open-quote;  
+  }
+  
+q:after
+  {
+    content: close-quote;  
+  }
+
+

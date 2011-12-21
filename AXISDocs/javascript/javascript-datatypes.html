@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+      libraries="selector_lite+array"
+    ></script>
+    <script type="text/javascript">
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	version:  '1',
+       	options:  {
+       	            rootPath: '../',
+         	          groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+
+    </script>
+    
+  </head>
+<body>
+<div id="TOC_BAR"></div>
+<div id="header">
+  <h1>Javascript: Data Types</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    Javascript is a loosely-typed language where true == 1 == "1", and Array[Function] = Object are valid constructs, and  Arrays, Functions, Dates, Strings, Regular Expressions, Booleans and (strangely!) null are all Objects.  Javascript is class-less, prototypal inheritance language where objects inherit properties from other objects.  Objects in Javascript are dynamic, whose attributes and methods can be re-typed and even deleted at any point, without the concept of private, public, or static members. Functions in javascript are lambda functions which accept other functions as arguments, can be anonymous, can be re-scoped, enable closures, can be the value of a variable, and are self-invoking.
+  </p>
+  
+  <p>
+    There are three datatypes in Javascript.  These are the primitives (Number, String, Boolean, undefined, and null), the composite datatype, Object(which includes Array), and Functions.  In addition, there are a few other specialized kinds of Objects.  These are Date, RegExp, and Error.  These last three are not distinct dataypes but specialized <i>classes</i> of Objects, which have specialized methods.  
+  </p>
+  
+  <p>
+    Look at the following code, and don't worry if things don't make sense -- just keep it in mind as you learn more and try code out.
+    <pre class="brush: js">           
+      typeof Number                               // 'function'
+      typeof Function                             // 'function'
+      typeof Object                               // 'function'
+      
+      Number.hasOwnProperty('toString');          // false
+      Object.isPrototypeOf(Number)                // false
+      
+      Object.prototype.isPrototypeOf(Object);     // true
+      Object.prototype.isPrototypeOf(Number);     // true
+      Object.prototype.isPrototypeOf(String);     // true
+      Object.prototype.isPrototypeOf(Function);   // true
+      
+      Object.prototype.hasOwnProperty('toString') // true
+      
+      var x = 12.21;
+      typeof x;                                   // 'number'
+      x = x.toString();                           // '12.21'
+      typeof x;                                   // 'string'
+      var y = x - 0 + 1;
+      y;                                          // 13.21
+      typeof y;                                   // 'number'
+      
+      var a = new Array();
+      a[0]  = function() { return 'abc'; };
+      a[0]();                                     // 'abc';
+               
+    </pre>
+    
+    Note that this discussion will not go into any great depth about the primitive types, and will only briefly discuss the complex datatypes.  For a further discussion of Objects, Functions, and Arrays, see the relevant chapters.  
+  </p>  
+</div>
+
+<h2>Primitives</h2>
+
+<p>
+Javascript defines three primitive datatypes, and two trivial types which define only a single value.  They are:
+
+<div class="list">
+  <dl>
+    <dt>
+      <h3>Number</h3>
+    </dt>
+    <dd>
+      <p>
+        1, 2, 3 etc.  Invocation:
+        <pre class="brush: js">
+          x = 1;              // Literal notation
+          x = new Number(1)   // Object notation
+        </pre>
+      </p>
+    </dd>
+    <dt>
+      <h3>String</h3>
+    </dt>
+    <dd>
+      <p>
+        Strings are enclosed in either double or single quotes around a sequence of zero or more Unicode characters.  To escape characters in a string, use the backslash(\).  Single quotes must be escaped in string literals surround with single quotes, and double quotes must be similarly escaped. String literals cannot be broken over two lines.  Invocation:
+        <pre class="brush: js">
+          x = 'This is a string';               // Literal notation
+          x = new Number('This is a string')    // Object notation
+          x = 'Don\'t forget to escape single quotes.';
+          x = "<div class=\"test\">Watch for HTML double quotes</div>";
+        </pre>
+      </p>
+    </dd>
+    <dt>
+      <h3>Boolean</h3>
+    </dt>
+    <dd>
+      <p>
+        Booleans are true/false values.  The loosely-typed nature of Javascript can often cause issues here.  Invocation:
+        <pre class="brush: js">
+          x = true;                 // Literal notation
+          x = new Boolean(true);    // Object notation
+          x = new Boolean();        // false
+          x = new Boolean(1);       // true
+          x = new Boolean("hi");    // true
+          x = new Boolean(-1);      // true
+          x = new Boolean(0);       // false
+          x = new Boolean(null);    // false
+          
+          /** 
+           * Careful with zero values.  The method String.indexOf(str) will return the
+           * position of `str` in a given string, and -1 if the fragment is not found.  
+           * This is a common source of errors.  
+           * the code below, the alert will not fire, as the index of `A` is the zero index,
+           * which is interpreted as a boolean false by the conditional.
+           */
+          var s = 'A test string';
+          var i = s.indexOf('A');
+          if(i) {                   // Better: if (i === -1) {
+            alert('found a match');
+          }
+        </pre>
+      </p>
+    </dd>
+    <dt>
+      <h3>null</h3>
+    </dt>
+    <dd>
+      <p>
+        `null` is not the same as `undefined`.  null is an assignment value.  Javascript never sets a value to null.  That must be done programatically.  Strangely, null is an object.
+        <pre class="brush: js">
+          a = null;
+          a;          // null
+          
+          /**
+           * null, in different contexts
+           */
+          Numeric:  0;
+          String:   'null';
+          Boolean:  false;
+          
+          typeof null;  // 'object'
+        </pre>
+      </p>
+    </dd>
+    <dt>
+      <h3>undefined</h3>
+    </dt>
+    <dd>
+      <p>
+        The `undefined` value is not the same as the `null` value.  A variable that has been declared but contains no value is undefined.
+        <pre class="brush: js">
+          var a;        
+          a;          // undefined
+          
+          /**
+           * undefined, in different contexts
+           */
+          Numeric:  NaN;
+          String:   'undefined';
+          Boolean:  false;
+          
+          typeof undefined  // 'undefined'
+        </pre>
+      </p>
+    </dd>
+  </dl>
+</div>
+
+</p>
+
+<h2>Object</h2>
+
+<p>
+  In addition to primitive datatypes, Javascript supports a composite datatype, Object.  Objects can be understood as a collection of named values.  Names can be either numbers or strings. If the names are numbers, the Object is called an Array.  What is traditionally called an "associative array" or "hash" should be understood as an Object in Javascript. In this way, Arrays and Objects are fundamentally the same datatype.  However, they each behave differently, and can be understood as distinct datatypes.  See the section on Objects for more information.
+  <pre class="brush: js">
+    x = {};             // Literal notation
+    x = new Object()    // Object notation
+    
+    x.width = 20;
+    x.width;            // 20
+    
+    x[1]  = 'hi';       // An Array-ish setting of an Object property.
+    x[1];               // 'hi'
+    
+    typeof x;           // 'object'
+    
+    for(prop in x)
+      {
+        prop;           // '1' 
+        typeof prop;    // 'string'
+      }
+      
+    /**
+     * Special case.  If you use the Object notation, and pass it a single
+     * value, you will get back an Object of the sent type.  Because of this, you
+     * are encouraged to use the literal notation
+     */
+    x = new Object(1);
+    x.constructor;        // Number
+    
+    x = new Object('hi');
+    x.constructor         // String
+  </pre>
+</p>
+
+<h2>Array</h2>
+
+<p>
+  As mentioned in the section on Objects, an Array is a type of Object.  Like an object, an Array is a collection of name/value pairs.  However an Array has a special collection of methods available to it, as well as a .length property. The interchangeability of Objects and Arrays allows for very dynamic data structures, but the difference should be kept clearly in mind.  For example, while it is legal to add a name/value pair to an Array where the `name` is a String, that new pair will <i>not</i> change the .length property of the Array.
+  <pre class="brush: js">
+    x = [];             // Literal notation
+    x = new Array()     // Object notation
+
+    x = ['a','b','c'];
+    x[2];               // 'c'      
+    
+    x.push('d');        // See chapter on Arrays for more methods
+    x[3];               // 'd'
+    
+    y = x.pop();        // .pop() returns value of popped element
+    y;                  // 'd'
+    
+    for(i=0; i < x.length; i++)
+      {
+        x[i];   // >a  >b  >c
+      }
+        
+    /**
+     * Special case.  If you use the Object notation, and pass it a single
+     * (numeric) value, the .length of the Array will be set to that value; the
+     * passed number will not be the first element of the Array!  For this reason
+     * it is best to stick with the literal notation unless you need to specifically
+     * preset the length of the Array
+     */
+    x = new Array(1);
+    
+    x[0];         // undefined;
+    x.length;     // 1
+  </pre>
+</p>
+
+<h2>Function</h2>
+
+<p>
+  A Function is a special kind of Object.  A Function is an object that has executable code associated with it.  See the chapter on Functions for a more information.
+  <pre class="brush: js">
+    function(arg1,arg2)
+      {
+        var say = 'hi!';
+        
+        alert(say);   // alerts 'hi!';
+      }
+      
+  </pre>
+</p>
+
+<h2>Date</h2>
+
+<p>
+  Date is a special kind of Object, and as such is not a distinct datatype.  Date objects contain various useful methods for getting and setting date information.
+  <pre class="brush: js">
+    var now   = new Date(); // an object holding the current date and time.
+    now.getTime();          // Unix timestamp representing current time.
+    
+    var xmas  = new Date(2009, 11, 25);  // an object set to a particular date
+  </pre>
+</p>
+
+<h2>RegExp</h2>
+
+<p>
+  RegExp is a special kind of Object allowing the setting and usage of regular expressions, and like Date is not a distinct datatype.  Javascript uses the Perl programming language syntax for regular expressions.  Unlike Date objects, RegExp objects have a literal invocation syntax.  It is recommended that you use the literal syntax, as it is easier to read and to define.
+  <pre class="brush: js">
+    rx  = new RegExp("/[a-z]/","gi")      // Object notation
+    rx  = /[a-z]/gi;                      // Literal notation
+    
+    rx.test('hello');       // true
+    rx.test(1);             // false
+  </pre>
+</p>
+
+<h2>Error</h2>
+
+<p>
+  Error objects are a special class of Object which is "thrown" by the Javascript interpreter when a runtime error occurs.  Javascript supports the try...catch...finally construct.  There are various types of Error objects thrown, which are not discussed at length here.
+  <pre class="brush: js">
+    try {
+      create.an.error = here;
+    }
+    catch(e) {        // `e` represents the thrown error
+      typeof e;       // "object"
+    }
+  </pre>
+</p>
+
+</body>
+</html>

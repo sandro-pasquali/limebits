@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js"></script>
+<script type="text/javascript">
+AXIS.Loader.load({
+  method: 'POST',
+  asynch: true,
+  url: 'http://api.ping.fm/v1/user.key',
+  body: 'api_key=399d9cb2e615aacc76f4bbf7c5c06be2&user_app_key=LimeBits',
+  callback: function(r) {
+    console.log(r);
+  }
+});
+  
+</script>
+</head>
+
+<body>
+</body>
+
+</html>

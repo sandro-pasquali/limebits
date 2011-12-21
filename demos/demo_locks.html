@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js"></script>
+<script type="text/javascript">
+var __BP__ = AXIS.PATH().replace('!lime/root/library/limebits/latest/axis/','');
+
+  //opaquelocktoken:15538d49-e9ed-4e11-9b41-69dbe6392715
+
+var currentLock = '';
+
+AXIS.WebDAV.UNLOCK({
+    url:      __BP__ + 'tester.html',
+    locktoken:  'opaquelocktoken:ad379e48-b03e-4cf3-8b50-f9d2e0c6499e',
+    callback: function(r)
+      {
+        //alert('unlock: ' + r.responseText);
+
+        return false;
+      }
+  });
+
+AXIS.WebDAV.LOCK({
+    url:        __BP__ + 'tester.html',
+    lockscope:  'shared',
+    callback: function(r)
+      {
+        var a = AXIS.Util.xml.getChildrenByNameNS(r.responseXML.documentElement,'locktoken')[0];
+        console.log(a);
+        currentLock = AXIS.Util.xml.getText(AXIS.Util.xml.getChildrenByNameNS(a,'href')[0]);
+
+        //alert(r.getStatus());
+
+        return false;
+      }
+  });
+
+AXIS.WebDAV.UNLOCK({
+    url:      __BP__ + 'tester.html',
+    locktoken:  currentLock,
+    callback: function(r)
+      {
+        //alert('unlock: ' + r.responseText);
+
+        return false;
+      }
+  });
+  
+</script>
+  
+</head>
+
+<body>
+</body>
+
+</html>

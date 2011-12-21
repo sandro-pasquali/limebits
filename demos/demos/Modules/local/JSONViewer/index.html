@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  extensions="Modules+Errors" 
+></script>
+
+<script type="text/javascript">
+  
+AXIS.Modules.load({
+  provider: 'local',
+  module:   'JSONViewer',
+  options:  {},
+  onload:   function(ob) {
+    ob.createView({ "firstName": "John", "lastName": "Smith", "address": { "streetAddress": "21 2nd Street", "city": "New York"}, "phoneNumbers": [ { "type": "home", "number": "212 555-1234" }, { "type": "fax", "number": "646 555-4567" } ], "newSubscription": false, "companyName": null }, 'jsonviewer');
+  }
+  
+});  
+
+</script>
+
+</head>
+
+<body>
+
+<div id="jsonviewer"></div>
+
+<!--
+{ "firstName": "John", "lastName": "Smith", "address": { "streetAddress": "21 2nd Street", "city": "New York"}, "phoneNumbers": [ { "type": "home", "number": "212 555-1234" }, { "type": "fax", "number": "646 555-4567" } ], "newSubscription": false, "companyName": null }
+
+-->
+
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+     	options:  {
+     	            rootPath: '../../',
+       	          groupURI: 'http://groups.google.com/group/limebits/post'
+     	          }
+    });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - User</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    An extension containing information on, and methods for, the current AXIS user.  
+  </p>
+</div>
+<h2>Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <a id="method_isloggedin"></a>
+      <h5>isLoggedIn
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Check if user is logged in.
+      </p>
+    </dd>
+    <dt>
+      <a id="method_username"></a>
+      <h5>username
+        <div>
+          Returns <dfn>String</dfn>, containing username if user logged in, or `unauthenticated` if not.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Get username of logged-in user.
+      </p>
+    </dd>
+  </dl>
+</div>
+
+</body>
+
+</html>

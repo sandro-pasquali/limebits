@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../../',
+       	            groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - Extensions</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    The AXIS is a core set of tools allowing you construct a custom framework for you applications.  Extensions are objects which can extend the AXIS.
+  </p>
+  <p>
+    For example, if the AXIS had been extended with the Events extension, you would call the `observe` method of the Events extension like this:
+  </p>
+  <pre class="brush: js">
+  AXIS.Events.observe();
+  </pre>
+</div>
+
+<h2>Writing Extensions</h2>
+<p>
+  You are encouraged to write extensions to the AXIS when developing applications, creating distinct objects with distinct purposes that you can access via AXIS.MyObject syntax.  This helps keep your code manageable, and allows for a nice modular way of assembling codebases for various types of projects.
+</p>
+</p>
+  Extensions are written as function constructors.  Once they are loaded, they can then be registered with the AXIS.  Loading and registration can be done in one step, in two different ways.
+</p>
+
+<h2>Extension Syntax</h2>
+<p>
+  Extensions are function constructors, and are written like all other javascript function constructors.  AXIS does do something that javascript doesn't, which is to provide the idea of a constructor function.  So a typical extension can be defined like this:
+</p>
+<pre class="brush: js">
+  MyExtension = function() {
+    
+    this.__construct = function() {
+      // do something once extended
+    };
+    
+    this.method = function() {
+      // Now `this` refers to AXIS
+      this.includeScript(...);
+    };
+    
+    this.attribute = 1;
+  };
+</pre>
+<p>
+  You are encouraged to use the __constructor function.  The recommendation is to keep your definition solely of method definitions and attributes, and to put what you would normally leave in the flow of the function definition into the __constructor.  Good to keep your code sustainable and easier to follow.
+<p>
+
+<h2>Registering an Extension</h2>
+<p>
+  Once the constructor function for MyExtension exists, we need to tell the AXIS to register it: 
+</p>
+<pre class="brush: js">
+  AXIS.register('MyExtension');
+  
+  // and now...
+  AXIS.MyExtension.method();
+</pre>
+
+<h2>Loading and Registering Extensions in One Step</h2>
+
+<p>
+  Creating and using extensions is a nice, modular, way of managing your code, especially in cases where the codebase for your application needs to change dynamically -- such as loading a controller for a new data model which has just been imported.  In cases like these you would probably just want to do a straightforward load-and-extend operation on the AXIS.  You can do that easily by using the #loadScript method with an auto-register directive:
+</p>
+<pre class="brush: js">
+  AXIS.includeScript({
+    src:        'MyExtension.js',
+    register:   true
+  });
+</pre>
+<p>
+This will automatically load and register the extension.  See the conversation on <a href="codebase/AXIS/AXIS-general-methods.html">general methods</a> for more information on #includeScript.
+</p>
+
+
+</body>
+</html>

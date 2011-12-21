@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+      libraries="selector_lite+array"
+    ></script>
+    <script type="text/javascript">
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	version:  '1',
+       	options:  {
+       	            rootPath: '../',
+         	          groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+      
+      AXIS.Modules.load({
+        provider: 'local',
+        module:   'SyntaxHighlighter',
+        version:  '1'
+      });
+      
+    </script>
+    
+  </head>
+<body>
+<div id="TOC_BAR"></div>
+<div id="header">
+  <h1>Javascript: Overview</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    Consult the chapter on Data Types to get an idea of the general structure of the Javascript language.
+  </p>
+  
+  <p>
+    This is an overview of Objects, Arrays, Functions, constructors, scope, closures, and prototypal inheritance.  
+  </p>  
+  
+  <p>
+    Javascript was created in order to help developers create more interesting webpages.  It was initially used to provide simple dynamic effects in websites, such as image rollovers.  As traditional websites were stateless (moving to one page destroyed what was on the previous page), Javascript began to be used as a way of storing simple data structures fetched "up front" (such as a list of products), allowing modifications to an interface without requiring additional trips to a server.  The combination of storing "sortable" data and being able to dynamically change elements of a page became known as <abbr title="Dynamic HTML">DHTML</abbr>.  Because of various, often severe, differences in browser implementations across vendors, <abbr title="Dynamic HTML">DHTML</abbr> was a difficult technology to get right, and few serious web applications were developed in the early years of serious Javascript usage.  Javascript developed a reputation as being a rather buggy and "hobbyish" language. Over time, developers "rediscovered" the language, and a great deal of new interest was generated after the coining of the term <abbr>AJAX</abbr>, when Javascript was suddenly elevated to the status of being the <i>best</i> way to build browser-based applications.  Javascript is now the most popular programming language in the world.
+  </p>
+  
+  <p>
+    There are useful "discovery" methods and functions that will be used throughout this overview in order to demonstrate various aspects of the datatypes and constructs which will be discussed:
+    
+    <div class="list">
+      <dl>
+        <dt>
+          <h3>typeof</h3>
+        </dt>
+        <dd>
+          <p>
+            A Javascript operator which returns a string describing the type of a data construct:
+            <pre class="brush: js">
+              var x = 'hello';
+              typeof x          // 'string'
+              
+              var y = 4;
+              typeof x          // 'number'
+            </pre>
+          </p>
+        </dd>
+        <dt>
+          <h3>instanceof</h3>
+        </dt>
+        <dd>
+          <p>
+            A Javascript comparison operator which returns a Boolean indicating whether one Object is an instance of another Object:
+            <pre class="brush: js">
+              var x = new Array();
+              
+              x instanceof Array; // true
+            </pre>
+          </p>
+        </dd>
+        <dt>
+          <h3>.constructor</h3>
+        </dt>
+        <dd>
+          <p>
+            An Object method which returns the name of the constructor Function for the targetted Object:
+            <pre class="brush: js">
+              var x = 23;
+              x.constructor;    // Number()
+            </pre>
+          </p>
+        </dd>
+        <dt>
+          <h3>.hasOwnProperty(arg)</h3>
+        </dt>
+        <dd>
+          <p>
+            An Object method which returns a Boolean indicating whether or not a given Object contains a method `arg`:
+            <pre class="brush: js">
+              var x = {};
+              x.myMethod = function(){}
+              
+              x.hasOwnProperty('myMethod');    // true
+            </pre>
+          </p>
+        </dd>
+        <dt>
+          <h3>.isPrototypeOf(arg)</h3>
+        </dt>
+        <dd>
+          <p>
+            An Object method which returns a Boolean indicating whether or not Object is the prototype of Object `arg`:
+            <pre class="brush: js">
+              Object.prototype.isPrototypeOf(Object);
+            </pre>
+          </p>
+        </dd>
+      </dl>
+    </div>
+
+<h2>Objects</h2>
+
+<p>
+Objects are a hash of key/value pairs.  Objects allow any Javascript datatype to be assigned to a property anme. If the value is a function, then it is understood as being a method of the object.  A value can also be another Object.
+
+<pre class="brush: js">
+var obj = {
+
+  active:     true,
+  isActive:   function()
+    {
+      return this.active;
+    }
+}
+  
+obj.isActive();     // true
+</pre>
+
+The above is an example of "object literal notation":
+
+<dl>
+  <dt>
+    Wrapped in curly braces.
+  </dt>
+  <dt>
+    Comma delimited.
+  </dt>
+  <dt>
+    key:value pairs.
+  </dt>
+</dl>
+
+It is not necessary to quote the property names when defining an object.  However, if there are spaces in the property names, then quotes are necessary:
+
+<pre class="brush: js">
+/**
+ * Property names containing spaces must be quoted
+ */
+var obj = {
+  a:        1,
+  "b c d":  2,
+  e:        'three'
+};
+</pre> 
+
+Because of the dynamic nature of Javascript, Objects can copied and deleted, and their methods and attributes can be dynamically added, deleted and changed.  There is no such thing as private, public, static or other type designations for the properties of Objects.
+
+</p>
+
+<h2>Arrays</h2>
+<p>
+  
+Arrays are types of Objects with special properties.  Arrays in Javascript are base-zero. Like Objects, arrays are collections of key/value pairs.  However, Arrays expect numeric keys.  Also like objects, Arrays accept any Javascript data type as a value, even other Arrays. Arrays are:  
+
+<dl>
+  <dt>
+    Wrapped in square brackets.
+  </dt>
+  <dt>
+    Comma delimited.
+  </dt>
+</dl>
+
+</p>
+
+<p>
+  Array values which are Strings must be quoted:
+</p>
+
+<p>
+  <pre class="brush: js">
+  var arr = ['a','b','c'];  
+    
+  arr[1];     // 'b';
+  
+  typeof arr                              // 'object' -- Arrays are Objects
+  Object.prototype.isPrototypeOf(Array);  // true
+           
+  </pre>
+</p>
+
+<p>
+  Unlike Objects, an Array receives a special new propery, .length, representing the number of the elements of an array.  As you add elements to an Array, its .length property will autoincrement:
+</p>
+
+<p>
+  <pre class="brush: js">
+  var arr = ['a','b','c'];  
+    
+  arr.length;         // 3
+  
+  arr.push('d');    
+  
+  arr.length;         // 4
+  </pre>
+</p>
+
+<p>
+You can also see here that Array objects have special methods (push(), shift(), pop(), etc).  While types of Objects, Arrays can be considered a unique datatype even though they are really just Objects.
+</p>
+
+<h2>Functions</h2>
+<p>
+A function is a special type of object.  A function:  
+<dl>
+  <dt>
+    Is an object.
+  </dt>
+  <dt>
+    Can have properties.
+  </dt>
+  <dt>
+    Can have methods.
+  </dt>
+  <dt>
+    Can be added/deleted/augmented like Objects
+  </dt>
+  <dt>
+    Has the special property of being <i>invokable</i>.
+  </dt>
+</dl>
+</p>
+
+<p>
+Functions can be named in a variety of ways:
+
+  <pre class="brush: js">  
+  function foo(){}
+  foo.name;               // "foo"
+  
+  foo = function(){}
+  foo.name;               // ""
+  
+  foo = function bar(){}
+  foo.name;               // "bar"
+    
+  var blah = foo;  
+  foo.name;               // "bar"
+  </pre>  
+</p>
+
+<p>
+  All functions will return a value when called.  If a function does not explicitly set a return value, the return value is <i>undefined</i>.  A function can also return other functions:
+ 
+  <pre class="brush: js"> 
+    function noreturn() {}
+    x = noreturn();     //  x is undefined
+    
+    function doesreturn() { return 1; }
+    x = doesreturn();   //  x is 1
+    
+    function y() {
+      
+      var w = 'hello';
+      var f = function()
+        {
+          alert(w);
+        }
+      return f;
+    };
+      
+    y()();   // 'hello' -- execute function returned by function
+  </pre>
+
+</p>
+
+<h3>Function Scope</h3>
+
+<p>
+The variables defined in a function are available only to the function -- function scope.  To ensure that a variable remains in the function scope you must precede the variable name with the `var` statement.  
+
+  <pre class="brush: js">
+  function scp()
+    {    
+      var a = 1;
+      a;          // a is 1
+    }
+  a;              // a is undefined
+  </pre>
+  
+</p>
+
+<p>
+If you omit the `var` statement the variable you define will be defined in the <i>global</i> scope.  This is a very bad thing, as now there will be a "rogue" variable which will interfere with <i>every</i> scope:  
+
+  <pre class="brush: js">
+  function noscp()
+    {    
+      a = 1;
+      a;          // a is 1
+    }
+  a;              // a is 1
+  </pre>
+  
+</p>
+
+<p>
+Unlike other languages, Functions in Javascript do not have block scope -- they have function scope.  This may be surprising behaviour for those used to other languages:
+
+  <pre class="brush: js">
+  function test()
+    {    
+      var outer = 1;
+      for(y = 0; y < outer; y++) 
+        {
+          var z = 'inner';
+        }
+      alert(z); // shows 'inner'; z is defined ouside the block!
+    }
+  test();
+  </pre>
+  
+</p>
+
+
+<p>
+  Functions have two special methods which allow you to change the scope in which a function will execute, .call() and .apply().  By using these methods you can have a Function execute within a different scope:
+
+  <pre class="brush: js">
+  function checkout(msg,custN) {
+  
+    alert(this.name +' total price =' + this.cost + this.tax + ' '+msg+', '+custN);
+    // shows 'pen total price = 1.07 Thanks for shopping, Sandro'
+  }
+  
+  function Product(prodName,cost,custName) {
+    this.name = name;
+    this.cost = cost;
+    this.tax  = cost * .07;
+      
+    /**
+     * Execute checkout in the scope of this product
+     */
+    checkout.call(this,'Thanks for shopping',custName);
+  }
+  
+  var x = new Product('pen',1.00,'Sandro');
+  </pre>
+</p>
+
+<p>
+The difference between .call and .apply is that for .apply the second argument must be an Array of values. In this case, it would be used like this: checkout.apply(this,['Thanks for shopping',custName]);
+</p>
+
+<h3>Function constructor</h3>
+
+<p>
+  The use of Function constructors to create Objects is the key to creating Javascript applications. Constructor functions initialize the properties of an object, and are invoked using the <i>new</i> operator. All Functions are automatically assigned a special local property, `this`, which is an Object (see the previous code block for a usage of `this` as used by the constructor function Product).  By adding name/value pairs to the `this` object upon invocation via the <i>new</i> operator you create an object to be returned which the Funciton has "built":
+  
+  <pre class="brush: js">
+    function Parrot(w) {
+      this.word   = w;
+      this.speak  = function() {
+        return this.word;
+      }
+    }
+    
+    var polly = new Parrot('hello');
+    
+    polly.speak();    // hello
+  </pre> 
+</p>
+
+<p>
+  Note that if a Function is meant to be used as a constructor, the accepted naming convention is to capitalize its first letter (`Parrot`, not `parrot`).  Note as well that arguments can be passed to the constructor, which is free to use them as it sees fit.
+</p>
+
+<p>
+  Note as well that a Function that writes to the `this` object without being invoked with the <i>new</i> operator cannot be used to call that method -- `this` is scoped to the Function object only when invoked via <i>new</i>.  If not so scoped, `this` actually refers to the global window scope!:
+  
+  <pre class="brush: js">
+    function Parrot(w) {
+      this.word   = w;
+      this.speak  = function() {
+        return this.word;
+      }
+    }
+    
+    alert(Parrot.speak);    // undefined
+    
+    Parrot('hello');
+    word;                   // 'hello' -- `word` is in the global scope!
+  </pre>
+</p>
+
+<p>
+  Notice that `this` is automatically returned -- it isn't necessary to write `return this`.
+</p>
+
+<p>
+  There are several native constructor Functions that you are already familiar with -- the native datatypes of javascript.  When it is said that Javascript data types are all objects, this really means that every time you create a value of a certain type you are instantiating a constructor function. For example:
+  <pre class="brush: js">   
+    var a = 4;
+    
+    a.constructor;  // Number()
+    
+    // More information makes the situation clearer:
+    
+    a.constructor.toString();  
+    
+    /* function Number() {
+     *   [native code]
+     * }
+     */
+  </pre>
+</p>
+
+<p>
+  A Function constructor can also return an object other than `this`, in which case the this object is simply discarded.
+  
+  <pre class="brush: js">
+    function Parrot(w) {
+    
+      this.word   = w;
+      this.speak  = function() {
+        return this.word;
+      }
+      
+      return {
+        fly:  function() {
+          alert('flap flap');
+        }
+      }
+    }
+    
+    var p = new Parrot("hello");
+    
+    p.fly();          // 'flap flap'
+    p.speak();        // p.speak() is not a function.
+  </pre>
+</p>
+
+<p>
+  What if a constructor Function returns something that isn't an Object?  In that case whatever was returned is simply ignored, and `this` becomes the return value:
+  
+  <pre class="brush: js">
+    function Parrot(w) {
+    
+      this.word   = w;
+      this.speak  = function() {
+        return this.word;
+      }
+      
+      return 'some string';
+    }
+    
+    var p = new Parrot("hello");
+    
+    p.speak();        // 'hello'
+  </pre>
+</p>
+
+<p>
+  Upon creation of a new Object via a Function constructor, the returned `this` object is automatically given a .constructor property, whose value is the name of the function used to construct the Object:
+  
+  <pre class="brush: js">
+    function Parrot(w) {
+    
+      this.word   = w;
+      this.speak  = function() {
+        return this.word;
+      }
+      
+      return 'some string';
+    }
+    
+    var p = new Parrot("hello");
+    
+    p.constructor;      // Parrot(w)
+  </pre>
+</p>
+
+<h2>Prototypal Inheritance</h2>
+<p>
+  Another special property assigned to every Function is <i>.prototype</i>, which is an empty Object.  It isn't necessary to instantiate a Function constructor to get a .prototype property: every Function receives one automatically:
+  
+  <pre class="brush: js">
+    function a(){};
+
+    alert(a.prototype);  // [Object Object]
+    
+    Object.isPrototypeOf(a.prototype);            // false;
+    Object.prototype.isPrototypeOf(a.prototype);  // true;
+    a.prototype.constructor;                      // a();
+  </pre>
+</p>
+
+<p>
+The .prototype property of constructor Functions is what allows Javascript to extend a common set of methods into every instantiation of a constructor Function.  There are no classes in Javascript: objects inherit from objects.  The prototype of constructor Functions allows this sort of inheritance:
+
+<pre class="brush: js">
+  function main() {
+    this.myFunction = function() {
+      alert('main');
+    }
+  }
+  
+  main.prototype = {
+    protofunc: function() {
+      alert('proto');
+    }
+  }
+    
+  var a = new main();
+  
+  a.myFunction();         // 'main'
+  a.protofunc();          // 'proto'
+</pre>  
+</p>
+
+<p>
+  Here the main() constructor function has had its prototype set to an object containing function protofunc().  When the variable a is assigned the Object constructed via main(), a also inherits the functions of main().prototype.  This is a powerful way to create several instances of an object which all inherit a common set of functionality.  Another thing to keep in mind is that the prototype of main() could also have been set to the Object returned from yet another constructor function, allowing a continual "subclassing" of Objects:
+  
+  <pre class="brush: js">
+    function Animal() {
+      this.animalMethod = function() {
+        alert('Animal');
+      }
+    }
+    
+    function Dog() {
+      this.dogMethod = function() {
+        alert('Dog');
+      }
+    }
+    
+    function Pet(name) {
+      this.name = function() {
+        alert(name);
+      }
+    }
+
+    Dog.prototype = new Animal();
+    Pet.prototype = new Dog();
+    
+    var fido = new Pet('Fido');
+    var spot = new Pet('Spot');
+    
+    fido.name();            // 'Fido';
+    spot.name();            // 'Spot';
+    
+    spot.dogMethod();       // 'Dog';
+    spot.animalMethod();    // 'Animal';
+  </pre>  
+</p>
+
+<p>
+  Additionally, prototypes are dynamic.  You are able to change the methods available in a given prototype, and have every child object automatically inherit those new methods without any additional work:
+  <pre class="brush: js">
+    function Animal() {
+      this.animalMethod = function() {
+        alert('Animal');
+      }
+    }
+    
+    function Dog() {
+      this.dogMethod = function() {
+        alert('Dog');
+      }
+    }
+    
+    function Pet(name) {
+      this.name = function() {
+        alert(name);
+      }
+    }
+
+    Dog.prototype = new Animal();
+    Pet.prototype = new Dog();
+    
+    var fido = new Pet('Fido');
+    var spot = new Pet('Spot');
+    
+    fido.name();            // 'Fido';
+    spot.name();            // 'Spot';
+    
+    spot.dogMethod();       // 'Dog';
+    spot.animalMethod();    // 'Animal';
+    
+    /**
+     * Now add a new method to the Dog.prototype
+     */
+    Pet.prototype.bark = function() {
+      alert('Woof!');
+    }
+    
+    fido.bark();            // 'Woof!';
+  </pre>  
+</p>
+
+<p>
+  This ability to extend prototypes is of course extendable to the native Javascript datatype constructors.  Indeed, a very popular Javascript library, <i>Prototype.js</i>, is essentially a collection of functions that extend Javascript datatypes. For example:
+  <pre class="brush: js">   
+  Array.prototype.foreach = function(f) {
+    for(var i=0; i < this.length; i++) {
+      this[i] = f(this[i]);
+    }
+  }
+    
+  var a = [1,2,3];
+  var f = function(v) {
+    return v * 10;
+  }
+  
+  a.foreach(f);
+  
+  a[0];   // 10
+  a[1];   // 20 
+  a[2];   // 30
+  </pre>
+</p>
+
+<p>
+  There are also situations where one might want to override a prototype function for any particular child object.  This is perfectly legal in javascript.  When an instance fires a method which it does not contain, the Javascript interpreter will continue to "bubble up" the prototype chain until it finds the requested method.  If you interpose an identically named method lower in the chain that the original method, the bubbling will stop there.  In fact, the <abbr>DOM</abbr> and <abbr>CSS</abbr> work in a similar way.  If you've written <abbr>CSS</abbr> you know that "cascading" here means that if you define a style property for an element one way, then have a sub-element change that style property, the definition of the sub-element takes precedence.  Conversely, if a style property is <i>not</i> defined for an element, that element's style will be found by bubbling up the element chain.  Prototypes work the same way.
+  <pre class="brush: js">
+    function Character(name) {
+      this.name = name;
+    }
+   
+    Character.prototype = {
+      run:    function(){},
+      jump:   function(){},
+      shoot:  function(){},
+      shout:  function(){
+        alert('For Rivendell!');
+      }
+    }
+    
+    var wizard = new Character('Gandalf');
+    var hobbit = new Character('Frodo');
+    var orc    = new Character('Snarl');
+    
+    hobbit.shout();   // 'For Rivendell!'
+    orc.shout();      // 'For Rivendell!' (hm... that's not right)
+    
+    orc.shout = function() {
+      alert('BLARG!');
+    }
+    
+    orc.shout();        // 'BLARG!' (local method)
+    wizard.shout();     // 'For Rivendell!' (prototype method)
+    
+  </pre>
+</p>
+
+<p>
+  There is a small but possibly troublesome "glitch" in the identification of constructors when extending constructor prototypes that, in practice, isn't really a problem, but may surprise you if you happen to check the .constructor property of an object you've instantiated which has also had its prototype extended.  Consider the above example, and the following code:
+  <pre class="brush: js">
+  function Character(name) {
+    this.name = name;
+  }
+
+  var wizard = new Character('Gandalf');
+
+  wizard.constructor;   // Character(name)
+  </pre>
+</p>
+
+<p>
+  The .constructor of <i>wizard</i>, as expected, is Character.  Changing Character's prototype, however, changes its constructor as well:
+  <pre class="brush: js">
+  function Character(name) {
+    this.name = name;
+  }
+  
+  Character.prototype = {};
+  
+  var wizard = new Character('Gandalf');
+
+  wizard.constructor;   // Object
+  </pre>
+</p>
+
+<p>
+  However, and perhaps surprisingly, the .constructor property of an Object is read/writable.  This allows you to "fix" the aforementioned glitch.  More interestingly, it allows you to in a way privatize constructors:
+  <pre class="brush: js">
+  function Character(name) {
+    this.name = name;
+  }
+  
+  Character.prototype = {};
+  
+  var wizard = new Character('Gandalf');
+  
+  wizard.constructor = Character;
+  
+  wizard.constructor;   // Character(name), fixing the glitch
+  
+  var evilwizard = new wizard.constructor('Saruman'); // keep the constructor function identity private.
+  evilwizard.shout = function() { alert('Shazam!'); }
+  
+  evilwizard.shout();   // Shazam!
+  
+  evilwizard.constructor; // Object(); 
+  /* 
+   * The glitch is back, but that is what we want! only `wizard.constructor` can be used to
+   * build new wizards, minimizing the growth of evil wizardry.
+   */
+  </pre>
+</p>
+
+<p>
+  Finally, there is no problem with creating a "classical" sort of object "extending", where a given Object with several defined methods (call it a "class") is extended by another object.  Functions are always passed by reference, so this sort of structure is possible and not repetitious:
+  <pre class="brush: js">
+  var Class = {
+    a:  function(){ alert('a'); },
+    b:  function(){ alert('b'); },
+    c:  function(){ alert('c'); }
+  }
+  
+  // Extend the Object prototype, giving all new Objects an .extend() method
+  Object.prototype.extend = function(f) {
+    for(p in f)
+      {
+        this[p] = f[p];
+      }
+  }
+  
+  // Define a constructor
+  var Other = function()
+    {
+      this.mine = function() {
+        alert('mine');
+      }
+    }
+
+  var myOb = new Other(); // create object `myOb`
+  myOb.extend(Class);     // myOb now extends Class; new Object method .extend()
+
+  myOb.mine();            // 'mine'
+  myOb.b();               // 'b'
+  </pre>
+</p>
+
+<h2>Closures</h2>
+<p>
+  Closures are one of the most powerful features of Javascript.  Closures allow you to maintain a group of values within one Function that are shared with other Functions without giving those other functions a direct reference to the original variable.  One useful way to use closures is in providing private Object methods, which is not a built-in feature of Javascript Objects:
+  <pre class="brush: js">
+    function Enclosure(priv) {
+      this.getPrivate = function()
+        {
+          return priv;
+        }
+    }
+    
+    var inst = new Enclosure('my private var');
+    
+    inst.getPrivate();          // 'my private var'
+    
+    inst.priv;                  // undefined
+  </pre>
+</p>
+
+<p>  
+  The Enclosure object has within its scope the 'priv' argument sent when it was instantiated.  However, the `this` object which constitutes the Object returned by the function when constructed does not have a reference to `priv`, which means that nobody can access `priv` via the instance variable `inst`, protecting the variable value.  The .getPrivate() method, however, was created in the scope of Enclosure, and as such has access to all of the variables within the Enclosure scope -- allow it to maintain a reference to `priv`.
+</p>
+
+<p>
+  Another powerful use of closures is in the creation of curried functions.  Currying can in some specific cases greatly simplify an API.  In any case where you want to minimize the number of arguments that need to be passed to a function you can use currying to "pack" some of those arguments into the function scope itself, simplifying the API to that function by reducing the number of arguments necessary:
+  <pre class="brush: js">
+    function curry(fnc, scp) {
+      var args = [].slice.call(arguments,2) // See documentation for Arrays
+      return function() {
+        fnc.apply(scp, args.concat([].slice.call(arguments,0)));
+      };  
+   }
+
+   function saySomething(a,b,c)
+     {
+       alert(a + b + c);
+     }
+
+   // No curry
+   var callback = saySomething;
+   callback('a','b','c'); // 'abc'
+   
+   // curried
+   var callback = curry(saySomething,this,'a','b','c');
+   callback();            // 'abc'
+   
+  </pre>
+</p>
+
+<p>
+  Here we use the curry function to return another function that already has the relevant arguments contained in its scope.  This removes the need to somehow maintain those values while waiting for some asynchronous process to return: the values are stored in the scope of the callback itself.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../../',
+       	            groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+
+      /**
+       * Create some example links
+       */
+      AXIS.createNamespace('demos');
+      $AXIS.demos.showNotification = function()
+        {
+          AXIS.showNotification({
+            content: 'A message'
+          });
+                    
+          window.scrollTo(0,0);
+        };
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - Some General Methods</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    The AXIS core tries to avoid providing methods that would be normally handled by specific architectures or third-party libraries (JQuery, Prototype, and so on).  There are nevertheless several useful functions that should make the construction of the base of your application easier.  The core AXIS functionality is mostly concerned with managing the loading and usage of extensions, providing error notifications, and providing some key methods which cannot depend on the inclusion of a third-party library (as they are often needed for the AXIS itself to function).  The AXIS is written with the intention of being stripped-down and, in a way, not useful, except as a skeleton kit that can be usefully fleshed out with extensions.
+  </p>
+</div>
+
+<h2>Getting Started</h2>
+<p>
+
+You are encouraged to read through the comments found in the AXIS code itself, to familiarize yourself with what is available, as well as the general coding style and intention of the codebase itself.  See section on <a href="AXIS-usage.html">AXIS Usage</a>.  See detailed method and property documentation for more information on the methods.
+
+</p>
+
+<h2>Namespaces</h2>
+<p>
+  The AXIS makes every attempt to avoid polluting the global namespace.  There are two global variables that are created: `AXIS` and `$AXIS`.  `AXIS` is the main namespace for the framework, and is what you will use as the base object of method calls. `$AXIS` is the namespace controller for the function #createNamespace:
+</p>
+<pre class="brush: js">
+// An AXIS method
+AXIS.includeScript();
+
+// An AXIS extension method
+AXIS.Events.observe();
+
+// Ask for a new namespace to be created
+AXIS.createNamespace('a.new.namespace');
+
+// Access that namespace via $AXIS
+$AXIS.a.new.namespace = 'hello';
+</pre>
+
+<h2>Lazy Loading Methods</h2>
+<p>
+  It is often necessary to dynamically load files, usually javascript and <abbr>CSS</abbr> files.  These methods allow you to load individual files, and special groupings of files.
+</p>
+
+<div class="vlist">
+  <dl>
+    <dt>
+      <a id="method_include_script"></a>
+      <h5>includeScript
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> You may pass this method an <dfn>Array</dfn>, <dfn>Object</dfn> or <dfn>String</dfn>. See examples below.
+            <ul>
+              <li>
+                <dfn class="optional">String</dfn> A <abbr>URL</abbr>.
+              </li>
+              <li>
+                <dfn class="optional">Object</dfn>
+                <ul>
+                  <li>
+                    <dfn>String</dfn> <i>src</i> : A <abbr>URL</abbr>.
+                  </li>
+                  <li>
+                    <dfn class="optional">String</dfn> <i>id</i> : An <i>id</i> attribute for the script element.  If none is passed, a random <i>id</i> will be assigned.
+                  </li>
+                  <li>
+                    <dfn class="optional">Callback</dfn> <i>onload</i> : A <dfn>Function</dfn> to call when the script has finished loading.
+                  </li>
+                  <li>
+                    <dfn class="optional">String</dfn> <i>method</i> : If a script is attached prior to the <abbr>DOM</abbr> being ready, it is attached using document.write. If the <abbr>DOM</abbr> is ready, it is attached to the <HEAD>.  You can force attachment via document.write by setting this argument to 'write'.
+                  </li>
+                  <li>
+                    <dfn class="optional">Boolean</dfn> <i>register</i> : If you are loading a script which forms an <a href="AXIS-extensions.html">AXIS extension</a> definition you can automatically register that extension once it is loaded by setting this attribute to true.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <dfn class="optional">Array</dfn> A list of load objects, as defined above.
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn> indicating if inclusion was attempted. NOTE: This does <i>not</i> mean that the inclusion was successful, only that the passed arguments were valid.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Allows dynamic inclusion of a script file.  
+      </p>
+      <pre class="brush: js">
+        // Load a script Object
+        AXIS.includeScript({
+          src: 'foo.js'
+        });
+        
+        // Load an Array.
+        AXIS.includeScript([
+          {
+            src: 'foo.js'
+          },
+          {
+            src: 'bar.js'
+          }
+        ]);
+        
+        // String
+        AXIS.includeScript('foo.js');
+        
+        // Onload functions
+        AXIS.includeScript({
+          src:    'foo.js',
+          onload: function() {
+            alert('foo.js has loaded');
+          }
+        })
+      </pre>
+
+    </dd>
+    
+    <dt>
+      <h5>includeScriptGroup
+        <ul>
+          <li>
+            <dfn>Array</dfn> Loads a group of load objects.  See arguments for <a href="#method_include_script">#includeScript</a>, above.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> Fires when all scripts in the group have loaded.
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        It is sometimes necessary to ensure that an entire group of files is loaded prior to executing a given function. For example, you might have to load several <abbr>UI</abbr> components prior to creating a special interface for a user.  In this case, you want to ensure that <i>all</i> scripts have fully loaded prior to calling an onload function.  This method allows you to pass a script group and a handler to be executed only after all files in the group have loaded.  Note that the loading of the scripts in the group is asynchronous; the only thing guaranteed is that all files in the group are sure to be loaded prior the "final" load function firing.
+      </p>
+
+      <pre class="brush: js">
+        // create an array of script objects
+        var scripts = [
+          { 
+            src: 'foo.js'
+          },
+          {
+            src: 'bar.js'
+          }
+        ];
+        
+        AXIS.includeScriptGroup(scripts,function() {
+          alert('Entire script group loaded');
+        });
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>includeScriptChain
+        <ul>
+          <li>
+            <dfn>Array</dfn> Loads a group of load objects.  See definition of load object for <a href="#method_include_script">#includeScript</a>, above.
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Cases arise where a number of distinct files which have each other as dependencies must be loaded dynamically. So if I need to load files A, B, and C, and C relies on B which relies on A, there is need for a forced sequential loading.  By sending this method an array of script objects you ensure that they will be loaded in the sent order.
+      </p>
+      <pre class="brush: js">
+        // create an array of script objects
+        var scripts = [
+          { 
+            src: 'foo.js'
+          },
+          {
+            src:    'bar.js'
+            onload: function()
+              {
+                // call a function in foo.js
+                foo.bar();
+              }
+          }
+        ];
+        
+        // foo.js loads, then bar.js, then bar.onload fires
+        AXIS.includeScriptChain(scripts);
+      </pre>
+      <p>
+        There is one notable drawback to this method: each script must wait for the previous script to be fully loaded before its own loading sequence can begin.  This is of course the point.  However, note that such a loading method is slower than standard browser loading behavior, which attempts to load several files at once.  Only use this method if you need the specific benefits.
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>includeCSS
+        <ul>
+          <li>
+            <dfn>Object</dfn>
+            <ul>
+              <li>
+                <dfn>String</dfn> <i>href</i> : A <abbr>URL</abbr>.
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>id</i> : An <i>id</i> attribute for the css element.  If none is passed, a random <i>id</i> will be assigned.
+              </li>
+              <li>
+                <dfn class="optional">String</dfn> <i>media</i> : Defaults to `screen`.
+              </li>
+            </ul>
+          </li>
+        </ul>        
+      </h5> 
+    </dt>
+    <dd>
+      <p>
+        Dynamically loads a CSS file
+      </p>
+
+      <pre class="brush: js">
+        AXIS.includeCSS({
+          id:     'myCSS',
+          href:   'foo.css',
+          media:  'print'
+        });
+      </pre>
+    </dd>
+  </dl>
+</div>
+
+<h2>Basic Event Binding</h2>
+<p>
+  The AXIS base avoids doing what will probably be done better in third-party libraries.  However, internally the AXIS code itself needs some event binding functionality, and the limited functionality needed is exposed as a general method.
+</p>
+<div class="vlist">
+  <dl>
+    <dt>
+      <h5>attachEvent</h5>
+    </dt>
+    <dd>
+      <p>
+        Attach an event handler to an element.
+      </p>
+      <pre class="brush: js">
+        // handler
+        var f = function(e) {
+          alert('handled');
+        }
+        
+        // 'event', handler function, element to attach to
+        AXIS.attachEvent('mousedown', f, document.getElementById('foo')); 
+      </pre>
+    </dd>
+    <dt>
+      <h5>detachEvent</h5>
+    </dt>
+    <dd>
+      <p>
+        Detach an event handler from an element.
+      </p>
+      <pre class="brush: js">
+        // handler
+        var f = function(e) {
+          alert('handled');
+        }
+        
+        // 'event', handler function, element to detach from
+        AXIS.detachEvent('mousedown', f, document.getElementById('foo')); 
+      </pre>
+    </dd>
+  </dl>
+</div>
+
+<h2>Other Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <h5>getUniqueId
+        <ul>
+          <li>
+            <dfn class="optional">String</dfn> A prefix for the id. 
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>String</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Get a unique id.  
+      </p>
+      <pre class="brush: js">
+        var uniq = AXIS.getUniqueId('prefix_');
+        
+        console.log(uniq); // prefix_1234567890
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>isArray
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> A value to check.
+          </li>
+        </ul>  
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Determines whether an argument is an <dfn>Array</dfn>.
+      </p>
+      <pre class="brush: js">
+        var a = AXIS.isArray([1,2,3]);
+        var b = AXIS.isArray('string');
+        
+        // a = true;
+        // b = false;
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>isObject
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> A value to check.
+          </li>
+        </ul>  
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Determines whether an argument is an <dfn>Object</dfn>.
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>isString
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> A value to check.
+          </li>
+        </ul>  
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Determines whether an argument is a <dfn>String</dfn>.
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>isFunction
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> A value to check.
+          </li>
+        </ul>  
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Determines whether an argument is a <dfn>Function</dfn>.
+      </p>
+    </dd>    
+    
+    <dt>
+      <h5>isNumber
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> A value to check.
+          </li>
+        </ul>  
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Determines whether an argument is a <dfn>Number</dfn>.
+      </p>
+    </dd>    
+    
+    <dt>
+      <h5>isElement
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> A value to check.
+          </li>
+        </ul>  
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Determines whether an argument is a <abbr>DOM</abbr> element.
+      </p>
+    </dd>    
+    
+    <dt>
+      <h5>isRegExp
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> A value to check.
+          </li>
+        </ul>  
+        <div>
+          Returns <dfn>Boolean</dfn>.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Determines whether an argument is a <dfn>RegExp</dfn>.
+      </p>
+    </dd>
+    
+    <dt>
+      <h5>curry
+        <ul>
+          <li>
+            <dfn>Function</dfn> The <dfn>Function</dfn> to curry.
+          </li>
+          <li>
+            <dfn class="optional">Object</dfn> The scope to execute the curried <dfn>Function</dfn> in.  Defaults to `window`.
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Curries a function.
+      </p>
+      <pre class="brush: js">
+        // A function to be curried.
+        var f = function() {}
+        
+        // Curry `f` in the scope of `this` and assign to `a`
+        var a = AXIS.curry(f, this);
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>showNotification
+        <ul>
+          <li>
+            <dfn>Object</dfn> <i>A Notification Object</i>
+            <ul>
+              <li>
+                <dfn>String</dfn> <i>content</i> : The content of the message.  Can contain <abbr>HTML</abbr>
+              </li>
+              <li>
+                <dfn class="optional">Boolean</dfn> <i>button</i> : Whether to show a dismiss button.
+              </li>
+              <li>
+                <dfn class="optional">Callback</dfn> <i>onDismiss</i> : Called when dismiss button clicked.
+              </li>
+              <li>
+                <dfn class="optional">Number</dfn> <i>type</i> : The type of notification (not implemented).
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Allows the developer to create a message for the user.  Click <span class="examplelink" onmousedown="$AXIS.demos.showNotification()">here</span> for an example.
+      </p>
+      <pre class="brush: js">
+        // Shows a notification and alerts when dismissed
+        AXIS.showNotification({
+          content: 'A message',
+          onDismiss: function() {
+            alert('notification dismissed');
+          }
+        });
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>fadeTo
+        <ul>
+          <li>
+            <dfn>Object</dfn> 
+            <ul>
+              <li>
+                <dfn>Element</dfn> <i>el</i> : The element to apply behavior to.
+              </li>
+              <li>
+                <dfn class="optional">Number</dfn> <i>startOpacity</i> : The opacity to set the object to. Default 100.
+              </li>
+              <li>
+                <dfn class="optional">Number</dfn> <i>endOpacity</i> : The opacity to be achieved. Default 0(zero).
+              </li>
+              <li>
+                <dfn class="optional">Number</dfn> <i>step</i> : Milliseconds between each opacity change.
+              </li>
+              <li>
+                <dfn class="optional">Number</dfn> <i>startDelay</i> : Milliseconds prior to beginning of fade. 
+              </li>
+              <li>
+                <dfn class="optional">Boolean</dfn> <i>deleteOnEnd</i> : Whether to remove the object from <abbr>DOM</abbr> collection when #endOpacity is reached. 
+              </li>
+            </ul>
+            <div>
+              Returns a <dfn>QueueObject</dfn>.
+            </dfn>
+          </li>
+        </ul>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Allows the fading in/out of a given DOM element.
+      </p>
+      <pre class="brush: js">
+        // Fades element out (opacity 100 -> 0)
+        AXIS.fadeTo({
+          element: document.getElementById('foo')
+        });
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_settings"></a>
+      <h5>settings
+        <ul>
+          <li>
+            <dfn>String</dfn> The setting to fetch value of.
+          </li>
+        </ul>  
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Gets the value of named configuration argument.
+      </p>
+      <pre class="brush: js">
+      &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+        arguments="createGlobals">
+      
+      // `true`
+      console.log(AXIS.settings('createGlobals'));
+      </pre>
+      <p>
+        For more information on configuration settings for the AXIS, see <a href="AXIS-usage.html#configuring">AXIS - Usage</a>.
+      </p>
+    </dd>
+    
+  </dl>
+</div>
+
+<div id="furtherReading"></div>
+
+</body>
+
+</html>

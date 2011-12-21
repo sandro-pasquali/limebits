@@ -1,0 +1,14 @@
+{
+  "css": [         
+    "styles/shCore.css",
+    "styles/shThemeLimeBits.css"
+    ],
+  
+  "js": [
+    "src/shCore.js"
+  ],
+  
+  "libraries": "json",
+  
+  "init": "init.js"
+}

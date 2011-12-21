@@ -1,0 +1,332 @@
+/**
+ * This file was originally part of YUI
+ * which is under a BSD licensed and copyrighted
+ * by Yahoo.
+ *
+ * Lime Labs LLC modifications are Copyright 2008
+ * Lime Labs LLC and licensed under LGPL v3
+ */
+
+/**
+ * Copyright 2008 Lime Labs LLC
+ * @author Sandro Pasquali (spasquali@gmail.com)
+ *
+ * This file is part of AXIS.
+ *
+ * AXIS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * version 3 as published by the Free Software Foundation.
+ *
+ * AXIS is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with AXIS.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/******************************
+ **********  LAYOUT  **********
+ ******************************/
+
+/* Remove the dotted border on the resize proxy */
+.yui-skin-sam .yui-layout .yui-resize-proxy {
+    border: none;
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+}
+/* During resize, hide the handles */
+.yui-skin-sam .yui-layout .yui-resize-resizing .yui-resize-handle {
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+/* Style the div inside the resize proxy */
+.yui-skin-sam .yui-layout .yui-resize-proxy div {
+    position: absolute;
+    border: 1px solid #808080;
+    background-color: #EDF5FF;
+}
+/* Set the color of the Active resize handle */
+.yui-skin-sam .yui-layout .yui-resize .yui-resize-handle-active {
+    background-color: #EDF5FF;
+}
+/* Styles for the left handle */
+.yui-skin-sam .yui-layout .yui-resize-proxy .yui-layout-handle-l {
+    width: 5px;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+/* Styles for the right handle */
+.yui-skin-sam .yui-layout .yui-resize-proxy .yui-layout-handle-r {
+    width: 5px;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+/* Styles for the bottom handle */
+.yui-skin-sam .yui-layout .yui-resize-proxy .yui-layout-handle-b {
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+}
+/* Styles for the top handle */
+.yui-skin-sam .yui-layout .yui-resize-proxy .yui-layout-handle-t {
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 5px;
+}
+
+/* Left Collapse button */
+.yui-skin-sam .yui-layout .yui-layout-unit-left div.yui-layout-hd .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -160px;
+    border: 1px solid #808080;
+}
+/* Left Collapsed Expand Button */
+.yui-skin-sam .yui-layout .yui-layout-clip-left .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -140px;
+    border: 1px solid #808080;
+}
+/* Right Collapse Button */
+.yui-skin-sam .yui-layout .yui-layout-unit-right div.yui-layout-hd .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -200px;
+    border: 1px solid #808080;
+}
+/* Right Collapsed Expand Button */
+.yui-skin-sam .yui-layout .yui-layout-clip-right .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -120px;
+    border: 1px solid #808080;
+}
+/* Top Collapse Button */
+.yui-skin-sam .yui-layout .yui-layout-unit-top div.yui-layout-hd .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -220px;
+    border: 1px solid #808080;
+}
+/* Top Collapsed Expand Button */
+.yui-skin-sam .yui-layout .yui-layout-clip-top .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -240px;
+    border: 1px solid #808080;
+}
+/* Bottom Collapse Button */
+.yui-skin-sam .yui-layout .yui-layout-unit-bottom div.yui-layout-hd .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -260px;
+    border: 1px solid #808080;
+}
+/* Bottom Collapsed Expand Button */
+.yui-skin-sam .yui-layout .yui-layout-clip-bottom .collapse {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -180px;
+    border: 1px solid #808080;
+}
+/* Close Button */
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-hd .close {
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px -100px;
+    border: 1px solid #808080;
+}
+
+/* Give the header a blue backgorund */
+.yui-skin-sam .yui-layout .yui-layout-hd {
+    background:url(../images/layout/sprite.png) repeat-x 0 -1400px;
+    border: 1px solid #808080;
+}
+/* Set the background color */
+.yui-skin-sam .yui-layout {
+    background-color: #EDF5FF;
+    font-size:        12px;
+    font-family:      Verdana, Arial;
+}
+/* Style the text in the header */
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-hd h2 {
+    font-weight: bold;
+    color: #fff;
+    padding: 3px;
+    font-size: 12px;
+}
+/* Style the body */
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+    border: 1px solid #808080;
+    border-bottom: none;
+    border-top: none;
+    *border-bottom-width: 0;
+    *border-top-width: 0;
+    background-color: #f2f2f2;
+    text-align: left;
+}
+/* Add a border to the bottom of the body because there is no footer */
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd-noft {
+    border-bottom: 1px solid #808080;
+}
+/* Add a border to the top of the body because there is no header */
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd-nohd {
+    border-top: 1px solid #808080;
+}
+
+/* Style the Clip */
+.yui-skin-sam .yui-layout .yui-layout-clip {
+    position: absolute;
+    height: 20px;
+    background-color: #EDF5FF;
+    display: none;
+    border: 1px solid #808080;
+}
+/* Style the footer */
+.yui-skin-sam .yui-layout div.yui-layout-ft {
+    border: 1px solid #808080;
+    border-top: none;
+    *border-top-width: 0;
+    background-color: #f2f2f2;
+}
+
+/* Remove the color from the resize handle */
+.yui-skin-sam .yui-layout-unit .yui-resize-handle {
+    background-color: transparent;
+}
+/* Reposition the handles */
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-r {
+    right: 0;
+    top: 0;
+    background-image: none;
+}
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-l {
+    left: 0;
+    top: 0;
+    background-image: none;
+}
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-b {
+    right: 0;
+    bottom: 0;
+    background-image: none;
+}
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-t {
+    right: 0;
+    top: 0;
+    background-image: none;
+}
+/* Add the gripper */
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-r .yui-layout-resize-knob,
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-l .yui-layout-resize-knob {
+    position: absolute;
+    height: 16px;
+    width: 6px;
+    top: 45%;
+    left: 0px;
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat 0 -5px;
+}
+/* Add the gripper */
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-t .yui-layout-resize-knob,
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-b .yui-layout-resize-knob {
+    position: absolute;
+    height: 6px;
+    width: 16px;
+    left: 45%;
+    background: transparent url(../images/layout/layout_sprite.png) no-repeat -20px 0;
+}
+
+
+
+
+/****************************
+ **********  TABS  **********
+ ****************************/
+ 
+ 
+ 
+
+/* .yui-navset defaults to .yui-navset-top */
+.yui-skin-sam .yui-navset .yui-nav,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav { /* protect nested tabviews from other orientations */
+    border:solid #2647a0; /* color between tab list and content */
+    border-width:0 0 0px; /* to add border, change 3rd value, ie 0 0 2px */
+    Xposition:relative;
+    zoom:1;
+}
+
+.yui-skin-sam .yui-navset .yui-nav li,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav li {
+    margin:0 0.16em 0 0; /* space between tabs */
+    padding:1px 0 0; /* gecko: make room for overflow */
+    zoom:1;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav .selected { 
+    margin:0 0.16em -1px 0; /* for overlap */
+}
+
+.yui-skin-sam .yui-navset .yui-nav a,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav a {
+    background:#d8d8d8 url(../images/layout/sprite.png) repeat-x; /* tab background */
+    border:solid #a3a3a3;
+    border-width:0 1px;
+    color:#000;
+    text-decoration:none;
+}
+
+/*
+ * tab styles
+ */
+.yui-skin-sam .yui-navset .yui-nav a em,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav a em {
+    border:solid #a3a3a3;
+    border-width:1px 0 0;
+    cursor:hand;
+    padding:0.25em .75em;
+    left:0; right: 0; bottom: 0; /* protect from other orientations */
+    top:-1px; /* for 1px rounded corners */
+    position:relative;
+    font-size: 11px;
+    height: 18px;
+    width: 70px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a,
+.yui-skin-sam .yui-navset .yui-nav .selected a:focus, /* no focus effect for selected */
+.yui-skin-sam .yui-navset .yui-nav .selected a:hover { /* no hover effect for selected */
+    background:#2647a0 url(../images/layout/sprite.png) repeat-x left -1400px; /* selected tab background */
+    color:#fff;
+}
+
+.yui-skin-sam .yui-navset .yui-nav a:hover,
+.yui-skin-sam .yui-navset .yui-nav a:focus {
+    background:#bfdaff url(../images/layout/sprite.png) repeat-x left -1300px; /* selected tab background */
+    outline:0;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a em {
+    padding:0.35em 0.75em; /* raise selected tab */
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a,
+.yui-skin-sam .yui-navset .yui-nav .selected a em {
+    border-color:#243356; /* selected tab border color */
+}
+
+.yui-skin-sam .yui-navset .yui-content {
+    background:#edf5ff; /* content background color */
+    visibility: hidden; /* NOTE that we don't use the content layers */
+}
+
+.yui-skin-sam .yui-navset .yui-content,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-content {
+    border:1px solid #808080; /* content border */
+    border-top-color:#243356; /* different border color */
+    padding:0.25em 0.5em; /* content padding */
+}
+
+.yui-nav
+  {
+    /** Nav control **/
+    
+    /* float: right; */
+  }
+
+/**
+ * Needed to get menu to float over layout
+ */
+.yui-skin-sam .yui-layout .yui-layout-unit-top,
+  .yui-skin-sam .yui-layout .yui-layout-unit-top div.yui-layout-bd-nohd {
+    overflow: visible;
+  }

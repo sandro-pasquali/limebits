@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html"; charset="utf-8" />
+  <title></title>
+  <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js"></script>
+  
+  <script type="text/javascript">
+  
+  AXIS.onDOMReady.subscribe({
+    callback: function() {
+      // create an <iframe>
+      var iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+      
+      // write a script into the <iframe> and create the sandbox
+      var f = frames[frames.length -1];
+      f.document.open();
+      f.document.write(
+        "<script>"+
+        "var MSIE/*@cc_on =1@*/;"+ // sniff
+        "parent.sandbox=MSIE?this:{eval:function(s){return eval(s)}}"+
+        "<\/script>"
+      );
+      f.document.close();
+      
+      console.log(window.sandbox);
+      window.sandbox.eval('alert(parent.AXIS);');
+    }
+  });
+  
+  </script>
+</head>
+<body>
+
+
+</body>
+</html>

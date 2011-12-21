@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  extensions="Modules+Errors" 
+  libraries=""></script>
+
+<script type="text/javascript">
+  
+  /**
+   * Visit http://icons.limebits.com/index.html to browse the collections.
+   */
+  
+  AXIS.Modules.load({
+    provider:   'local',
+    module:     'IconLibrary',
+    options:    {},
+    onload:     function(ob)
+      {      
+        ob.load([ 'nuvola/16/actions/edit',
+                  'nuvola/16/actions/apply',
+                  'nuvola/32/actions/apply'],
+                  function(im) {
+                    /**
+                     * When all the images are loaded, you will receive an 
+                     * object containing an object:  {
+                     *   namespace:  {Array}   Multiple sizes of same icon, indexed.
+                     *   path:       {String}  Full path to image
+                     *   size:       {Number}  16, 32, 64, ...
+                     * }
+                     *
+                     * This info is indexed in two ways. You can either fetch the item
+                     * by sending the path sent in arguments to #load, or by index of
+                     * arguments sent to #load.
+                     */
+                    $AXIS.Icons.__im__ = im;
+
+                    AXIS.find('targetImageHash').src = im['nuvola/16/actions/edit'].path;
+                    AXIS.find('targetImageIndex').src = im[1].path;
+                    AXIS.find('targetNSIndex').src = $AXIS.Icons.nuvola.actions.apply[32];
+                  }
+        );
+      }
+  });
+
+  
+</script>
+
+</head>
+
+<body>
+  <img id="targetImageHash" src="" style="width:16px; height:16px;" />
+  <br />
+  <img id="targetImageIndex" src="" style="width:16px; height:16px;" />
+  <br />
+  <img id="targetNSIndex" src="" style="width:32px; height:32px;" />
+  <br />
+  <input type="button" onclick="console.log($AXIS.Icons.__im__)" value="Show image object in console" />
+</body>
+
+</html>

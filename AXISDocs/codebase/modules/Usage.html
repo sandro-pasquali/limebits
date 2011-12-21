@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+     	options:  {
+     	            rootPath: '../../',
+     	            tooltipDefs: {
+     	              'Some Definition': {
+     	                text: "A random definition"
+     	              }
+     	            },
+     	            //codestyling: {
+     	             // theme: 'RDark'  
+     	           // },
+       	          groupURI: 'http://groups.google.com/group/limebits/post'
+     	          }
+    });
+                       
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - Modules</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    One of the core design principles behind the AXIS is that of extensibility.  In addition to what this means in terms of having AXIS extensions and other libraries, the AXIS also aims to allow the easy incorporation of 3rd party code into your AXIS projects.  The <i>Modules</i> extension makes this easy.  
+  </p>
+</div>
+
+<h2>Cookie Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <a id="method_create"></a>
+      <h4>create
+        <ul>
+          <li><dfn>String</dfn> Cookie name.</li>
+          <li><dfn>String</dfn> Cookie value.</li>
+          <li>
+            <dfn class="optional">Object</dfn> Further cookie definition information:
+            <ul>
+              <li><dfn class="optional">String</dfn> <i>path</i> : Cookie path restrictions.</li>
+              <li><dfn class="optional">Number</dfn> <i>days</i> : Expiration date.</li>
+            </ul>
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn> indicating success or failure.
+        </div>
+      </h4>
+    </dt>
+    <dd>
+      <p>
+        Creates a cookie.  
+      </p>
+      <pre class="brush: js">
+      // Sets cookie for '/myhome/' expiring in 2 days.
+      AXIS.Cookies.create('myCookie','shortbread',{
+        path: '/myhome/',
+        date: 2
+      });
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_update"></a>
+      <h4>update
+        <ul>
+          <li><dfn>String</dfn> Cookie name.</li>
+          <li><dfn>String</dfn> Cookie value.</li>
+          <li><dfn class="optional">Number</dfn> Expiration date.</li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn> indicating success or failure.
+        </div>
+      </h4>
+    </dt>
+    <dd>
+      <p>
+        Updates the value of an existing cookie.  
+      </p>
+      <pre class="brush: js">
+      // Updates 'myCookie' cookie, which now expires in 7 days.
+      AXIS.Cookies.update('myCookie','shortbread',7);
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_read"></a>
+      <h4>read
+        <ul>
+          <li><dfn>String</dfn> Name of cookie to read.</li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn> false if no cookie found, or <dfn>String</dfn> with cookie value.
+        </div>
+      </h4>
+    </dt>
+    <dd>
+      <p>
+        Gets the value of a cookie.  
+      </p>
+      <pre class="brush: js">
+      console.log(AXIS.Cookies.read('myCookie');
+      // shortbread
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="method_erase"></a>
+      <h4>erase
+        <ul>
+          <li><dfn>String</dfn> Name of cookie to erase.</li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn>, false if no such cookie found, true if erased.
+        </div>
+      </h4>
+    </dt>
+    <dd>
+      <p>
+        Erases a cookie.  
+      </p>
+      <pre class="brush: js">
+      AXIS.Cookies.erase('myCookie');
+      console.log(AXIS.Cookies.read('myCookie');
+      // false
+      </pre>
+    </dd>
+    
+  </dl>
+</div>
+</body>
+</html>

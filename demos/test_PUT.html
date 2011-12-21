@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  arguments="useGoogleAPI" 
+  extensions="Modules"
+></script>
+
+<script type="text/javascript">
+
+AXIS.Modules.load({
+ 	provider: 'google',
+ 	module:   'jquery',
+ 	version:  '1',
+ 	onload:  function()
+ 	  {
+     $.ajax({
+          type: "PUT",
+          url: 'dummy.html',
+          data: 'dd',
+          async: false,
+          success: function(msg) {
+            alert('jquery put');
+          }
+      });
+ 	  }
+});
+
+  var a = AXIS.WebDAV.PUT({
+    url:  'dummy.html',
+    body: 'hi',
+    callback: function() {
+      console.log('put');  
+    }
+  });
+  
+console.log(a);
+
+
+</script>
+
+</head>
+
+<body>
+	<div class="test"></div>
+</body>
+
+</html>

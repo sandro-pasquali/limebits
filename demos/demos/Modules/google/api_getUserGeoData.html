@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  arguments="useGoogleAPI" 
+  extensions="Modules" 
+></script>
+
+<script type="text/javascript">
+  
+/**
+ * Get user geolocation data.  Pass a callback to fetch data.
+ * NOTE: once you have received a response from Google.gdata (you have
+ * had a callback fired at least once) it isn't necessary to call
+ * AXIS#User#getUserGeoData again (the data has been permanently stored
+ * in AXIS#User#Data)
+ */
+AXIS.User.getUserGeoData(function() {
+  alert(AXIS.User.Data.get('city'));
+});
+
+
+</script>
+
+</head>
+
+<body>
+
+
+</body>
+
+</html>

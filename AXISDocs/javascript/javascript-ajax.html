@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+      libraries="selector_lite+array"
+    ></script>
+    <script type="text/javascript">
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../',
+         	          groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+  <h1>Asynchronous Data Loading and Sending</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    <abbr>AJAX</abbr> is the big technology buzzword around another technology darling, Web 2.0.  What all of this really means is that it is now possible for web developers to make "websites" (better: web applications) which are able to make remote requests to other servers, to a web-service "in the cloud", and so forth.  This means that web applications can fetch data and send data dynamically.  What this means for the user is that their interface no longer needs to refresh itself entirely for updated data to become visible: <abbr>AJAX</abbr> describes the design philosophy which emphasizes asynchronous, dynamic data retrieval and display within web applications.  Javascript's XMLHttpRequest (<abbr>XHR</abbr>) object is what provides this power to the developer.  
+  </p>
+</div>
+
+<h2>How to use the XMLHTTP Object</h2>
+<h3>Getting an instance</h3>
+<p>
+  The first thing necessary to create an <abbr>AJAX</abbr> powered application is to get an instance of the <abbr>XHR</abbr> object. Unfortunately the <abbr>XHR</abbr> object has suffered for a long time from browser incompatabilities.  However, over time the browser developers have gotten closer together on implementation details, and the popularity of <abbr>AJAX</abbr> has encouraged hackers to find workarounds and the like.  The first incompatibility involves getting an instance of the object in the first place.  This code does the trick:
+  <pre class="brush: js">
+    var xhr = window.ActiveXObject 
+              ? new ActiveXObject("Msxml2.XMLHTTP") 
+              : new XMLHttpRequest();
+  </pre>
+</p>
+
+<p>
+  The main thing to note is that Microsoft has its own ActiveX interface, while all other browsers use the standard XMLHttpRequest() object.  However, in the end, an instance so established will work cross-browser without incident.
+</p>
+
+<h3>Making Requests</h3>
+<p>
+  Once the <abbr>XHR</abbr> object has been created, it is a simple matter to use it as a transport layer for <abbr>REST</abbr> operations.  Here is a complete code sequence for making a GET request on the current page, detecting when the GET has completeed, and showing the data retrieved:
+  <pre class="brush: js">
+  xhr.open("GET", "javascript-ajax.html",true);
+  xhr.onreadystatechange=function() {
+     if(xhr.readyState==4) {
+       alert(xhr.responseText);
+     }
+  }
+  xhr.send(null);  
+  </pre>
+</p>
+
+<h3>Step By Step</h3>
+<p>
+  The syntax is very straightforward, and works the same way in all browsers.  Once Javascript has provided you with an <abbr>XHR</abbr> object, you have an API to whatever abstraction your OS is using to negotiate the <abbr title="Transmission Control Prototocol">TCP</abbr>/<abbr title="Internet Prototocl">IP</abbr> transport layer.  You can then use this connection to make <abbr>REST</abbr> requests.  Step by step:
+  <pre class="brush: js">
+  xhr.open
+    ( 
+      // Transfer method.  GET, POST, (WebDAV: PROPFIND, PUT, MOVE, CHECKIN, etc) 
+      "GET", 
+              
+      // The URI
+      "javascript-ajax.html",
+              
+      // If true the request is done asynchronously;
+      // If false the request is synchronous.
+      true
+    );
+  
+  // The onreadystatechange method is fired whenever the state of the request
+  // changes.  The stages of the request are represented numerically:
+  // 0: uninitialized
+  // 1: loading
+  // 2: loaded
+  // 3: interactive
+  // 4: complete
+  xhr.onreadystatechange=function() 
+    {
+      // We are waiting for state '4', complete
+      if(xhr.readyState==4) {
+     
+        // .responseText is the text of the response.
+        // .responseXML is another attribute of xhr.
+        alert(xhr.responseText);
+      }
+    }
+  
+  // For REST calls which send data (POST, PUT), `null` would be
+  // replaced by the body being sent. See below.
+  xhr.send(null);
+  </pre>
+</p>
+
+<h3>Headers</h3>
+<p>
+  In addition to fetching the text, or body, of the response, you also have access to the response object header:  
+  <pre class="brush: js">
+  xhr.open("HEAD", "javascript-ajax.html",true);
+  xhr.onreadystatechange=function() {
+    if(xhr.readyState==4) {
+    
+     // Fetching the `Last-Modified` header
+     
+     alert("File was last modified on - "+
+     xhr.getResponseHeader("Last-Modified"));
+    } 
+  }
+  xhr.send(null);
+  </pre>
+</p>
+
+<p>
+  Headers are also manipulable at the sendpoint.  Here is an example of setting the header values for a POST request:
+  <pre class="brush: js">
+  xhr.open("POST", "webservice.php", true);
+  
+  // You can set multiple headers
+  xhr.setRequestHeader("Content-Type",
+                       "application/x-www-form-urlencoded");
+   
+  xhr.onreadystatechange=function() {
+    if(xhr.readyState == 4) {
+      
+      // .status gives you the HTTP status code for the response.
+      // Useful to check this for 'not found (404)',
+      // 'not modified (304)' etc.
+      // 200 is a general 'OK' status code.
+      if(xhr.status == "200") {
+        alert('POST successful');
+        updateFolderView();
+      }
+      else {
+        alert('POST failed');
+        rollbackFolderView();
+      }
+    } 
+  }
+ 
+  xhr.send('[["some json for the service"],"a","1"]');
+  
+  </pre>
+</p>
+
+<h3>Synchronous vs. Asynchronous</h3>
+<p>
+  In the following code:
+  <pre class="brush: js">
+    xhr.open("GET", "javascript-ajax.html",true);
+  </pre>
+  The third argument is either true or false, establishing the connection as either asynchronous(true) or synchronous(false).  Which method to use is one of the most important decisions that need to be made when developing <abbr>AJAX</abbr> applications.  It is likely that you will make use of both.
+</p>
+<h4>Syncronous Requests</h4>
+<p>
+  When an <abbr>XHR</abbr> call is made synchronously execution control is passed by Javascript to the <abbr>XHR</abbr> object, and until that call completes the Javascript interpreter waits.  This often means that the entire browser instance is "locked up", with the user unable to move, click on, or otherwise manipulate the page in front of him.  This may in fact be desired behaviour. A simple example is a file manager, where a "new folder" action sent via <abbr>XHR</abbr> to a remote storage device must know whether the action was successful prior to updating the current view's folder list.  As such, all further action on the view must cease until an accurate current state is returned from the <abbr>XHR/abbr> call.  Many POST-type actions benefit from synchronicity between view and model.
+  <pre class="brush: js">
+  // User has just filled out a "new folder name" dialog
+  // and hit 'create' confirmation.  Because the request
+  // is synchronous, we can assume the createNewFolder() function
+  // only returns after the call has completed.
+  if(createNewFolder('docs')) {
+    alert('folder created');
+  }
+  else {
+    alert('create failed');
+  }
+
+  function createNewFolder(name) {
+  
+    // make a synchronous request
+    xhr.open("POST", "filesystem.srv", false);
+    
+    // A synchronous call allows the determination of return condition
+    // for this function to reflect response status.
+    xhr.onreadystatechange=function() {
+      if(xhr.readyState==4) {
+        if(xhr.status==200) {   
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+    }
+    xhr.send('folder::' + name); 
+  }
+  </pre>
+</p>
+
+<h4>Asyncronous Requests</h4>
+<p>
+  Asynchronous <abbr>XHR</abbr> do not stop code execution.  The great advantage of asynchronicity is that several simultaneous requests can be active "in the background" while the user continues to work with a given interface.  It is easy to see how this sort of "multithreaded" execution model allows for a rather rich experience to be created for the browser.  On the other hand, programming around asynchronous requests requires maintaining a resilient data model in a storm of unpredictable changes, which can be tricky to deal with, especially in cases where handling of one asynchronous request *may* depend on another.  The advantage of having a smooth "non-blocking" user experience must be weighed against the greater complexity of building usch systems.  A common asynchronous patter is the "polling" pattern:
+  <pre class="brush: js">
+  
+  var lastModifedTime = 'Fri, 09 Jan 2009 16:20:15 GMT';
+  
+  function checkMarket() {
+  {
+    xhr.open("HEAD", "stockmarket.rss",true);
+    xhr.onreadystatechange=function() {
+      if(xhr.readyState==4) {
+        var lastModified = xhr.getResponseHeader("Last-Modified");
+        
+        if(lastModified != lastModifiedTime) {  
+          // do nothing, as nothing has changed
+        }
+        else
+        {
+          // document has changed. Reset and notify.
+          lastModifiedTime = lastModified;
+          notifyOfStockChange(xhr.responseText);
+        }
+      } 
+    }
+    xhr.send(null);
+  }
+  
+  // poll the above function every minute.
+  setInterval(checkMarket,60000); 
+  
+  </pre>
+</p>
+<p>
+  In a complex system, you will probably use a mixture of both.  In addition, you will probably institute a callback system, allowing the passing of callback function to <abbr>XHR</abbr> call methods, giving some control to what happens when.  The <abbr>XHR</abbr> related aspects of the AXIS Framework make extensive use of callbacks and related structures.
+</p>
+
+</body>
+
+</html>

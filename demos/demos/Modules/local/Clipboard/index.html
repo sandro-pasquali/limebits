@@ -1,0 +1,120 @@
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+
+		.clip_button 
+		  { 
+		    width:            150px; 
+		    text-align:       center; 
+		    border:           1px solid black; 
+		    background-color: pink; 
+		    margin:           10px; 
+		    padding:          10px; 
+		    cursor:           default; 
+		    font-size:        9pt; 
+		  }
+		  
+		.clip_button.hover 
+		  { 
+		    background-color: blue; 
+		  }
+		  
+		.clip_button.active 
+		  { 
+		    background-color: red;
+		  }
+		  
+	</style>
+  <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+    extensions="Errors+Modules"
+  ></script>
+  <script type="text/javascript">
+    
+  AXIS.Modules.load({
+    provider:   'local',
+    module:     'Clipboard',
+    onload:     function(resp) {
+
+      AXIS.createNamespace('Clipboard');
+      
+      // Create a control button -- clicking pastes to clipboard.
+      var c = $AXIS.Clipboard = resp.setControl('clip_button');
+
+      c.setHandCursor(true);
+      	
+      c.addHandler('load', function() {
+        // Do something when the flash movie is loaded (init complete).
+      });
+            
+      c.addHandler('complete', function(copyOb) {
+        // Do something when a copy operation is complete.
+        console.log(copyOb.clipText);
+      });
+      
+      c.addHandler('mouseOver', function() {
+        // Do something mouseover on control "button"
+        // We can cheat a little here -- update the copied text on mouse over
+      	c.setText(AXIS.find('input_text').value);
+      });
+      
+      c.addHandler('mouseOut', function() {
+        // Do something mouseout on control "button"
+      });
+      
+      c.addHandler('mouseDown', function() {
+        // Do something mousedown on control "button"
+      });
+      
+      c.addHandler('mouseUp', function() {
+        // Do something mouseup on control "button"
+      });
+      
+      
+      
+      // You can create as many instances as you'd like...
+      var c2 = $AXIS.Clipboard2 = resp.setControl('clip_button2');
+
+      c2.addHandler('mouseOver', function() {
+        // Do something mouseover on control "button"
+        // We can cheat a little here -- update the copied text on mouse over
+      	c2.setText(AXIS.find('input_text2').value);
+      });
+
+    }
+  });
+
+  </script>
+
+</head>
+<body>
+
+<b>Text 1:</b>
+<br />
+
+<textarea id="input_text" cols=50 rows=3 onChange="$AXIS.Clipboard.setText(this.value)">Copy me!</textarea>
+
+<br />
+
+<div id="clip_button" class="AXIS-Clipboard clip_button"><b>Copy To Clipboard 1</b></div>
+
+<br/>
+
+<b>Text 2:</b>
+<br />
+
+<textarea id="input_text2" cols=50 rows=3 onChange="$AXIS.Clipboard2.setText(this.value)">Copy me!</textarea>
+
+<br />
+
+<div id="clip_button2" class="AXIS-Clipboard clip_button"><b>Copy To Clipboard 2</b></div>
+
+<br/>
+Paste clipboard here:
+<br/>
+
+<textarea id="testarea" cols=50 rows=3></textarea>
+<br/>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "js": [         
+    "puny_mce_src.js",
+    "plugins/textcolor/textcolor_src.js",
+    "plugins/paste_src.js",
+    "plugins/image/image_src.js",
+    "plugins/link/link_src.js",
+    "plugins/emoticons/emoticons_src.js",
+    "plugins/editsource/editsource_src.js",
+    "plugins/forceblocks_src.js",
+    "plugins/bbcode_src.js",
+    "plugins/entities_src.js",
+    "plugins/protect_src.js",
+    "plugins/safari2x_src.js",
+    "i18n/sv.js"
+  ],
+
+  "init": "init.js"
+}
+

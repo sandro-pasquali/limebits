@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+  
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  arguments="showLoadingInfo+login+useGoogleAPI+CSSReset" 
+  extensions="Errors+Modules" 
+  libraries="selector+array"
+></script>
+
+<script type="text/javascript">
+
+var __BP__ = AXIS.PATH().replace('!lime/root/library/limebits/latest/axis/','');
+
+AXIS.Modules.load({
+	provider: 'yahoo',
+	module:   'Layout',
+	version:  '1',  
+	options:  { 
+	            tabHandlers:
+	              {
+	                click:      function(ev)
+	                  {
+	                    alert(this.get('label'));
+	                  },
+	                mousedown:  function(){},
+	                mouseup:    function(){},
+	                mouseover:  function(){},
+	                mouseout:   function(){}
+	              }
+	          },
+	          
+	onload:   function(p)
+	  {
+	  	p.createLayout('main',AXIS.find('DEMO_LAYOUT'));
+	  	p.tabPanel.createTabsInterface({
+	  	  DOMElement: 'layout_panel_tabs',
+	  	  tabs:       [
+	                    { label: 'Page' },
+	                    { 
+	                      label: 'Source',
+	                      active: true
+	                    }
+	                  ]});
+	                  
+	  	var tt = p.tabPanel.tabs.add({label:'jah'});
+	    p.tabPanel.tabs.removeByIndex(tt.idx);
+
+	    $AXIS.Modules.yahoo.Layout.browse.setFooter({
+	     height: 26,
+	     content: 'new content' 
+	    });
+	    
+	    
+	    AXIS.Modules.load({
+	      provider:   'yahoo',
+	      module:     'Tree',
+	      version:    '1',
+	      onload:     function()
+	        {
+	          //alert('tv'); 
+	        }
+      });
+      
+      
+      AXIS.onDOMReady.subscribe({
+        callback: function()
+          {
+      	  	p.view.createSmartFrame({
+      	  	  namespace:    'frames.editor',
+      	  	  src:          AXIS.PATH() + 'modules/yahoo/Layout/smartFrames/editor/frame.html',
+      	  	  footerHeight:   24,
+      	      footer:         '<form><input type="button" onclick="$AXIS.frames.view._frame.runFooterCommand(\'home\')" value="My Homepage" /></form>',
+      	      onload:       function(frm)
+      	        {
+      	         // alert(AXIS.getElementsByClassName('ygtvitem',false,document).length);
+      	          //alert(frm._frame.contentWindow.open_file1);
+      	        }
+      	  	});
+      	  	
+      	  	//alert(p.tabsControl.getTabIndex(x));
+      	  	//alert(p.panel('view').get);
+      	  	//alert(google.load);
+      	 }
+      });
+	  }
+});
+
+</script>
+
+</head>
+
+<body>
+<div id="DEMO_LAYOUT">
+  <div id="layout_panel_bar">
+    <div id="layout_panel_tabs" class="yui-navset"></div>
+  </div>
+  <div id="layout_panel_browse">
+    <div id="treewrapper">
+      <div id="treediv"> </div>
+    </div>
+  </div>
+  <div id="layout_panel_view"></div>
+</div>
+
+</body>
+
+</html>

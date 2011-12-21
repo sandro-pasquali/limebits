@@ -1,0 +1,11 @@
+{
+  "css": [         
+    "css/tree.css"
+  ],
+  
+  "js": [
+    "http://yui.yahooapis.com/combo?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js&2.6.0/build/treeview/treeview-min.js"
+  ],
+
+  "init": "init.js"
+}

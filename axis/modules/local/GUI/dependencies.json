@@ -1,0 +1,7 @@
+{
+  "init": "init.js",
+  
+  "extensions": "DOM+CSS",
+  
+  "libraries": "selector_lite"
+}

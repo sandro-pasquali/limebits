@@ -1,0 +1,12 @@
+{
+  "css": [         
+    "http://yui.yahooapis.com/combo?2.6.0/build/logger/assets/skins/sam/logger.css&2.6.0/build/yuitest/assets/skins/sam/yuitest.css",
+    "css/loggerInterface.css"
+  ],
+  
+  "js": [
+    "http://yui.yahooapis.com/combo?2.6.0/build/yahoo-dom-event/yahoo-dom-event.js&2.6.0/build/logger/logger-min.js&2.6.0/build/yuitest/yuitest-min.js"
+  ],
+
+  "init": "init.js"
+}

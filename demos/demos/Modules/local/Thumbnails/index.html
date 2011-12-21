@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  extensions="Modules+Errors"
+></script>
+<script type="text/javascript">
+
+AXIS.Modules.load({
+  provider:   'local',
+  module:     'Thumbnails',
+  options:    
+    {
+      size:         'large',
+      containerId:  'container',
+      urls:         [
+        'http://www.limebits.com',
+        'http://sandro.limebits.com/vitaminb/index.html?bar',
+        'http://www.amazon.com',
+        'http://www.nytimes.com'
+      ]
+    }
+}); 
+
+</script>
+
+</head>
+
+	<body>
+		<div id="container"></div>
+	</body>
+</html>
+

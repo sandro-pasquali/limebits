@@ -1,0 +1,4 @@
+grant authenticated write
+grant authenticated read
+deny unauthenticated read
+deny unauthenticated write

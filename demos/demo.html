@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+  
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  arguments="createGlobals+login+useGoogleAPI+CSSReset" 
+  extensions="Errors+Modules+Keyboard+DOM+CSS+Forms+EventsPlus+Data+SHA1+History+Store" 
+  libraries="selector+array+string+date+json+Element.core+~axis/libraries/resource.js"
+></script>
+<script type="text/javascript">
+
+AXIS.onDOMReady.subscribe({
+  callback: function() {
+      
+    AXIS.select('div').foreach(function(t){
+      //console.log(t.get('id'));
+    });
+
+
+    AXIS.attachEvent('click',function(e){
+      alert(this.attr('tag'));
+    },AXIS.find('elementary'));
+    
+    //AXIS.fireEvent('click',AXIS.find('elementary'));
+    
+  }
+});
+
+AXIS.History.onChange.subscribe({
+  callback: function(a){
+    console.log(a);
+  }
+});
+
+AXIS.Modules.load({
+ 	provider: 'google',
+ 	module:   'jquery',
+ 	version:  '1'
+});
+      
+AXIS.Modules.load({
+ 	provider: 'google',
+ 	module:   'swfobject',
+ 	version:  '2.1',
+ 	onload:   function()
+ 	  {
+ 	    //alert(swfobject.registerObject);  
+ 	  }
+});
+
+AXIS.Modules.load({
+  provider: 'local',
+  module:   'SyntaxHighlighter',
+  version:  '1',
+  onload:   function(r)
+    {
+      r.paint();
+    }
+});
+
+</script>
+
+<script type="text/javascript">
+
+var __BP__ = AXIS.PATH().replace('!lime/root/library/limebits/latest/axis/','');
+
+AXIS.Modules.load({
+	provider: 'yahoo',
+	module:   'Layout',
+	version:  '1',  
+	options:  { 
+	            tabHandlers:
+	              {
+	                click:      function(ev)
+	                  {
+	                    alert(this.get('label'));
+	                  },
+	                mousedown:  function(){},
+	                mouseup:    function(){},
+	                mouseover:  function(){},
+	                mouseout:   function(){}
+	              }
+	          },
+	          
+	onload:   function(p)
+	  {
+	  	p.createLayout('main',document.getElementById('DEMO_LAYOUT'));
+	  	p.tabPanel.createTabsInterface({
+	  	  DOMElement: 'layout_panel_tabs',
+	  	  tabs:       [
+	                    { label: 'Page' },
+	                    { 
+	                      label: 'Source',
+	                      active: true
+	                    }
+	                  ]});
+	                  
+	  	var tt = p.tabPanel.tabs.add({label:'jah'});
+	    p.tabPanel.tabs.removeByIndex(tt.idx);
+
+	    $AXIS.Modules.yahoo.Layout.browse.setFooter({
+	     height: 26,
+	     content: 'new content' 
+	    });
+	    
+	    
+	    AXIS.Modules.load({
+	      provider:   'yahoo',
+	      module:     'Tree',
+	      version:    '1',
+	      onload:     function()
+	        {
+	          //alert('tv'); 
+	        }
+      });
+      
+      
+      AXIS.onDOMReady.subscribe({
+        callback: function()
+          {
+            var q, e, i;
+            
+            for(var t=0; t < 1000; t++)
+              {
+              	e = p.browse.body;
+              	i = document.createElement('div');
+              	i.id = 'sandro' + t;
+              	i.setAttribute('selectable','true');
+              	i.setAttribute('draggable','true');
+              	i.innerHTML = i.id + '<<';
+              	e.appendChild(i);
+              }
+              
+            AXIS.EventsPlus.observe({
+              selector:   'div[id^="sandro"]',
+              event:      'mouseover mouseout',
+              handler:    function(e)
+                {
+                  switch(e.eventType)
+                    {
+                      case 'mouseover':
+                        e.el.style.border = '1px blue solid';
+                      break;
+                      
+                      case 'mouseout':
+                        e.el.style.border = '';
+                      break;
+                      
+                      default:
+                      break;
+                    }
+                }   
+            });
+              
+            i = document.createElement('div');
+            i.id = 'skafjlsd';
+            i.setAttribute('draggable','true');
+            i.setAttribute('selectable','true');
+            var xx = p.browse.body.appendChild(i);
+            xx.innerHTML = 'sdaksjdf';
+  
+      	  	p.view.createSmartFrame({
+      	  	  namespace:    'frames.editor',
+      	  	  src:          AXIS.PATH() + 'modules/yahoo/Layout/smartFrames/editor/frame.html',
+      	  	  footerHeight:   24,
+      	      footer:         '<form><input type="button" onclick="$AXIS.frames.view._frame.runFooterCommand(\'home\')" value="My Homepage" /></form>',
+      	      onload:       function(frm)
+      	        {
+      	         // alert(AXIS.getElementsByClassName('ygtvitem',false,document).length);
+      	          //alert(frm._frame.contentWindow.open_file1);
+      	        }
+      	  	});
+      	  	
+      	  	//alert(p.tabsControl.getTabIndex(x));
+      	  	//alert(p.panel('view').get);
+      	  	//alert(google.load);
+      	 }
+      });
+	  }
+});
+
+	  
+//var elasticBox = AXIS.Animations.build("elastic",document.getElementById("tester"),"","mouse");
+//AXIS.Queue.add(elasticBox);
+
+AXIS.WebDAV.GET({
+  url:        'demo.html',
+  onSuccess:  function(r)
+    {
+      //alert(r.getStatus() + ':' + r.responseText);  
+    },
+  onFailure:  function(r)
+    {
+      //alert('fail');  
+    }
+});
+
+AXIS.WebDAV.GET({
+  url:        __BP__ + 'demo.html',
+  onSuccess:  function(r)
+    {
+      //alert(r.getStatus() + ':' + r.responseText);  
+    },
+  onFailure:  function(r)
+    {
+      //alert('fail');  
+    }
+});
+/*
+AXIS.WebDAV.getByteRange({
+  url:        __BP__ + 'demo.html',
+  byteRange:  '99-199',
+  onSuccess:  function(r)
+    {
+      alert('br:' + r.responseText);  
+    },
+  onFailure:  function(r)
+    {
+      //alert('fail');  
+    }
+});
+*/
+		
+/** out for now while chetan works on acl
+
+var ww = AXIS.WebDAV.getACL({
+    url:      __BP__ + '',
+    callback: function(r)
+      {
+        //alert('acl: ' + r.responseText);
+        //alert(r.getStatus());
+        return false;
+      },
+    responseProcessor: function(r)
+      {
+        return 'sandro'; 
+        
+      }
+  });
+  
+//alert('synch: ' + ww.getStatus());
+
+AXIS.WebDAV.getCUPS({
+    url:      __BP__ + '',
+    callback: function(r)
+      {
+        //alert('privilegeset: ' + r.responseText);
+        //alert(r.allows('write'));
+        return false;
+      }
+  });
+
+**/
+
+AXIS.WebDAV.POST({
+    url:      __BP__ + 'tester.html',
+    body:     'hi',
+    callback: function(r)
+      {
+        //alert('POST:' + r.responseText);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+
+AXIS.WebDAV.getPropertyNames({
+    url:      __BP__ + 'demo.html',
+    callback: function(r)
+      {
+        //alert(r.responseText);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+  
+  //wd = 'haha';
+         //     wd = AXIS.JSON.stringify(wd);
+        //wd = AXIS.JSON.parse(wd);
+       // alert(wd);
+  
+AXIS.WebDAV.readFolder({
+    url:      'AXISDocs',
+    callback: function(r)
+      {
+        //alert('collection: ' + r.responseText);
+        console.log(r.folder);
+
+        return false;
+      }
+  });
+
+var gg = AXIS.WebDAV.getAllProperties({
+    url:      __BP__ + 'demo.html',
+    callback: function(r)
+      {
+        //alert('allprop: ' + r.responseText);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+  
+AXIS.WebDAV.getAllProperties({
+    url:      __BP__ + 'demo.html',
+    includes: [
+      'supported-live-property-set',
+      'supported-report-set'
+    ],
+    callback: function(r)
+      {
+        console.log(r.responseText);
+        console.log(AXIS.WebDAV.responseXMLToObject(r.responseXML));
+        return false;
+      }
+  });
+
+AXIS.WebDAV.getPrincipalSearchPropertySetReport({
+    url:      __BP__ + 'demo.html',
+    callback: function(r)
+      {
+        //alert('getPrincipalSearchPropertySetReport: ' + r.responseText);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+
+AXIS.WebDAV.HEAD({
+    url:      __BP__ + 'demo.html',
+    callback: function(r)
+      {
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+  
+AXIS.WebDAV.MKCOL({
+    url:          __BP__ + 'newfolder/',
+    callback:     function(r)
+      {
+        //alert('mkcol:' + r.responseText);
+        //alert('delete serialized: ' + r.serializedXML);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+
+AXIS.WebDAV.PROPPATCH({
+    url:          __BP__ + 'demo.html',
+    
+    setGroup:       'authors',
+    setProperty:    'Author',
+    setValues:      [
+                      'sandro',
+                      'pandro'
+                    ],
+            
+    removeGroup:    'authors',
+    removeProperty: 'Author',
+    removeValues:   [
+                      'sandro',
+                      'pandro'
+                    ],
+
+    callback: function(r)
+      {
+        //alert(r.responseText);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+  
+/**
+ * Test setting, getting, and removing properties
+ */
+AXIS.WebDAV.setProperty({
+  url:            'demo.html',
+  setProperties:  { 
+    ns: 'MYNS:', 
+    name: "order", 
+    value: "book" 
+  }
+});
+
+AXIS.WebDAV.getProperty({
+  url:            'demo.html',
+  properties:  { 
+    //ns: 'MYNS:', 
+    name: "creationdate"
+  },
+  callback: function(r) {
+
+    //console.log(r.responseXMLObject());  
+    //console.log(r.responseXMLObject().multistatus.response.propstat.prop.creationdate); 
+    //console.log(r.responseXML);
+    //console.log(r.serializedXML());
+   // console.log(r.responseXML.documentElement);
+   // console.log(r.responseXML.documentElement.childNodes.getElementsByTagName('response'));
+  }
+});
+
+AXIS.WebDAV.removeProperty({
+  url:            'demo.html',
+  removeProperties:  { 
+    ns: 'MYNS:', 
+    name: "order"
+  }
+});
+
+AXIS.WebDAV.getProperty({
+  url:            'demo.html',
+  properties:  { 
+    ns: 'MYNS:', 
+    name: "order"
+  },
+  callback: function(r) {
+    //alert(r.responseText);  
+  }
+});
+    
+AXIS.WebDAV.COPY({
+    url:          __BP__ + 'tester.html',
+    destination:  __BP__ + 'testerDest.html',
+    callback:     function(r)
+      {
+        //alert('copy:' + r.responseText);
+        //alert('delete serialized: ' + r.serializedXML);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+  
+AXIS.WebDAV.MOVE({
+    url:          __BP__ + 'testerDest.html',
+    destination:  __BP__ + 'tester.html',
+    overwrite:    true,
+    callback:     function(r)
+      {
+        //alert('copy:' + r.responseText);
+        //alert('delete serialized: ' + r.serializedXML);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+  
+AXIS.WebDAV.DELETE({
+    url:      __BP__ + 'testing.html',
+    callback: function(r)
+      {
+        //alert('delete:' + r.responseText);
+        //alert('delete serialized: ' + r.serializedXML);
+        //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+
+AXIS.WebDAV.PUT({
+    url:      __BP__ + 'testing.html',
+    body:     'this text was put here',
+    onFailure: function(r)
+      {
+        //alert('put failed with status: ' + r.getStatus());
+      },
+    callback: function(r)
+      {
+        //alert('put:' + r.responseText);
+        //alert('put serialized: ' + r.serializedXML);
+       //alert(r.responseXMLObject());
+        return false;
+      }
+  });
+
+</script>
+
+</head>
+
+<body>
+<div id="DEMO_LAYOUT">
+  <div id="layout_panel_bar">
+    <div id="layout_panel_tabs" class="yui-navset"></div>
+  </div>
+  <div id="layout_panel_browse">
+    <div id="treewrapper">
+      <div id="treediv"> </div>
+    </div>
+    <div onclick="AXIS.History.set({args:[Math.random(),'http://www.google.com']})">History</div>
+    <div id="elementary">Element</div>
+
+    <pre class="brush: js">
+
+      /**
+       * @fileoverview
+       */
+      function XMLHTTP()
+        {
+          /**
+           * @constructor
+           */
+          this.XMLHTTP = function()
+            {
+            }
+        }
+
+    </pre>
+  </div>
+  <div id="layout_panel_view"></div>
+</div>
+
+</body>
+
+</html>

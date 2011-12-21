@@ -1,0 +1,9 @@
+{
+  "css": [         
+    "css/default.css"
+  ],
+
+  "init": "init.js",
+  
+  "extensions": "DOM"
+}

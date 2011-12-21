@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../../'
+       	          }
+      });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>Library - selector</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    The <i>selector</i> library allows a developer to easily run <abbr>CSS</abbr> selectors against the <abbr>DOM</abbr> and work with the results.
+  </p>
+</div>
+
+<h2>Methods</h2>
+<div class="vlist">
+  <dl>
+    
+    <dt>
+      <h5>select
+        <ul>
+          <li>
+            <dfn>String</dfn> A <abbr>CSS</abbr> selector.
+          </li>
+        </ul>
+        <div>
+          Returns an <dfn>Array</dfn> of <dfn>Element</dfn> objects matching selector.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        When used as part of an AXIS chain, the #select method <i>replaces</i> the #store method.  This allows you to run methods in the scope of an array of <abbr>DOM</abbr> elements. Such as:  
+      </p>
+      <pre class="brush: js">
+        AXIS
+          .select('h2')
+          .foreach(function(t) {
+            // gives all &lt;h2> elements red text
+            t.style.color = 'red';
+      </pre>
+    </dd>
+    
+    <dt>
+      <h5>match
+        <ul>
+          <li>
+            <dfn>Element</dfn> The <dfn>Element</dfn> to check.
+          </li>
+          <li>
+            <dfn>String</dfn> A <abbr>CSS</abbr> selector.
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn> true if selector matches element, false if not.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Checks whether a given selector would match a given <dfn>Element</dfn>.
+      </p>
+      <pre class="brush: js">
+        // Whether first matched element has `h2` tag
+        AXIS
+          .select('h2')
+          .match(AXIS.$[0],'h2');
+        
+        // true
+        console.log(AXIS.$);
+      </pre>
+    </dd>
+    
+  </dl>
+</div>
+</body>
+
+</html>

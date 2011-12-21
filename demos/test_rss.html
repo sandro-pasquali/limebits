@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title></title>
+  <script type="text/javascript" src="!lime/root/library/limebits/latest/axis/AXIS.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
+  <script type="text/javascript">
+  
+var RSS = {
+feeds: []
+};
+
+$(document).ready(function() {
+
+  $('.bits_rss').each(function(i) {
+    var eurl = $(this).attr('rel');
+    var eid = $(this).attr('id');
+    RSS.feeds[i] = eid;
+  
+    RSS['feed' + i] = function(json) {
+      json = eval(json);
+      this.evaluatedJSON = eval(json);
+      console.log(this.evaluatedJSON);
+      
+      var myRSSFeed = document.getElementById(RSS.feeds[i]);
+      var newElement, titleItem, timeItem, titleText, timeText;
+      var items = json.query.results.item;
+      for(var a=0; a < items.length; a++) {
+        newElement = document.createElement('div');
+        newElement.setAttribute('class','entry');
+        titleItem = document.createElement('div');
+        titleItem.setAttribute('class','titleStyle');
+        timeItem = document.createElement('div');
+        
+        timeItem.onclick = function(){
+          alert(this.innerHTML);
+        }
+      
+        timeItem.setAttribute('class','timeStyle');
+        titleText = document.createTextNode(items[a]['title']);
+        timeText = document.createTextNode(items[a].pubDate);
+        titleItem.appendChild(titleText);
+        timeItem.appendChild(timeText);
+        newElement.appendChild(titleItem);
+        newElement.appendChild(timeItem);
+        myRSSFeed.appendChild(newElement);
+      }
+    }
+
+    var url = "http://query.yahooapis.com/v1/public/yql?q=select * from rss where url='" + eurl + "'&format=json&callback=RSS.feed" + i;
+
+    console.log(url);
+      AXIS.includeScript({
+      src: url
+    });
+  }); 
+});
+  
+  </script>
+</head>
+<body>
+
+<div class="col">
+<div class="blogheader">Cho-tabetai</div>
+<div class="bits_rss"
+id="cho_rss_feed"
+rel="http://cho-tabetai.com/?feed=rss2"></div>
+</div>
+
+
+<div class="col">
+<div class="blogheader">Nytimes</div>
+<div class="bits_rss"
+id="nytimes_rss_feed"
+rel="http://feeds.nytimes.com/nyt/rss/HomePage"></div>
+</div>
+
+</body>
+</html>

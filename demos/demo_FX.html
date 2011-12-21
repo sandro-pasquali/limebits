@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title></title>
+    
+<style type="text/css">
+#box {
+	width:100px;
+	height:100px;
+	border:1px solid black;
+	position:absolute;
+	left:100px;
+	top:100px;
+	background-color:#FF0000;
+}
+
+.test {
+	width:100px;
+	height:100px;
+	border:1px solid black;
+	position:absolute;
+	left:100px;
+	top:100px;
+	background-color:#FF0000;
+}
+
+.test2 {
+	width:100px;
+	height:100px;
+	border:1px solid black;
+	position:absolute;
+	left:100px;
+	top:100px;
+	background-color:#FF0000;
+}
+
+#s0 {
+  left: 200px; 
+}
+
+#s1 {
+  left: 300px; 
+}
+
+#s2 {
+  left: 400px; 
+}
+
+#stest0 {
+  left: 600px;
+}
+
+#stest1 {
+  left: 700px;
+}
+</style>
+    
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Errors" 
+  libraries="FX+selector_lite+array+string" 
+></script>
+
+<script>
+
+function rand(min,max){
+	return Math.round(min+(Math.random()*(max-min)));
+};
+
+var easing = ['linear', 'easeIn', 'easeOut', 'easeInOut', 'bounceIn', 'backIn', 'elasticIn', 'elasticOut', 'elasticBoth',
+			  'backOut', 'backBoth', 'bounceOut', 'bounceBoth', 'circIn', 'circOut', 'circInOut', 'expoIn', 'expoOut', 'expoInOut',
+			  'quintIn', 'quintOut', 'quintInOut', 'quartIn', 'quartOut', 'quartInOut', 'cubicIn', 'cubicOut', 'cubicInOut',
+			  'quadIn', 'quadOut', 'quadInOut'];
+
+function animate(){  
+
+	AXIS
+	  .select('.test')
+  	  .FX
+  	    .add({
+    		  top: {to: rand(0, 300)},
+    		  left: {to: rand(0, 40), units: 'ex'},
+    		  width: {to: rand(10, 40), units: 'em'}, 
+    		  height: {to: rand(10, 60), units: '%'},
+    		  backgroundColor: {to: "rgb("+rand(0, 255)+", "+rand(0, 255)+", "+rand(0, 255)+")"}
+    	  }, 1, easing[rand(0, easing.length - 1)])
+  	    .start(0)
+  	    .start(1).store('sandro')
+  	    .scope(['a','b','c',['d','e','f'],'g'])
+  	      .shuffle(1)
+  	        .store('sandro','second')
+  	      .stringify()
+  	        .store('sandro','third')
+  	      .STRING
+  	        .reverse()
+  	    .select('.test2')
+  	      .FX
+            .add({
+              width: {to: rand(10, 40), units: 'em'}
+            }, 1, easing[rand(0, easing.length - 1)])
+        	  .start()
+    	    .select('.test2')
+            .add({
+              height: {to: rand(10, 20), units: 'em'}
+            }, 2, easing[rand(0, easing.length - 1)])
+            
+        	  .$if(false, function() {
+        	    return typeof this === 'blslk';
+        	  })
+      	      .start(0)
+      	      
+      	    .$elsif(false, function() {
+        	    return typeof this === 'blslk';
+        	  })
+        	  
+      	      .start(1)
+      	      
+      	    .$endif()
+      	    
+      	  .STRING
+      	    .scope('blahblah')
+      	    .reverse()
+      	      .scope('shabs')
+      	      .reverse()
+      	      .store('haha') 
+  	  
+console.log($AXIS.sandro.$.length);
+console.log('ss: ' + $AXIS.sandro.second);
+console.log('ts: ' + $AXIS.sandro.third);
+console.log($AXIS.haha.$);
+	
+}
+</script>
+
+    
+</head>
+<body>
+
+<button onclick="animate()">Go</button>
+
+<div id="box"></div>
+
+<div id="s0" class="test"></div>
+<div id="s1" class="test"></div>
+<div id="s2" class="test"></div>
+
+<div id="stest0" class="test2"></div>
+<div id="stest1" class="test2"></div>
+
+</body>
+</html>

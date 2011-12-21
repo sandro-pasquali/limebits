@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  libraries="selector" 
+  extensions="Errors+EventsPlus+Keyboard"
+></script>
+<script type="text/javascript">
+
+AXIS.onDOMReady.subscribe({
+  callback: function() { 
+    var q, i;
+    var e = AXIS.find('targetD');
+    
+    for(var t=0; t < 1000; t++)
+      {
+        AXIS.Element.create('div', {
+          'id':           'sandro' + t,
+          'selectable':   t % 2 ? 'false' : 'true',
+          'draggable':    'true',
+          'html':         'sandro' + t + '<<'
+        });
+      }
+
+    AXIS.EventsPlus.observe({
+      selector:   'div[id^="sandro"]',
+      event:      'mouseover mouseout',
+      handler:    function(e)
+        {
+          switch(e.eventType)
+            {
+              case 'mouseover':
+                e.el.style.border = '1px blue solid';
+              break;
+              
+              case 'mouseout':
+                e.el.style.border = '';
+              break;
+              
+              default:
+              break;
+            }
+        }   
+    });
+  }
+});
+
+</script>
+
+</head>
+
+<body>
+
+<div id="targetD"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+{
+  "init": "init.js",
+  
+  "css":  [
+    "css/style.css"
+  ]
+}

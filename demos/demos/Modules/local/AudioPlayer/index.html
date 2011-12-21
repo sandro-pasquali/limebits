@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  extensions="Modules+Errors"
+></script>
+<script type="text/javascript">
+AXIS.Modules.load({
+  provider:   'local',
+  module:     'AudioPlayer',
+  options:    
+    {
+      width: 400
+    },
+  onload:     function(ob)
+    {      
+      ob.embed({
+        DOMId:      "audioplayer_1",
+        soundFile:  "http://mirrors.creativecommons.org/ccmixter/contrib/Wired/Le%20Tigre%20-%20Fake%20French.mp3"
+      }); 
+      
+      ob.embed({
+        DOMId:      "audioplayer_2",
+        soundFile:  "http://mirrors.creativecommons.org/ccmixter/contrib/Wired/Le%20Tigre%20-%20Fake%20French.mp3",
+        width:      500,
+        volslider: 'ff0000',
+        autostart: 'yes',
+        loop:      'yes',
+        titles:    'Le Tigre: Fake French'
+      }); 
+    }
+});  
+</script>
+
+
+</head>
+
+<body>
+
+<p id="audioplayer_1">Alternative content</p><br />
+<p id="audioplayer_2">Alternative content</p>  
+
+</body>
+
+</html>

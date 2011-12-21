@@ -1,0 +1,7 @@
+{
+  "js": [         
+    "audio-player.js"
+  ],
+
+  "init": "init.js"
+}

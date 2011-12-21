@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Errors+Data" 
+  libraries="array"
+></script>
+<script type="text/javascript">
+    
+ 		var tab = AXIS.Data.createTable({
+			name: 'testTable',
+			autoinc: true,
+			primary: 'first',
+			fields: [
+			          {
+			            name: 'one'
+			          },
+			          {
+			            name:'two'
+			          },
+			          {
+			            name:'three', 
+			            regex:'integer'
+			          },
+			          {
+			            name:'four', 
+			            regex:'integer'
+			          }
+		          ],
+			manifest: {
+			            class:          'DAV-RESPONSE',
+			            constructedBy:  'AXIS#functionName',
+			            href:           'http://sandro.sandro-dav.limewire.com:8080',
+			            displayName:    'sandro'
+			          }
+		});
+
+    tab.insertRecord([{
+    	first: 'x0',
+    	one: 'x1',
+    	two: 'x2',
+    	three: 5,
+    	four: 5
+    },
+    {
+    	first: 'b0',
+    	one: 'b1',
+    	two: 'b2',
+    	three: 6,
+    	four:  7
+    },
+    {
+    	first: 'c0',
+    	one: 'c1',
+    	two: 'c2',
+    	three: 4,
+    	four: 4
+    }]);
+    
+    tab.insertRecord({
+    	first: 'a0',
+    	one: 'a1',
+    	two: 'a2',
+    	three: 4,
+    	four: 4
+    },1);
+    
+  tab.deleteRecord(1);
+   
+    tab.insertRecord({
+    	first: 's0',
+    	one: 's1',
+    	two: 's2',
+    	three: 44,
+    	four: 466
+    },1);
+   
+  console.log(tab); 
+   
+  AXIS
+    .scope(tab.getAllRecords())
+    .stringify(true); 
+  //alert(AXIS.$);
+    
+    AXIS
+      .scope(tab.getAllRecords())
+      .stringify(true);
+    
+    alert('starting table: ' + AXIS.$);
+    
+    tab.addField({name: 'newfield',regex: 'varchar'});
+    
+    AXIS
+      .scope(tab.getAllRecords())
+      .stringify(true);
+    alert('presort: ' + AXIS.$);
+    
+    var ss = tab.sort({three:1,first:1});
+    
+    AXIS
+      .scope(ss)
+      .stringify(true);
+    alert('sorted: ' + AXIS.$);
+
+  //alert(tab.deleteField('one'));
+  
+  AXIS
+    .scope(tab.getAllRecords())
+    .stringify(true); 
+  //alert(AXIS.$);
+  
+  
+	AXIS
+	  .scope(tab.getFields())
+	  .stringify(true);
+	//alert(AXIS.$);
+   
+   //var st = 'one:c1&two:c2|four>three|three>four|three=four|three:four';
+   
+   
+   var st = {
+    AND:  [
+      [
+        'one',
+        'c1',
+        ':'
+      ],
+      [
+        'two',
+        'c2',
+        ':'
+      ]
+    ],
+    OR: [
+      [
+        'four',
+        'three',
+        '>'
+      ],
+      [
+        'three',
+        'four',
+        '>'
+      ],
+      [
+        'three',
+        'four',
+        '='
+      ],
+      [
+        'three',
+        'four',
+        ':'
+      ]
+    ]
+  };
+  
+  
+  var srch = tab.search(st);
+  
+	AXIS
+	  .scope(srch)
+		.stringify(true);
+	alert('searching: ' + AXIS.$);
+   
+  var q = tab.deleteRecord(st);
+	  
+	//alert(tab.deleteRecord(1));
+
+
+AXIS
+  .scope(tab.getAllRecords())
+  .stringify(true);
+//lert(AXIS.$);
+
+
+</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

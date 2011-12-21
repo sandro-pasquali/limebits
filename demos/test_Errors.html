@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js"
+  extensions="Errors"
+></script>
+
+<script type="text/javascript">
+/*
+function DAVException(message)
+  {
+   this.message=message;
+   this.name="UserException";
+   
+   alert(this.message);
+  }
+
+function XHRException(message)
+{
+ this.message=message;
+ this.name="UserException";
+ 
+ alert(this.message);
+}
+*/
+
+/*
+// Make the exception convert to a pretty string when used as
+// a string (e.g. by the error console)
+XHRException.prototype.toString = function ()
+{
+ return this.name + ': "' + this.message + '"';
+}
+*/
+    AXIS.Errors.onXHRException.subscribe({
+      callback: function(r) {
+        console.log(r);
+      }
+    });
+
+try 
+  {
+    AXIS.Errors._reportingLevel = 20;
+/*
+    //throw new TypeError('hi');
+    // Create an instance of the object type and throw it
+    throw new AXIS.Errors.XHRException([
+      "Value too high",
+      "Probably bad arguments",
+      "Make sure you send an object."
+    ]);
+*/
+throw new AXIS.Errors.XHRException('AXIS_REG_FAIL~~sandro');    
+  } 
+catch(e) 
+  {
+    if(e instanceof AXIS.Errors.DAVException)
+      {
+          e.report();
+      }
+    if(e instanceof AXIS.Errors.XHRException)
+      {
+          e.report();
+      }
+  } 
+
+</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

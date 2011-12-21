@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../'
+       	          }
+      });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>Appendix -- <abbr>HTTP</abbr> Status Codes</h1>
+</div>
+
+<ul>
+  <li>
+    <h3>100</h3>
+    Continue.
+  </li>
+  <li>
+    <h3>102</h3>
+    Processing (<abbr>WebDAV</abbr>) (<abbr><abbr>RFC</abbr></abbr> 2518). 
+  </li>
+  <li>
+    <h3>200</h3>
+    OK.
+  </li>
+  <li>
+    <h3>201</h3>
+    Created.
+  </li>
+  <li>
+    <h3>202</h3>
+    Accepted.
+  </li>
+  <li>
+    <h3>203</h3>
+    Non-Authoritative Information (since <abbr>HTTP</abbr>/1.1).
+  </li>
+  <li>
+    <h3>204</h3>
+    No Content.
+  </li>
+  <li>
+    <h3>205</h3>
+    Reset Content.
+  </li>
+  <li>
+    <h3>206</h3>
+    Partial Content.
+  </li>
+  <li>
+    <h3>207</h3>
+    Multi-Status (<abbr>WebDAV</abbr>).
+  </li>
+  <li>
+    <h3>208</h3>
+    Already reported.
+  </li>
+  <li>
+    <h3>300</h3>
+    Multiple Choices.
+  </li>
+  <li>
+    <h3>301</h3>
+    Moved Permanently.
+  </li>
+  <li>
+    <h3>302</h3>
+    Found.
+  </li>
+  <li>
+    <h3>303</h3>
+    See Other (since <abbr>HTTP</abbr>/1.1).
+  </li>
+  <li>
+    <h3>304</h3>
+    Not Modified.
+  </li>
+  <li>
+    <h3>305</h3>
+    Use Proxy (since <abbr>HTTP</abbr>/1.1).
+  </li>
+  <li>
+    <h3>307</h3>
+    Temporary Redirect (since <abbr>HTTP</abbr>/1.1).
+  </li>
+  <li>
+    <h3>400</h3>
+    Bad Request.
+  </li>
+  <li>
+    <h3>401</h3>
+    Unauthorized.
+  </li>
+  <li>
+    <h3>402</h3>
+    Payment Required.
+  </li>
+  <li>
+    <h3>403</h3>
+    Forbidden -- Note Opera will often return this instead of 401.
+  </li>
+  <li>
+    <h3>404</h3>
+    Not Found.
+  </li>
+  <li>
+    <h3>405</h3>
+    Method Not Allowed.
+  </li>
+  <li>
+    <h3>406</h3>
+    Not Acceptable.
+  </li>
+  <li>
+    <h3>407</h3>
+    Proxy Authentication Required.
+  </li>
+  <li>
+    <h3>408</h3>
+    Request Timeout.
+  </li>
+  <li>
+    <h3>409</h3>
+    Conflict.
+  </li>
+  <li>
+    <h3>410</h3>
+    Gone.
+  </li>
+  <li>
+    <h3>411</h3>
+    Length Required.
+  </li>
+  <li>
+    <h3>412</h3>
+    Precondition Failed.
+  </li>
+  <li>
+    <h3>413</h3>
+    Request Entity Too Large.
+  </li>
+  <li>
+    <h3>414</h3>
+    Request-URI Too Long.
+  </li>
+  <li>
+    <h3>415</h3>
+    Unsupported Media Type.
+  </li>
+  <li>
+    <h3>416</h3>
+    Requested Range Not Satisfiable.
+  </li>
+  <li>
+    <h3>417</h3>
+    Expectation Failed.
+  </li>
+  <li>
+    <h3>422</h3>
+    Unprocessable Entity (<abbr>WebDAV</abbr>) (<abbr>RFC</abbr> 4918).
+  </li>
+  <li>
+    <h3>423</h3>
+    Locked (<abbr>WebDAV</abbr>) (<abbr>RFC</abbr> 4918).
+  </li>
+  <li>
+    <h3>424</h3>
+    Failed Dependency (<abbr>WebDAV</abbr>) (<abbr>RFC</abbr> 4918).
+  </li>
+  <li>
+    <h3>426</h3>
+    Upgrade Required (<abbr>RFC</abbr> 2817).
+  </li>
+  <li>
+    <h3>449</h3>
+    Retry With.
+  </li>
+  <li>
+    <h3>500</h3>
+    Internal Server Error.
+  </li>
+  <li>
+    <h3>501</h3>
+    Not Implemented.
+  </li>
+  <li>
+    <h3>502</h3>
+    Bad Gateway.
+  </li>
+  <li>
+    <h3>503</h3>
+    Service Unavailable.
+  </li>
+  <li>
+    <h3>504</h3>
+    Gateway Timeout.
+  </li>
+  <li>
+    <h3>505</h3>
+    <abbr>HTTP</abbr> Version Not Supported.
+  </li>
+  <li>
+    <h3>506</h3>
+    Loop detected (Bind Draft).
+  </li>
+  <li>
+    <h3>507</h3>
+    Insufficient Storage (<abbr>WebDAV</abbr>) (<abbr>RFC</abbr> 4918).
+  </li>
+  <li>
+    <h3>509</h3>
+    Bandwidth Limit Exceeded.
+  </li>
+  <li>
+    <h3>510</h3>
+    Not Extended (<abbr>RFC</abbr> 2774).
+  </li>
+</ul>
+
+
+</body>
+</html>

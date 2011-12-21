@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<title></title>
+		<script language="javascript" src="rss.js"></script>
+		<script language="javascript">
+			window.onload = function()
+			{
+				ReadRSS('cnn_tech_rss.xml','rssBodyTemplate','rssTitleTemplate');
+			}
+		</script>
+	</head>
+	<body>
+	<div id="rssTitleTemplate">
+
+		(::Title::)<br/>
+		<a href="(::Link::)"><h1>(::Description::)</h1></a>
+	</div>
+	<div id="rssBodyTemplate">
+		<a href="(::Link::)"><b>(::Title::)</b></a> 
+		<b>(::Pubdate::)</b>
+		<br/>
+
+		<font size="-1">(::Description::)</font>
+		<hr noshade/>
+		<br/>
+	</div>
+	</body>
+</html>

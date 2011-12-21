@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title></title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Modules+Errors" 
+></script>
+
+<script type="text/javascript">
+
+/**
+ * Only used for syntax highlighting in demo page.
+ * Not necessary for menu system.
+ */
+AXIS.Modules.load({
+  provider: 'local',
+  module:   'SyntaxHighlighter',
+  onload:   function(r)
+    {
+      r.paint();
+    }
+}); 
+
+AXIS.Modules.load({
+  provider: 'local',
+  module:   'DropDownMenu',
+  options:  {
+    /**
+     * Optional. If you set this to 'false' any <ul> element on the page with a 
+     * class of "module-dropdownmenu" will automatically be rendered.  Default
+     * is to automatically render.
+     */
+    manualLoad:   true
+  },
+  onload:   function(m) {
+    /**
+     * Again, not necessary if you don't pass any arguments; default is
+     * to automatically render menus.
+     */
+    m.start();
+  }
+});  
+  
+</script>
+
+
+</head>
+<body>
+  
+<ul class="module-dropdownmenu" id="menu">
+	<li><a href="#" class="menulink">Dropdown One</a>
+		<ul>
+			<li><a href="#">Navigation Item 1</a></li>
+			<li>
+				<a href="#" class="sub">Navigation Item 2</a>
+				<ul>
+					<li class="topline"><a href="#">Navigation Item 1</a></li>
+					<li><a href="#">Navigation Item 2</a></li>
+					<li><a href="#">Navigation Item 3</a></li>
+					<li><a href="#">Navigation Item 4</a></li>
+					<li><a href="#">Navigation Item 5</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#" class="sub">Navigation Item 3</a>
+				<ul>
+					<li class="topline"><a href="#">Navigation Item 1</a></li>
+					<li><a href="#">Navigation Item 2</a></li>
+					<li>
+						<a href="#" class="sub">Navigation Item 3</a>
+						<ul>
+							<li class="topline"><a href="#">Navigation Item 1</a></li>
+							<li><a href="#">Navigation Item 2</a></li>
+							<li><a href="#">Navigation Item 3</a></li>
+							<li><a href="#">Navigation Item 4</a></li>
+							<li><a href="#">Navigation Item 5</a></li>
+							<li><a href="#">Navigation Item 6</a></li>
+						</ul>
+					</li>
+					<li><a href="#">Navigation Item 4</a></li>
+				</ul>
+			</li>
+			<li><a href="#">Navigation Item 4</a></li>
+			<li><a href="#">Navigation Item 5</a></li>
+		</ul>
+	</li>
+	<li><a href="#" class="menulink">Non-Dropdown</a></li>
+	<li>
+		<a href="#" class="menulink">Dropdown Two</a>
+		<ul>
+			<li><a href="#">Navigation Item 1</a></li>
+			<li>
+				<a href="#" class="sub">Navigation Item 2</a>
+				<ul>
+					<li class="topline"><a href="#">Navigation Item 1</a></li>
+					<li><a href="#">Navigation Item 2</a></li>
+					<li><a href="#">Navigation Item 3</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="#" class="menulink">Dropdown Three</a>
+		<ul>
+			<li><a href="#">Navigation Item 1</a></li>
+			<li><a href="#">Navigation Item 2</a></li>
+			<li><a href="#">Navigation Item 3</a></li>
+			<li><a href="#">Navigation Item 4</a></li>
+			<li><a href="#">Navigation Item 5</a></li>
+			<li>
+				<a href="#" class="sub">Navigation Item 6</a>
+				<ul>
+					<li class="topline"><a href="#">Navigation Item 1</a></li>
+					<li><a href="#">Navigation Item 2</a></li>
+				</ul>
+			</li>
+			<li><a href="#">Navigation Item 7</a></li>
+			<li><a href="#">Navigation Item 8</a></li>
+			<li><a href="#">Navigation Item 9</a></li>
+			<li><a href="#">Navigation Item 10</a></li>
+		</ul>
+	</li>
+</ul>
+
+<br style="clear: both;" />
+
+<pre class="brush: html">
+  Any &lt;ul> structure with a class of "module-dropdownmenu" will render as a drop-down menu.
+  
+  For example, the menu below is rendered using this html.
+
+  &lt;ul class="module-dropdownmenu" id="menu2">
+  	&lt;li>&lt;a href="#" class="menulink">Sample Menu&lt;/a>
+  		&lt;ul>
+  			&lt;li>&lt;a href="#">Chrysler&lt;/a>&lt;/li>
+  			&lt;li>
+  				&lt;a href="#" class="sub">Ford&lt;/a>
+  				&lt;ul>
+  					&lt;li class="topline">&lt;a href="#">Azure&lt;/a>&lt;/li>
+  					&lt;li>&lt;a href="#">Adventure&lt;/a>&lt;/li>
+  					&lt;li>&lt;a href="#">Aspire&lt;/a>&lt;/li>
+  					&lt;li>&lt;a href="#">Assault&lt;/a>&lt;/li>
+  					&lt;li>&lt;a href="#">Advance&lt;/a>&lt;/li>
+  				&lt;/ul>
+  			&lt;/li>
+  			&lt;li>&lt;a href="#">Subaru&lt;/a>&lt;/li>
+  			&lt;li>&lt;a href="#">Aston Martin&lt;/a>&lt;/li>
+  		&lt;/ul>
+  	&lt;/li>
+  &lt;/ul>
+
+</pre>
+
+
+<ul class="module-dropdownmenu" id="menu2">
+	<li><a href="#" class="menulink">Sample Menu</a>
+		<ul>
+			<li><a href="#">Chrysler</a></li>
+			<li>
+				<a href="#" class="sub">Ford</a>
+				<ul>
+					<li class="topline"><a href="#">Azure</a></li>
+					<li><a href="#">Adventure</a></li>
+					<li><a href="#">Aspire</a></li>
+					<li><a href="#">Assault</a></li>
+					<li><a href="#">Advance</a></li>
+				</ul>
+			</li>
+			<li><a href="#">Subaru</a></li>
+			<li><a href="#">Aston Martin</a></li>
+		</ul>
+	</li>
+</ul>
+
+</body>
+</html>

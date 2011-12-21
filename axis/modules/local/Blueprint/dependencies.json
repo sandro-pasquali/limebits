@@ -1,0 +1,12 @@
+{
+  "css": [         
+    "css/screen.css?media=screen,projection",
+    "css/print.css?media=print",
+    "css/ie.css?ieonly=true&media=screen,projection",
+    "css/plugins/fancy-type/screen.css?media=screen,projection"
+  ],
+
+  "init": "init.js"
+}
+
+          

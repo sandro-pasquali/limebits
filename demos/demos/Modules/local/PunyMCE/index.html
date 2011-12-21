@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  extensions="Modules+Errors" 
+></script>
+<script type="text/javascript">
+
+AXIS.Modules.load({
+  provider:   'local',
+  module:     'PunyMCE',
+  options:    {},
+  onload:     function(ob) {      
+    $AXIS.Modules.local.PunyMCE.create({
+      id: 'content1'
+    });
+  }
+});  
+
+</script>
+
+</head>
+<body>
+
+	<textarea id="content1" name="content1" style="width:320px;height:70px">
+		Some basic &lt;strong&gt;contents&lt;/strong&gt;. :)
+	</textarea>
+
+
+
+
+</body>
+</html>

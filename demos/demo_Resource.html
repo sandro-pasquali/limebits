@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Errors" 
+  libraries="resource"
+></script>
+<script type="text/javascript">
+
+AXIS
+  .scope($AXIS.Resource({
+    url: 'tester.html',
+    autolock: true,
+    modules:  {
+      'versioning': {
+        operatingNode:  'xxx',
+        api:            {} // or new Func(), etc. -- or simply a file include?
+      }
+    }
+  }))
+  .RESOURCE
+    .removeAce()  
+    .changeAce() 
+     
+    .addAce({
+      grant:     false,
+      principal: {
+        name:   'chetan'
+      },
+      privileges: ['write-acl','read-acl','read','write']
+    })
+    
+    .addAce({
+      grant:    true,
+      principal: {
+        name:   'tim'
+      },
+      privileges: 'all'
+    })
+    
+    .addAce({
+      grant:    true,
+      principal: {
+        type:   'property',
+        name:   'owner'
+      },
+      privileges: 'read'
+    })
+    
+    .getAceIndex({
+      grant:    true,
+      principal: {
+        name:   'tim'
+      }
+    }).store('resource','aceIndex')
+    
+    .restore()
+    
+    .$if(AXIS.isNumber($AXIS.resource.aceIndex))
+      .removeAce($AXIS.resource.aceIndex)
+    .$endif()
+
+    .addAce({
+      grant:      true,
+      principal: {
+        type:   'principal',
+        name:   'all'
+      },
+      privileges: 'read',
+      idx:        1
+    })
+    
+    /**
+     * Create recognized-principal error
+    .addAce({
+      grant:    false,
+      principal: {
+        type:   'user',
+        name:   'sandrodo'
+      },
+      privileges: 'read'
+    })
+    */
+    
+    /**
+     * Create no-ace-conflict error
+ 
+    .addAce({   
+      grant:      false,
+      principal:  {
+        type:   'user',
+        name:   'tim'  
+      },
+      privileges: 'all'
+    })
+    */
+    
+    /**
+     * Create no-protected-ace-conflict error
+    .addAce({   
+      grant:      false,
+      principal:  {
+        type:   'property',
+        name:   'owner'  
+      },
+      privileges: 'all'
+    })
+    */
+
+    
+    .commitAclChanges();
+    
+    
+    console.log('aceIndex: ' + $AXIS.resource.aceIndex);
+</script>
+</head>
+
+<body>
+</body>
+
+</html>

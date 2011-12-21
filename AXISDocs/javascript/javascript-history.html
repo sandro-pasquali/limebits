@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+      libraries="selector_lite+array"
+    ></script>
+    <script type="text/javascript">
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	version:  '1',
+       	options:  {
+       	            rootPath: '../',
+         	          groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+      
+      AXIS.Modules.load({
+        provider: 'local',
+        module:   'SyntaxHighlighter',
+        version:  '1'
+      });
+      
+    </script>
+    
+  </head>
+<body>
+<div id="TOC_BAR"></div>
+<div id="header">
+  <h1>Javascript: A History</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    Javascript is the most popular programming language in use today.  This popularity has nothing to do with the superiority of Javascript as a programming language. Javascript is the scripting language natively supported by all browsers, and as such is the language used to create the more advanced functionality and visual effects which anyone who visits a modern website enjoys. As the number of websites grows the number of applications written using Javascript grows, and this means more jobs for those who know Javascript.  If you are building websites, you <i>must</i> be aware of how Javascript works.
+  </p>  
+</div>
+
+<h2>The Start of a Revolution</h2>
+
+<p>
+  In early 1995 Brendan Eich was hired by the Netscape Corportation to design a simple scripting language which would assist non-programmers in using Netscape Navigator's newly added support for Java applets.  As one person put it:
+  <div class="quoteblock">
+    <div class="content">
+      <q>Brendan Eich convinced his pointy-haired boss at Netscape that the Navigator browser should have its own scripting language, and that only a new language would do, a new language designed and implemented in big hurry, and that no existing language should be considered for that role.</q>
+  
+    </div>
+    <div class="attribution">
+      &#8212; <em>Douglas Crockford</em>, Senior Javascript architect, Yahoo
+    </div>
+  </div>
+</p>
+
+<p>
+  The language he created was initally named "Livescript".  This was later changed to "Javascript", a marketing mistake that saddled the language with a fully mistaken association to Java, and with comparisons to that language and other "serious" languages along its functionality and design.  All of this confusion kept Javascript in the "toy language" category for quite some time, even as its use steadily grew, at first in providing simple dynamic effects for webpages (image rollovers on mouse events), and later as the gateway to creating full-blown applications in a browser.
+</p>
+
+<h2>Enter Redmond</h2>
+
+<p>
+  Somewhere around this time Microsoft had decided to enter the browser game, and it too created a scripting language for their upcoming browser, IE3.  Microsoft created the VBScript language (which hooked into embeddable components on Windows platforms) and a port of Javascript, "JScript".  They then released their IE3 browser, which notably was the first browser to offer support for <abbr>CSS</abbr> (Cascading Style Sheets).  The incompatibility between IE3 and Netscape Navigator in their implementation of Javascript was aggravated with the release 4.0 browser generation, in which both manufacturers created completely proprietary document object models (<abbr>DOM</abbr>). Thus began the storied "browser wars".
+</p>
+
+<h2>One Step Forward, Two Steps Back</h2>
+
+<p>
+  As developers began to find, fix, and work around the bugs, security flaws, and incompatabilities between the browsers, the Internet took off.  While various individuals, companies, and consortiums were working to standardize Javascript and the <abbr>DOM</abbr>, very real people were already spending very real money fueling Web 1.0.  Developers struggled to create libraries which tried to smoothed the differences between browsers.  The difficulty of doing so, aggravated by the constantly changing implementations the <abbr>DOM</abbr> and Javascript itself, resulted in either single-browser specific websites, or in a general avoidance of any fancy scripting in the websites which were gaining huge numbers of new users and traffic.  New technologies came into the picture aimed at providing a standard and easy way to create dynamic websites, and the one technology that rose to prominence in this time was Macromedia Flash.  Dynamic <abbr>HTML</abbr> websites, created by using Javascript to manipulate the still-flaky <abbr>DOM</abbr>, continued to be produced and their potential was clear, but the difficulty of implementing stable solutions which always worked across all browsers held back real developments in the field.
+</p>
+
+<h2>AJAX</h2>
+
+<p>
+Between 2000 and 2005 some successes were seen for companies which managed to build rather dynamic and powerful applications which worked in browsers.  However, it was with the coining of the term <abbr>AJAX</abbr> by Jesse James Garrett that the current and lively interest in browser-based application development flourished (<a href="http://www.adaptivepath.com/ideas/essays/archives/000385.php">Ajax: A New Approach to Web Applications</a>). Sometimes all that you need is a name.
+</p>
+
+</body>
+</html>

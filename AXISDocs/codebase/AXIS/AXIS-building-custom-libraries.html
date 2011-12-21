@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../../',
+       	            groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - Custom Libraries</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    The AXIS is designed to be customizable.  You can write <a href="../AXIS/AXIS-extensions.html">extensions</a> to add collections of useful methods around a specific behaviour.  However, you might want to simply add a collection of useful functions on a per-page basis that have little to do with the AXIS in particular, but would like to take advantage of its functionality.  As well, you'd like to not pollute the global namespace by just dumping a bunch of functions on the page.  You might even want to have these methods chainable.
+  </p>
+  <p>
+    The AXIS provides you with a very powerful dynamic library creation system.  It lets you extend the AXIS without have to create a formal extension object.  It also provides a mechanism for you to make all your library methods chainable.
+  </p>
+</div>
+
+<h2>An Example</h2>
+<p>
+  One library that the AXIS provides is the `array` library.  This library provides a number of useful array manipulation functions.  Because they are chainable, you can eaily perform rather robust transformations on a given array.  Loading this library is done via the `libraries` attribute of the script tag which loads the AXIS:
+</p>
+<pre class="brush: xml">
+&lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  libraries="array"
+>&lt;/script>
+</pre>
+<p>
+  You now have extended the AXIS with the array library.  Here's some sample code that you can now write:
+</p>
+<pre class="brush: js">
+var a = [
+  'one',
+  'two',
+  'three'
+];
+
+AXIS
+  .scope(a)
+  .shuffle()
+  .foreach(function(t) {
+    console.log(t);
+  });
+
+// two, one, three (or similar)
+</pre>
+<p>
+  As you are able to write any number of library methods, which can operate in any scope, the AXIS provides you with a nearly endless flexibility for designing the codebase for your applications  
+</p>
+
+<h2>Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <a id="method_scope"></a>
+      <h4>scope
+        <ul>
+          <li>
+            <dfn>Mixed</dfn> Any type of object.
+          </li>
+        </ul>
+      </h4>
+    </dt>
+    <dd>
+      <p>
+        The AXIS#scope method will accept <b>any</b> value and execute all future chain calls within that scope.  In the example above, an array was set as the chain scope, and all further functions manipulated that array. You can see that the #scope method is the core starting point for your library.
+      </p>
+    </dd>
+    
+    <dt>
+      <a id="method_extend"></a>
+      <h4>extend
+        <ul>
+          <li>
+            <dfn>String</dfn> The name of the method. Cannot begin with dollar sign `$`.
+          </li>
+          <li>
+            <dfn>Function</dfn> The function bound to #name.
+          </li>
+        </ul>
+      </h4>
+    </dt>
+    <dd>
+      <p>
+        Use #extend to create new AXIS methods. You can use any name, but it must be unique -- passing a name that already exists will throw a warning.  
+      </p>
+      <pre class="brush: js">
+      AXIS.extend('foreach', function(func) {
+        for(var i=0; i < this.length; i++) {
+          this[i] = func(this[i]);
+        }
+        
+        return this;
+      });
+      </pre>
+    </dd>
+
+    <dt>
+      <a id="method_store"></a>
+      <h4>store
+        <ul>
+          <li>
+            <dfn>String</dfn> The name to store the current scope value under.
+          </li>
+          <li>
+            <dfn class="optional">Boolean</dfn> Whether to make this storage name an array.  If made an array, all future #store calls with given name will extend that array.
+          </li>
+        </ul>
+      </h4>
+    </dt>
+    <dd>
+      <p>
+        As you move down a chain, you may want to store current scope value for later, allowing normal chain flow to continue.  This allows you a lot of freedom when defining chains.
+      </p>
+      <pre class="brush: js">
+      AXIS
+        .scope([1,2,3])
+        .filter(function(f) {
+          return f < 3
+        })
+        .store('firstResult')
+        .filter(function(f) {
+          return f < 2
+        })
+        .store('secondResult')
+        
+      // [2,1]
+      // [1]
+      console.log($AXIS.firstResult.$);
+      console.log($AXIS.secondResult.$);
+      </pre>
+    </dd>
+    
+  </dl>
+</div>
+
+<h2>Writing Methods</h2>
+<p>
+  Here is the #foreach method defininition in the `array` library, and how it is called:
+</p>
+<pre class="brush: js">
+  
+AXIS.extend('foreach', function(func) {
+  for(var i=0; i < this.length; i++) {
+    this[i] = func(this[i]);
+  }
+  
+  return this;
+});
+
+...
+.foreach(function() {
+  // do something
+}
+
+</pre>
+<p>
+  The most important thing to note when defining methods is to always return some sort of value, ideally `this`.
+</p>
+</body>
+
+</html>

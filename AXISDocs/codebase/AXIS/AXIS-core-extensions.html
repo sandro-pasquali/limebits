@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../../',
+       	            groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+            
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - Core Extensions</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    When the AXIS is loaded is automatically loads certain extensions.  These extensions provide key functionality, such as Login control, Cookie management, and <abbr>XHR</abbr> requests. This is a (very)brief overview of these core extensions, with very basic examples of use.  Individual extensions are discussed in their own sections.  All core extensions are accessible via AXIS.[], such as AXIS.Cookies.
+  </p>
+</div>
+
+<h2>Cookies</h2>
+<p>
+  Standard methods for managing cookies.
+</p>
+<pre class="brush: js">
+AXIS.Cookies.create("myCookie","foo");
+AXIS.Cookies.erase("myCookie");
+</pre>
+
+<h2>User</h2>
+<p>
+  Methods for getting current user information.  This mostly has to do with user's authenticated state.
+</p>
+<pre class="brush: js">
+// Check(bool) if user is logged in.
+AXIS.User.isLoggedIn(); 
+</pre>
+
+<h2>Loader</h2>
+<p>
+  The Loader object manages <abbr>XHR</abbr> calls.  It does useful things like ensuring the integrity of requests, notifying the viewer of load states, and so forth.  It does <i>not</i> do the actual loading, which is left to the AXIS.XHR object.
+</p>
+<pre class="brush: js">
+// GET a file
+AXIS.Loader.load({
+  method: 'GET',
+  url:    'http://www.google.com'
+});
+</pre>
+
+<h2>XMLHTTP</h2>
+<p>
+  The XMLHTTP object is the "engine" which handles <abbr>XHR</abbr> calls.   It should not be used directly; you should always use the call <abbr>API</abbr> provided by either the AXIS.Loader or AXIS.WebDAV.  It is useful to investigate the code, however, to see how these sorts of requests happen and are handled.
+</p>
+
+<h2><abbr>WebDAV</abbr></h2>
+<p>
+  The <abbr>WebDAV</abbr> object provides an <abbr>API</abbr> allowing the developer to make <abbr>WebDAV</abbr> calls.
+</p>
+<pre class="brush: js">
+AXIS.WebDAV.MKCOL({
+  url:          'newfolder/',
+  callback:     function(r) {
+    alert('folder created');
+  }
+});
+</pre>
+
+<h2>Login</h2>
+<p>
+  This object manages the users authentication state. Login is automatic, so this object is only really used internally by the AXIS.
+</p>
+
+<div id="furtherReading"></div>
+
+</body>
+
+</html>

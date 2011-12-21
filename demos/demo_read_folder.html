@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js"></script>
+<script type="text/javascript">
+AXIS.WebDAV.readFolder({
+    url:      'AXISDocs',
+    onSuccess: function(r)
+      {
+        alert('collection: ' + r.responseText);
+        console.log(r.folder);
+        return false;
+      }
+  });
+</script>
+</head>
+
+<body>
+</body>
+
+</html>

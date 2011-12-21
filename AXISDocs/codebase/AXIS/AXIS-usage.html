@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      arguments="noLogin+useGoogleAPI" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+       	options:  {
+       	            rootPath: '../../',
+       	            groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+    });
+    
+    </script>
+
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+  <h1>AXIS - Usage</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    The AXIS is a enterprise-level application development framework which is extremely easy to use and install.  It all starts with just a single script include.  This simple mechanism also happens to be extremely powerful.  You can easily build custom installs of the AXIS, as well as passing custom arguments available to your own code directly via the build process.
+  </p>
+</div>
+
+<h2>Getting Started</h2>
+<p>
+  To use the AXIS Framework(AXIS) include the following in the &lt;HEAD&gt; of your document:
+
+</p>
+<pre class="brush: js">
+&lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js"&gt;
+</pre>
+<p>
+  This will load the AXIS from any directory. You will never need to use another path. 
+</p>
+
+<a id="configuring"></a>
+<h2>Configuring AXIS Build</h2>
+<p>
+  There are three types of configuration options for the AXIS: <i>arguments</i>, <i>extensions</i>, and <i>libraries</i>:
+</p>
+<div class="vlist">
+  <dl>
+    <dt>
+      <h3>AXIS Native Arguments</h3>
+    </dt>
+    <dd>
+      <p>
+        These are built-in arguments you can pass to AXIS which allow you to customize the general functionality of the AXIS. For example, to turn off authentication for any page, pass the `noLogin` argument to the AXIS:
+      </p>
+      <pre class="brush: js">
+      &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      arguments="noLogin">&lt;/script>
+      </pre>
+      <dl>
+        <dt>
+          <h4>
+            <i>createGlobals</i>
+          </h4>
+        </dt>
+        <dd>
+          <p>
+            Creates a global reference to objects which extend the AXIS, preceeding the object name with `$$`.  Note that these are truly globals: they exist in the global namespace.  This may or may not be relevant to you, but keep it in mind.
+          </p>
+
+          <pre class="brush: js">
+          &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+            arguments="createGlobals" 
+            extensions="Errors+Modules">
+          
+          // These will be defined in the global namespace
+          // $$WebDAV   == AXIS.WebDAV
+          // $$Modules  == AXIS.Modules
+          
+          &lt;/script>
+          </pre>
+        </dd>
+        <dt>
+          <h4>
+            <i>showLoading</i>
+          </h4>
+        </dt>
+        <dd>
+          <p>
+            When an <abbr>XHR</abbr> request is made, either via <a href="../extensions/WebDAV.html">AXIS#WebDAV</a> or <a href="../extensions/Loader.html">AXIS#Loader</a>, a loading panel will appear indicating to the user that a request is in progress.  If not included, no such information about the loading state of the AXIS is passed on to the user.
+          </p>
+          <pre class="brush: js">
+          &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+            arguments="showLoading">&lt;/script>
+          </pre>
+        </dd>
+        
+        <dt>
+          <h4>
+            <i>noLogin</i>
+          </h4>
+        </dt>
+        <dd>
+          <p>
+            The default action for the AXIS is to check the login status of the user.  You can turn this off:
+          </p>
+          <pre class="brush: js">
+          &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+            arguments="noLogin">&lt;/script>
+          </pre>
+        </dd>
+        
+        <dt>
+          <h4>
+            <i>disableNotifications</i>
+          </h4>
+        </dt>
+        <dd>
+          <p>
+            The default action for the AXIS is to show notifications requested by a given application.  These may be error notifications, or other types of messages fired by an application.  You can turn these off:
+          </p>
+          <pre class="brush: js">
+          &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+            arguments="disableNotifications">&lt;/script>
+          </pre>
+          <p>
+            Since these notifications may often contain useful or even critical information, you should think carefully about disabling them.
+          </p>
+        </dd>
+        
+        <dt>
+          <h4>
+            <i>enableSelectorCache</i>
+          </h4>
+        </dt>
+        <dd>
+          <p>
+            The `selector` library by default operates on the current <abbr>DOM</abbr>.  That is, it does not cache the first <abbr>DOM</abbr> it sees and assume that all future <abbr>DOM</abbr>'s will be the same.  Cacheing previous selection information would speed up future selection speed, however, and there may be times where that is desirable.  You can enable cacheing by setting the `enableSelectorCache` argument. Some things to keep in mind: any changes (dynamic) to the <abbr>DOM</abbr> will break the cache.  As such, the cache-enabled selector engine will watch for <abbr>DOM</abbr> Mutation events, which will force a rebuilding of the cache when they occur.  This creates a number of subscriptions to Mutation events, and that will slow down the speed of <abbr>DOM</abbr> insertions, deletions, and so forth. If you choose to use this argument it is recommended that you do so only for <abbr>DOM</abbr>'s that do not change, or change rarely.
+          </p>
+          <pre class="brush: js">
+          &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+            arguments="enableSelectorCache" 
+            libraries="selector">&lt;/script>
+          </pre>
+        </dd>
+        
+        <dt>
+          <h4>
+            <i>useGoogleAPI</i>
+          </h4>
+        </dt>
+        <dd>
+          <p>
+          There are a number of powerful <a href="../extensions/Modules.html">AXIS#Modules</a> which make use of Google's services <abbr>API</abbr>. As well, the Google `gdata` interface is enabled in the <a href="../extensions/User.html">AXIS#User</a> extension, which allows a developer to fetch geolocation data for a user.  These features are not enabled by default, saving the cost of loading the Google <abbr>API</abbr> toolset for those who do not need it.  For those who do, simply set the `useGoogleAPI` argument for the AXIS.
+          </p>
+          <pre class="brush: js">
+          &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+            arguments="useGoogleAPI" 
+            libraries="Modules"
+          >
+          
+          /**
+           * Load jquery via Google AJAX Libraries API
+           */
+          AXIS.Modules.load({
+           	provider: 'google',
+           	module:   'jquery',
+           	version:  '1'
+          });
+          
+          /**
+           * Get user geolocation data.  Pass a callback to fetch data.
+           * NOTE: once you have received a response from Google.gdata (you have
+           * had a callback fired at least once) it isn't necessary to call
+           * AXIS#User#getUserGeoData again (the data has been permanently stored
+           * in AXIS#User#Data)
+           */
+          AXIS.User.getUserGeoData(function() {
+            alert(AXIS.User.Data.get('city'));
+          });  
+          
+          &lt;/script>
+          </pre>
+        </dd>
+        
+      </dl>
+    </dd>
+    
+    <dt>
+      <h3>Multiple Arguments</h3>
+    </dt>
+    <dd>
+      <p>
+        Sending multiple arguments is easy.  Simply separate them with the plus sign `+`:
+      </p>
+    
+      <pre class="brush: js">
+      &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+        arguments="createGlobals+showLoading+myConstant=2+myBool=true">&lt;/script>
+      </pre>
+    </dd>
+    
+    <dt>
+      <a id="custom_arguments"></a>
+      <h3>Custom Arguments</h3>
+    </dt>
+    <dd>
+    
+      <p>
+        You can also pass your own arguments to the AXIS.  Simply add any string separated by the plus sign `+`:
+      </p>
+      <pre class="brush: js">
+      &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+        arguments="myConstant+myBool">&lt;/script>
+      </pre>  
+      <p>
+        An argument like 'myConstant' is a simple <dfn>Boolean</dfn> -- the value of AXIS.settings('myConstant') will be `true`.  You can also pass give arguments values via the equals(`=`) sign:
+      </p>
+      <pre class="brush: js">
+    
+      &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+        arguments="myConstant=20+otherValue=true">
+      
+        // will display ('20')          
+        alert(AXIS.settings('myConstant'));
+      &lt;/script>
+      </pre> 
+      <p>
+        See <a href="AXIS-general-methods.html#method_settings">AXIS#settings</a> for more on how to read argument values.
+      </p>
+    </dd>
+    
+    <dt>
+      <h3>AXIS Extensions</h3>
+    </dt>
+    <dd>
+      <p>
+        A growing repository of extensions to the AXIS is available.  These are discussed individually <a href="">here</a>.  Extensions are easy to include and use.  Including the `Events` extension would create a new set of features, available at `AXIS.Events`: 
+      </p>
+      <pre class="brush: js">
+        &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" extensions="Events">&lt;/script>
+      </pre>
+      <p>
+        To request multipe extensions, you use the `+` sign:
+      </p>
+
+      <pre class="brush: js">
+        &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+          extensions="Events+JSON+Modules+Forms">&lt;/script>
+      </pre>
+    </dd>
+    <dt>
+      <h3>Adding Libraries</h3>
+    </dt>
+    <dd>
+      <p>
+
+        Adding libraries
+      </p>
+      <pre class="brush: js">
+        &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+          libraries="selector">&lt;/script>
+      </pre>
+      <p>
+        To request multipe libraries, you use the `+` sign:
+      </p>
+      <pre class="brush: js">
+        &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+          libraries="selector+array+string">&lt;/script>
+      </pre>
+
+    </dd>
+  </dl>
+</div>
+
+</body>
+</html>

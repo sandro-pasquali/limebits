@@ -1,0 +1,10 @@
+{
+  "css": [         
+    "css/docs.css",
+    "css/print.css?media=print"
+  ],
+
+  "libraries": "selector_lite+array",
+
+  "init": "init.js"
+}

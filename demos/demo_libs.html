@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  arguments="createGlobals+showLoadingInfo+login+useGoogleAPI" 
+  libraries="selector+array+string+date+FX+Element.core+sorting" 
+  extensions="Errors+Modules"
+></script>
+<script type="text/javascript">
+
+/**
+ * Sanity... watch for selector conflicts
+ */
+AXIS.Modules.load({
+ 	provider: 'google',
+ 	module:   'jquery',
+ 	version:  '1',
+ 	onload:  function()
+ 	  {
+        $(document).ready(function(){
+          $("button:gt(1)").attr("disabled","disabled");
+        });
+ 	  }
+});
+
+
+
+
+</script>
+
+<script type="text/javascript">
+
+AXIS.onDOMReady.subscribe({
+  callback: function()
+  {
+    /*
+        var x = {sandro: 'one'};
+        alert(  AXIS
+                  .scope(['one','two','three',['a','b','c',['x','y',x]]])
+                    .contains(x)
+                  .$
+             );
+      */
+    /*
+      
+        alert(  AXIS
+                  .scope([ 'Tom', 'Dick', 'Harry', [ 'Karen', 'Laura' ], 'Mary', 7, 8, 9 ])
+                    .random(-5)
+                  .$
+             );
+     */
+     
+     /*
+        alert(  AXIS
+                  .scope([ 'Tom', 'Dick', 'Harry', [ 'Karen', 'Laura', 'John' ], 'Mary', 7, 8, 9 ])
+                    .shuffle(true)
+                  .$
+             );
+
+        alert(  AXIS
+                  .scope([ 'Tom', 'Dick', 'Harry', [ 'Karen', 'Laura', ['a','b','c'], 'John' ], 'Mary', 7, 8, ['yet','another','array','here'], 9 ])
+                    .stringify(true,'    ')
+                  .$
+             );
+     */
+
+var a = [ 'Tom', 'Dick', 'Harry', [ 'Karen', 'Laura', ['a','b','c'], 'John' ], 'Mary', 7, 8, ['yet','another','array','here'], 9 ];
+
+AXIS.extend({
+  name:       'destructor', 
+  expects:    'Array', 
+  func:       function(a) 
+    {
+      var b = AXIS.store('shaba');
+      
+      alert(this.length);
+      var a = [1,2,3];
+      AXIS
+        .scope(this)
+        .foreach(function(i) {
+          return 1; 
+        })
+      console.log(a);
+      alert(this.length);
+      return $AXIS.shaba.$;
+    }
+});
+
+AXIS
+  .scope(document.getElementById('testLogger'))
+  .$
+    .style.border = '1px red solid';
+
+        AXIS
+          .scope(a)
+                      .destructor()
+          .FX
+            .shuffle(true).store('shuffleStore')
+            .stringify(true)
+              .STRING
+                .ucfirst().store('sandro.has.a.long.namespace')
+            .contains('jah')
+            .shuffle(true)
+            .scope('sandrooooo')
+              .STRING
+                .reverse().store('some.other.namespace','foo')
+                .toArray()
+            .shuffle(true)
+            .stringify(true).store('mojo');
+            
+          console.log('mojo: ' + $AXIS.mojo.$);
+          console.log('here: ' + AXIS.$);
+          console.log($AXIS.sandro.has.a.long.namespace.$);
+          console.log('son:' + $AXIS.some.other.namespace.foo);
+          console.log('shuff'+$AXIS.shuffleStore.$);
+          console.log(AXIS.$);
+
+      AXIS
+        .select('div')
+          .foreach(function(i)
+            {
+             // return 'k';
+              //alert(i.id + ' - ' + AXIS.match(i,'div#testLogger').$);
+
+            });
+//alert(AXIS.select.$);
+        
+      //alert(AXIS.$);
+
+
+  }
+});
+
+
+
+</script>
+
+</head>
+
+<body>
+	<div class=" yui-skin-sam">
+		<div id="testLogger" >sdafasdf</div>
+	</div>
+  <button>0th Button</button>
+  <button>1st Button</button>
+  <button>2nd Button</button>
+
+</body>
+
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Errors+Data+Store" 
+  libraries="selector+array+json"
+></script>
+<script type="text/javascript">
+    
+var bbb = AXIS.Store.update({
+  url: 'jajaja',
+  content: ['on','tone'] 
+});  
+
+for(x in AXIS.Store._local)
+  {
+    console.log(bbb);  
+  }  
+
+
+// try and create etag conflict
+var xx = AXIS.WebDAV.PUT({
+  url: 'jajaja',
+  body: '["d"]'
+});
+
+console.log('set etag: ' + xx.getResponseHeader('Etag'));
+
+var bbb = AXIS.Store.update({
+  url: 'jajaja',
+  overwrite: 'T',
+  content: ['on','tone'] 
+});  
+
+
+bbb = AXIS.Store.read({
+  url: 'jajaja'
+});         
+
+
+bbb = AXIS.Store.destroy({
+  url: 'jajaja'
+});
+
+for(x in AXIS.Store._local)
+  {
+    console.log(AXIS.Store._local[x]);  
+  }  
+
+
+ 		var tab = AXIS.Data.createTable({
+			name: 'testTable',
+			primary: 'first',
+			fields: [
+			          {
+			            name: 'one'
+			          },
+			          {
+			            name:'two'
+			          },
+			          {
+			            name:'three', 
+			            regex:'varchar'
+			          },
+			          {
+			            name:'four', 
+			            regex:'integer'
+			          }
+		          ],
+			manifest: {
+			            'class':        'DAV-RESPONSE',
+			            constructedBy:  'AXIS#functionName',
+			            href:           'http://sandro.sandro-dav.limewire.com:8080',
+			            displayName:    'sandro'
+			          }
+		});
+
+    tab.insertRecord([{
+    	first: 'x0',
+    	one: 'c1',
+    	two: 'x2',
+    	three: 5,
+    	four: 5
+    },
+    {
+    	first: 'b0',
+    	one: 'c1',
+    	two: 'b2',
+    	three: 6,
+    	four:  7
+    },
+    {
+    	first: 'c0',
+    	one: 'c1',
+    	two: 'c7',
+    	three: 'four',
+    	four: 4
+    }]);
+    
+    tab.insertRecord({
+    	first: 'a0',
+    	one: 'a1',
+    	two: 'a2',
+    	three: 4,
+    	four: 4
+    },1);    
+    
+    /**
+     * Create some records
+     */
+    var ru1,ru2;
+    for(var u=0; u < 10; u++)
+      {
+        ru1 = parseInt(Math.random() * 1000000000);
+        ru2 = parseInt(Math.random() * 1000000000);
+        
+        tab.insertRecord({
+        	first: 'a0',
+        	one: 'a1',
+        	two: 'a2',
+        	three: ru1,
+        	four: ru2
+        });
+        
+      }
+
+  /**
+   * Add a new field.
+   */
+  tab.addField({name: 'newfield',regex: 'varchar'});
+
+
+  tab.saveFile('sandroTable.json');
+  tab.loadFile('sandroTable.json');
+
+   var st = {
+    AND:  [
+      [
+        'one',
+        'c1',
+        '=='
+      ]
+    ],
+    OR: [
+      [
+        'four',
+        'three',
+        'gt'
+      ]
+    ]
+  };
+    
+   st = {
+    STRICT: false,
+    AND: [
+      [
+        'four',
+        ':three',
+        'gt'
+      ]
+    ],
+    OR: [
+      [
+        'one',
+        'c1',
+        '=='
+      ]
+    ]
+  };
+    
+    tab.map(function() {
+      this.three = 'ahahaha';
+    });
+   
+    AXIS
+      .scope(tab.getRecords())
+      .stringify(true);
+    //alert('all: ' + AXIS.$);
+    
+    console.log(tab.reduce(function(b){ 
+      return this + b.four; 
+      }, 0));
+      
+    console.log(tab.reduceRight(function(b){ 
+      return this + b.four; 
+      }, 0));
+
+    console.log(tab.reduce(function(b){
+      this.push(b);
+      return this;
+    },[]).length);
+
+    
+    AXIS
+      .scope(tab.getRecords())
+      .stringify(true);
+    //alert('presort: ' + AXIS.$);
+   
+   /** 
+    var ss = tab.sort({three:1,first:1});
+    
+    AXIS
+      .scope(ss)
+      .stringify(true);
+    //alert('sorted: ' + AXIS.$);
+    **/
+
+  //alert(tab.deleteField('one'));
+  
+  AXIS
+    .scope(tab.getRecords())
+    .stringify(true); 
+  //alert(AXIS.$);
+  
+  //tab.deleteRecord(1);
+  
+  /*
+  tab.updateRecord(1,{
+    first: 'sandro',
+    four: 4545    
+  });
+  */
+   
+  AXIS
+    .scope(tab.getRecords())
+    .stringify(true); 
+  //alert(AXIS.$);
+  
+	AXIS
+	  .scope(tab.getFields())
+	  .stringify(true);
+	//alert(AXIS.$);
+  
+  var srch = tab.search(st);
+  
+	AXIS
+	  .scope(srch)
+		.stringify(true);
+	//alert('searching: ' + AXIS.$);
+   
+  var q = tab.deleteRecord(st);
+	  
+	//alert(tab.deleteRecord(1));
+
+
+AXIS
+  .scope(tab.getRecords())
+  .stringify(true);
+//lert(AXIS.$);
+
+
+</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

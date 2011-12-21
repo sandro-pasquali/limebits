@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+    
+    /**
+     * Creates a single-page file out of the table of contents.  Assuming that
+     * the entirety of this documentation is composed of the hrefs contained
+     * in the index links, the idea is to take each href(uri), fetch it via XHR, and
+     * insert it into the page.  Now that we have all the pages in one, we change
+     * the behaviour of the index by converting the hrefs to anchors targeting
+     * the relevant content (xhr'd file) on this page. 
+     */    
+    AXIS.onDOMReady.subscribe({
+      callback: function(a){
+        if(window.location.hash == '#SINGLEPAGE'){
+          AXIS
+            .select('h3 a')
+            .foreach(function(t){
+              var href = t.href;
+              
+              /**
+               * Generate a DIV with a targetable ID, which will
+               * become the new href of this Anchor.  Then change
+               * the href of this Anchor to a hash w/ id.
+               */              
+              var aId = AXIS.getUniqueId();
+              var d = document.createElement('div');
+              d.id = aId;
+              document.body.appendChild(d);
+              
+              t.href = '#' + aId;
+               
+              /**
+               * Now fetch the href's and insert into document.  Note that
+               * this is done synchronously
+               */
+              AXIS.Loader.load({
+                url: href,
+                asynch: false,
+                callback: function(r) {
+                  var _r = r.responseText;
+                  AXIS.find(aId).innerHTML = _r.substring(_r.indexOf('<body>') + 6,_r.indexOf('</body>'));
+                }
+              });
+            });
+          
+          /**
+           * Now switch the `Single Page` link to a `Multi Page` link
+           */
+          var pt = AXIS.find('page_toggle');
+          pt.innerHTML = 'Linked Pages';
+          pt.href = 'index.html';
+        }
+      }
+    });
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+     	version:  '1',
+     	options:  
+     	  {
+     	    rootPath:       "",
+          groupURI:       "http://groups.google.com/group/limebits/post",
+          headerText:     "LIMEBITS: CREATING A READABLE AND WRITABLE WEB",
+          showNav:        (window.location.hash == '#SINGLEPAGE') ? false : true
+     	  }
+    });
+    
+    </script>
+        
+  </head>
+  <body>
+    <div id="TOC_BAR"></div>
+
+    <div id="header">
+      <h1>The AXIS Application Framework</h1>
+    </div>
+    
+    <h2>About</h2>
+    <p>
+      LimeBits is the world's first <abbr>WebDAV</abbr> powered application development environment.  We are creatign a readable and writable web.
+      Applications are developed using a single, well-known programming language, Javascript, and are fully copyable.
+      <a href="http://www.limebits.com">LimeBits</a> 
+    </p>
+
+    <p>
+      Sign up to the
+      <a href="http://groups.google.com/group/limebits">mailing list</a> to
+      stay updated and discuss changes.  Each paragraph has a
+      handy <em>Comment</em> link that allows you to quote text and post a
+      comment to the mailing list. Feel free to make liberal use of this
+      feature.
+    </p>
+
+    <p>
+      <em>
+        Limebits is an open-source project, and because applications created on the platform are copyable and therefore editable, even the AXIS itself can be modified.
+      </em>
+    </p>
+    <h2>Part I. Introduction</h2>
+    <h3 class="toc_numbered"><span>01.</span> <a href="what-limebits.html">What is LimeBits?</a></h3>
+    <h3 class="toc_numbered"><span>02.</span> <a href="what-webdav.html">What is WebDAV?</a></h3>
+    <h3 class="toc_numbered"><span>03.</span> <a href="what-web-based-applications.html">What are Web-Based Applications?</a></h3>
+      
+    <h2>Part II. The AXIS Core</h2>
+    <h3 class="toc_numbered"><span>01.</span> <a href="codebase/AXIS/AXIS-goals.html">Goals</a></h3>
+    <h3 class="toc_numbered"><span>02.</span> <a href="codebase/AXIS/AXIS-usage.html">Usage</a></h3>
+    <h3 class="toc_numbered"><span>03.</span> <a href="codebase/AXIS/AXIS-general-methods.html">General Methods</a></h3>
+    <h3 class="toc_numbered"><span>04.</span> <a href="codebase/AXIS/Queue.html">AXIS#Queue</a></h3>
+    <h3 class="toc_numbered"><span>05.</span> <a href="codebase/AXIS/CustomEvent.html">AXIS#CustomEvent</a></h3>
+    
+    <h2>Part III. AXIS Required Extensions</h2>
+    <h3 class="toc_numbered"><span>01.</span> <a href="codebase/AXIS/AXIS-extensions.html">What is an `Extension`?</a></h3>
+    <h3 class="toc_numbered"><span>02.</span> <a href="codebase/AXIS/AXIS-core-extensions.html">Core AXIS Extensions</a></h3>
+    <h3 class="toc_numbered"><span>03.</span> <a href="codebase/extensions/Cookies.html">AXIS#Cookies</a></h3>
+    <h3 class="toc_numbered"><span>04.</span> <a href="codebase/extensions/User.html">AXIS#User</a></h3>
+    <h3 class="toc_numbered"><span>05.</span> <a href="codebase/extensions/Loader.html">AXIS#Loader</a></h3>
+    <h3 class="toc_numbered"><span>06.</span> <a href="codebase/extensions/XHR.html">AXIS#XHR</a></h3>
+    <h3 class="toc_numbered"><span>07.</span> <a href="codebase/extensions/WebDAV.html">AXIS#WebDAV</a></h3>
+    <h3 class="toc_numbered"><span>08.</span> <a href="codebase/extensions/Login.html">AXIS#Login</a></h3>
+    
+    <h2>Part IV. AXIS Optional Extensions</h2>
+    <h3 class="toc_numbered"><span>01.</span> <a href="codebase/extensions/Modules.html">AXIS#Modules</a></h3>
+   
+    <h2>Part V. Libraries</h2>
+    <h3 class="toc_numbered"><span>01.</span> <a href="codebase/AXIS/AXIS-building-custom-libraries.html">Building Custom Libraries</a></h3>
+    <h3 class="toc_numbered"><span>02.</span> <a href="codebase/libraries/selector.html">selector</a></h3>
+    <h3 class="toc_numbered"><span>03.</span> <a href="codebase/libraries/array.html">array</a></h3>
+    <h3 class="toc_numbered"><span>04.</span> Date</h3>
+    <h3 class="toc_numbered"><span>05.</span> String</h3>
+
+    <h2>Part VI. Javascript</h2>
+    <h3 class="toc_numbered"><span>01.</span> <a href="javascript/javascript-history.html">History</a></h3>
+    <h3 class="toc_numbered"><span>02.</span> <a href="javascript/javascript-datatypes.html">Datatypes</a></h3>
+    <h3 class="toc_numbered"><span>03.</span> <a href="javascript/javascript-overview.html">Overview</a></h3>
+    <h3 class="toc_numbered"><span>04.</span> <a href="javascript/javascript-ajax.html"><abbr>AJAX</abbr></a></h3>
+    
+    <h2>Part VII. Appendices</h2>
+    <h3 class="toc_numbered"><span>01.</span> <a href="appendices/HTTP-status-codes.html"><abbr>HTTP</abbr> Status Codes</a></h3>
+
+<!--
+    <h2>Part X. Maintainable Code</h2>
+    <h3 class="toc_numbered"><span>01.</span> What is maintainable code?</h3>
+    <h3 class="toc_numbered"><span>02.</span> Writing maintainable code</h3>
+    -->
+    <p>
+      <a id="page_toggle" href="index.html?123&nobar#SINGLEPAGE">Single Page</a>
+    </p>
+  </body>
+</html>

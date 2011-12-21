@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js"></script>
+<script type="text/javascript">
+
+var RSS = {
+  feeds: []
+};
+
+AXIS.onDOMReady.subscribe({
+	callback: function() {
+	  var fIdx  = RSS.feeds.length;
+	  var url   = "http://rss.cnn.com/rss/cnn_topstories.rss";
+	  
+	  RSS.feeds[fIdx] = function(r) {
+	    console.log(r);  
+	  };
+	  
+	  AXIS.includeScript("http://query.yahooapis.com/v1/public/yql?q=select * from rss where url='" + url + "'&format=json&callback=RSS.feeds[" + fIdx + "]");
+	}
+});
+      
+  
+  
+</script>
+</head>
+
+<body>
+</body>
+
+</html>

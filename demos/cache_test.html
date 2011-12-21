@@ -1,0 +1,23 @@
+
+<html>
+<head>
+   <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js"></script>
+    <script type="text/javascript">
+    AXIS.WebDAV.PUT({
+      url: "http://sandro.sandro-dav.limewire.com:8080/helloworld.txt",
+      body: "hello there!",
+      asynch: false
+    });
+    var content = AXIS.WebDAV.GET({
+      url: "http://sandro.sandro-dav.limewire.com:8080/helloworld.txt",
+      onSuccess: function(r){
+        console.log(r.getStatus());  //success is 200
+        alert('response:' + r.responseText);
+      }
+    });
+   </script>
+</head>
+<body>
+text
+</body>
+</html>

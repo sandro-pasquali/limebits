@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  extensions="Modules+Errors" 
+></script>
+
+<script type="text/javascript">
+  
+var dfnD =  {  
+                'Some Token': {
+                text: "Some sort of long explanation of a token."
+                },
+                
+                'Word of the Day: Martinet': {
+                text: "One who lays stress on a rigid adherence to the details of forms and methods."
+                }
+            };
+          
+  
+AXIS.Modules.load({
+  provider: 'local',
+  module:   'Tooltips',
+  options:  {
+              definitions:  dfnD,
+              topOffset:    2,
+              leftOffset:   2,
+              maxWidth:     300,
+              showAbbr:     true
+            },
+  onload:   function(ob) {
+    ob.set();
+  }
+});  
+  
+</script>
+
+</head>
+
+<body>
+
+<!-- Directly -->
+<blockquote>
+  <span class="AXIS_tooltip" tip="a tip">Some text here</span>
+</blockquote>
+
+<!--  
+
+  Using <abbr> title 
+  This is turned off by default (browser has its own tooltip).
+  You can turn AXIS tooltips on, which will use the title, 
+
+-->
+<blockquote>
+  <abbr title="abbr title">an abbr</abbr>
+</blockquote>
+
+<!--  Using <dfn> elements -->
+<blockquote>
+  <dfn>Word of the Day: Martinet</dfn>
+</blockquote>
+
+</body>
+
+</html>

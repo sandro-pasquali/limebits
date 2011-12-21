@@ -1,0 +1,9 @@
+{
+  "css": [         
+    "css/tooltips.css"
+  ],
+  
+  "libraries": "selector_lite+array",
+
+  "init": "init.js"
+}

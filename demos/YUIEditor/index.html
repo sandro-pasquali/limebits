@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LimeBits</title>
+  
+<script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.combined.js" 
+  arguments="showLoadingInfo+CSSReset" 
+  extensions="Errors+Modules" 
+  libraries="json"
+></script>
+
+<script type="text/javascript">
+  
+(function() {
+  
+var UrlInf = AXIS.parseUrl();
+
+var __BP__ = AXIS.PATH().replace('!lime/root/library/limebits/latest/axis/','');
+
+AXIS.Modules.load({
+	provider: 'yahoo',
+	module:   'Layout',
+	version:  '1',  
+	options:  { 
+	            tabHandlers:
+	              {
+	                click:      function(ev)
+	                  {
+	                    alert(this.get('label'));
+	                  },
+	                mousedown:  function(){},
+	                mouseup:    function(){},
+	                mouseover:  function(){},
+	                mouseout:   function(){}
+	              }
+	          },
+	          
+	onload:   function(p)
+	  {
+	    /**
+	     * Note that we are passing the inline layout -- what is in the BODY
+	     */
+	  	p.createLayout('main',AXIS.find('DEMO_LAYOUT'));
+	  	
+	  	p.tabPanel.createTabsInterface({
+	  	  DOMElement: 'layout_panel_tabs',
+	  	  tabs:       [
+	                    { label: 'Page' },
+	                    { 
+	                      label: 'Source',
+	                      active: true
+	                    }
+	                  ]});
+	                  
+	  	var tt = p.tabPanel.tabs.add({label:'jah'});
+	    p.tabPanel.tabs.removeByIndex(tt.idx);
+
+
+
+	    $AXIS.Modules.yahoo.Layout.browse.setFooter({
+	     height: 26,
+	     content: 'new content' 
+	    });
+	    
+	    
+	    AXIS.Modules.load({
+	      provider:   'yahoo',
+	      module:     'Tree',
+	      version:    '1',
+	      onload:     function()
+	        {
+	          //alert('tv'); 
+	        }
+      });
+      
+	    AXIS.Modules.load({
+	      provider:   'yahoo',
+	      module:     'Menu',
+	      version:    '1',
+	      onload:     function()
+	        {
+	          $AXIS.Modules.yahoo.Layout.tabPanel.setStyle('zIndex', 50000);
+	        }
+      });
+      
+      AXIS.onDOMReady.subscribe({
+        callback: function() {
+      	  p.view.createSmartFrame({
+      	    namespace:    'CodeMirror.frame',
+      	  	src:          AXIS.PATH() + 'modules/yahoo/Layout/smartFrames/codemirror/index.html',
+      	  	footerHeight:   24,
+      	    footer:         '<div id="editor_cursor_position">n</div>',
+      	    onload:       function(frm) {
+      	      //console.log($AXIS.CodeMirror.frame.frameDocument);
+      	      //console.log(frm.frameDocument);
+      	          
+      	    }
+      	  });
+      	  	
+      	  //alert(p.tabsControl.getTabIndex(x));
+      	  //alert(p.panel('view').get);
+      	  //alert(google.load);      	  	
+        }
+      });
+	  }
+});
+
+
+})();
+
+</script>
+
+</head>
+
+<body>
+<div id="DEMO_LAYOUT">
+  <div id="layout_panel_bar">
+    <div id="layout_panel_tabs" class="yui-navset">
+      
+      <!-- start Menu control -->
+      
+      <div id="productsandservices" class="yuimenubar yuimenubarnav">
+        <div class="bd">
+          <ul class="first-of-type">
+            
+            <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="#file">File</a>
+              <div id="file" class="yuimenu">
+                <div class="bd">
+                  <ul>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://360.yahoo.com">360&#176;</a></li>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://alerts.yahoo.com">Alerts</a></li>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://avatars.yahoo.com">Avatars</a></li>
+                    
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://groups.yahoo.com">Groups</a></li>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://promo.yahoo.com/broadband/">Internet Access</a></li>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="#">PIM</a>
+                    
+                        <div id="pim" class="yuimenu">
+                          <div class="bd">
+                            <ul class="first-of-type">
+                              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://mail.yahoo.com">Yahoo! Mail</a></li>
+                              
+                              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://addressbook.yahoo.com">Yahoo! Address Book</a></li>
+                              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://calendar.yahoo.com">Yahoo! Calendar</a></li>
+                              <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://notepad.yahoo.com">Yahoo! Notepad</a></li>
+                            </ul>            
+                          </div>
+                        </div>                    
+                    
+                    </li>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://members.yahoo.com">Member Directory</a></li>
+                    
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://messenger.yahoo.com">Messenger</a></li>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://mobile.yahoo.com">Mobile</a></li>
+                    <li class="yuimenuitem"><a class="yuimenuitemlabel" href="http://www.flickr.com">Flickr Photo Sharing</a></li>
+                  </ul>
+                </div>
+              </div>              
+            </li> <!-- close first menu block -->   
+            
+          </ul>            
+        </div>  
+      </div> <!-- close Menu control -->
+    
+    <!-- icon bar -->
+    <div style="float:left; padding:2px 0px 0px 2px; width:297px;"><img src="http://icons.limebits.com/icons/nuvola/22/apps/edu_languages.png" /></div>
+    
+    <!-- tabs will get inserted here -->
+    
+    </div>
+  </div>
+  <div id="layout_panel_browse">
+    <div id="treewrapper">
+      <div id="treediv"> </div>
+    </div>
+  </div>
+  <div id="layout_panel_view"></div>
+</div>
+
+</body>
+
+</html>

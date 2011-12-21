@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    
+    <script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+      extensions="Modules" 
+    ></script>
+    <script type="text/javascript">
+
+    AXIS.Modules.load({
+     	provider: 'local',
+     	module:   'Docs',
+     	options:  {
+     	            rootPath: '../../',
+     	            tooltipDefs: {
+     	              'ModuleObject': {
+     	                text: "Passed to AXIS#Modules#load.  The definition object for module loading.",
+     	                link: "#module_object"
+     	              }
+     	            },
+       	          groupURI: 'http://groups.google.com/group/limebits/post'
+     	          }
+    });
+                       
+    </script>
+    
+  </head>
+<body>
+  
+<div id="TOC_BAR"></div>
+
+<div id="header">
+
+  <h1>AXIS - Modules</h1>
+</div>
+
+<div id="preamble">
+  <p>
+    Methods for loading modules into the current workspace.  In order to use modules, you will need to add the <i>Modules</i> extension:
+  </p>
+  <pre class="brush: js">
+  &lt;script type="text/javascript" src="/!lime/root/library/limebits/latest/axis/AXIS.js" 
+  extensions="Modules">&lt;/script>
+  </pre>
+</div>
+
+<a id="module_object"></a>
+<h2>The Module Object</h2>
+<p>
+  Modules are accessed via a common definition. 
+</p>
+<div class="vlist">
+  <dl>
+    <dt>
+      <h5><dfn>ModuleObject</dfn>
+        <ul>
+          <li>
+            <dfn>String</dfn> <i>provider</i> : The module provider, serving as a grouping category.
+          </li>
+          <li>
+            <dfn>String</dfn> <i>module</i> : The name of the requested module.
+          </li>
+          <li>
+            <dfn class="optional">Number</dfn> <i>version</i> : The module version to load.
+          </li>
+          <li>
+            <dfn class="optional">Callback</dfn> <i>onload</i> : Function called module loads successfully.  Passed whatever is returned by module initialization function.
+          </li>
+          <li>
+            <dfn class="optional">Object</dfn> <i>options</i> : Any module-specific options.
+          </li>
+        </ul>
+      </h5>
+    </dt>
+  </dl>
+</div>
+  
+<h2>Creating Modules</h2>
+<p>
+  
+</p>
+
+<h2>Methods</h2>
+<div class="vlist">
+  <dl>
+    <dt>
+      <h5>load
+        <ul>
+          <li>
+            <dfn>ModuleObject</dfn>
+          </li>
+        </ul>
+        <div>
+          Returns <dfn>Boolean</dfn> indicating success or failure.
+        </div>
+      </h5>
+    </dt>
+    <dd>
+      <p>
+        Loads a module.  This documentation is itself a module, the `Docs` module, ie: 
+      </p>
+      <pre class="brush: js">
+      AXIS.Modules.load({
+       	provider: 'local',
+       	module:   'Docs',
+       	options:  {
+       	            rootPath: '../../',
+       	            },
+         	          groupURI: 'http://groups.google.com/group/limebits/post'
+       	          }
+      });
+      </pre>
+    </dd>
+   
+  </dl>
+</div>
+</body>
+</html>
